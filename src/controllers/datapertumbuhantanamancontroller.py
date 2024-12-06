@@ -1,5 +1,5 @@
 import sqlite3
-from datapertumbuhantanaman import DataPertumbuhanTanaman
+from src.controllers.datapertumbuhantanaman import DataPertumbuhanTanaman
 
 class DataPertumbuhanTanamanController:
     def __init__(self):
@@ -34,7 +34,7 @@ class DataPertumbuhanTanamanController:
         conn.close()
 
 # data_pertumbuhan_tanaman = DataPertumbuhanTanamanController()
-# data_pertumbuhan_tanaman1 = DataPertumbuhanTanaman("Sehat", 20, "2021-01-01", "Daun berwarna hijau")
+# data_pertumbuhan_tanaman1 = DataPertumbuhanTanaman("Sehat", 6, "2021-01-04", "Daun berwarna hijau")
 # data_pertumbuhan_tanaman.tambah_data_pertumbuhan("JERUK", 2, data_pertumbuhan_tanaman1)
 # data_pertumbuhan_tanaman.hapus_data_pertumbuhan("JERUK", 2, data_pertumbuhan_tanaman1)
 

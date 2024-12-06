@@ -1,10 +1,15 @@
 import flet as ft
+from datetime import date, timedelta
 # import plotly.graph_objects as go
 from src.components.button1 import create_button1
 from src.components.navBar import create_navbar
 from src.components.addButton import create_floating_action_button
-
-
+from src.controllers.datainformasitanaman import DataInformasiTanaman
+from src.controllers.datainformasitanamancontroller import DataInformasiTanamanController
+from src.controllers.jadwalperawatan import JadwalPerawatan
+from src.controllers.tanaman import Tanaman
+from src.controllers.jadwalperawatancontroller import JadwalPerawatanController
+from src.controllers.grafikpertumbuhan import GrafikPertumbuhan
 class State:
     toggle = True
 
@@ -56,7 +61,15 @@ def main(page: ft.Page):
         ft.LineChartDataPoint(9.5, 3.44),
         ft.LineChartDataPoint(11, 3.44),
     ]
-
+    def to_date(dt_date):
+        yy, mm, dd = map(int, dt_date.split('-'))
+        return date(yy, mm, dd)
+    
+    graph = GrafikPertumbuhan()
+    data1_set1, data_tanggal = graph.tinggi_terhadap_waktu(Tanaman(jenis_tanaman="JERUK", index_tanaman=2, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None))
+    range_tanggal = (to_date(data_tanggal[-1]) - to_date(data_tanggal[0])).days
+    
+    data1_set1 = [ft.LineChartDataPoint((to_date(data_tanggal[i])-to_date(data_tanggal[0])).days/range_tanggal*11, data1_set1[i]) for i in range(len(data1_set1))]
     # Create a LineChart
     data_1 = [
         ft.LineChartData(
@@ -81,17 +94,9 @@ def main(page: ft.Page):
             title=ft.Text("Tinggi Tanaman (cm)", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
             labels=[
                 ft.ChartAxisLabel(
-                    value=1,
+                    value=i,
                     label=ft.Text("10K", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ),
-                ft.ChartAxisLabel(
-                    value=3,
-                    label=ft.Text("30K", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ),
-                ft.ChartAxisLabel(
-                    value=5,
-                    label=ft.Text("50K", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ),
+                ) for i in range(len(data1_set1))
             ],
             labels_size=40,
         ),
@@ -99,10 +104,22 @@ def main(page: ft.Page):
             title=ft.Text("Tanggal", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
             labels=[
                 ft.ChartAxisLabel(
+                    value=0,
+                    label=ft.Container(
+                        ft.Text(
+                            to_date(data_tanggal[0]),
+                            size=16,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.Colors.BLACK,
+                        ),
+                        margin=ft.margin.only(top=10),
+                    ),
+                ),
+                ft.ChartAxisLabel(
                     value=2,
                     label=ft.Container(
                         ft.Text(
-                            "MAR",
+                            to_date(data_tanggal[0])  + timedelta(days=round(range_tanggal/11*2)),
                             size=16,
                             weight=ft.FontWeight.BOLD,
                             color=ft.Colors.BLACK,
@@ -111,10 +128,10 @@ def main(page: ft.Page):
                     ),
                 ),
                 ft.ChartAxisLabel(
-                    value=5,
+                    value=4,
                     label=ft.Container(
                         ft.Text(
-                            "JUN",
+                            to_date(data_tanggal[0])  + timedelta(days=round(range_tanggal/11*4)),
                             size=16,
                             weight=ft.FontWeight.BOLD,
                             color=ft.Colors.BLACK,
@@ -123,10 +140,34 @@ def main(page: ft.Page):
                     ),
                 ),
                 ft.ChartAxisLabel(
-                    value=8,
+                    value=7,
                     label=ft.Container(
                         ft.Text(
-                            "SEP",
+                            to_date(data_tanggal[0])  + timedelta(days=round(range_tanggal/11*7)),
+                            size=16,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.Colors.BLACK,
+                        ),
+                        margin=ft.margin.only(top=10),
+                    ),
+                ),
+                ft.ChartAxisLabel(
+                    value=9,
+                    label=ft.Container(
+                        ft.Text(
+                            to_date(data_tanggal[0])  + timedelta(days=round(range_tanggal/11*9)),
+                            size=16,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.Colors.BLACK,
+                        ),
+                        margin=ft.margin.only(top=10),
+                    ),
+                ),
+                ft.ChartAxisLabel(
+                    value=11,
+                    label=ft.Container(
+                        ft.Text(
+                            to_date(data_tanggal[-1]),
                             size=16,
                             weight=ft.FontWeight.BOLD,
                             color=ft.Colors.BLACK,

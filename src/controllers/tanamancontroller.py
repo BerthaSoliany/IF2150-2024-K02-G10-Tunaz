@@ -1,5 +1,5 @@
 import sqlite3
-from tanaman import Tanaman
+from src.controllers.tanaman import Tanaman
 
 class TanamanController:
     def __init__(self):

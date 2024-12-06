@@ -1,5 +1,5 @@
 import sqlite3
-from datainformasitanaman import DataInformasiTanaman
+from src.controllers.datainformasitanaman import DataInformasiTanaman
 
 class DataInformasiTanamanController:
     def __init__(self):
