@@ -60,19 +60,21 @@ class JadwalPerawatanController:
     #         tanggal_penyiraman = tanggal_penyiraman + frekuensi_penyiraman
 
     def susun_jadwal_penyiraman(self, bulan_tahun_kalender: str):
-        bulan_tahun_kalender = datetime(2024, 12, 1)
+        bulan_tahun_kalender = datetime.strptime(bulan_tahun_kalender, "%Y-%m-%d %H:%M:%S")
         conn = sqlite3.connect("tunaz.db")
         cursor = conn.cursor() 
-        cursor.execute("CREATE TEMPORARY TABLE IF NOT EXISTS JadwalPenyiraman (id_tanaman INT NOT NULL, tanggal_penyiraman DATE NOT NULL);")
-        cursor.execute("CREATE TEMPORARY TABLE IF NOT EXISTS TempJadwalPerawatan AS SELECT * FROM DataJadwalPerawatan;")
+        cursor.execute("CREATE TEMPORARY TABLE IF NOT EXISTS JadwalPenyiraman (id_tanaman INT NOT NULL, tanggal_penyiraman TEXT NOT NULL);")
+        cursor.execute("CREATE TEMPORARY TABLE IF NOT EXISTS TempJadwalPerawatan AS SELECT * FROM dataJadwalPerawatan;")
         cursor.execute("SELECT * FROM TempJadwalPerawatan;")
         jadwal_perawatan = cursor.fetchall()
         for jadwal in jadwal_perawatan:
-            waktu_siram = datetime.strptime(jadwal[5], "%Y-%m-%d")
+            waktu_siram = datetime.strptime(jadwal[5], "%Y-%m-%d %H:%M:%S")
             selisih_hari = (bulan_tahun_kalender - waktu_siram).days
             tanggal_penyiraman = waktu_siram + timedelta(days=selisih_hari - (selisih_hari % jadwal[3]))
+            while(tanggal_penyiraman.month != bulan_tahun_kalender.month):
+                tanggal_penyiraman = tanggal_penyiraman + timedelta(days = jadwal[3])
             while tanggal_penyiraman.month == bulan_tahun_kalender.month:
-                output_tanggal = tanggal_penyiraman.strftime("%Y-%m-%d")
+                output_tanggal = tanggal_penyiraman.strftime("%Y-%m-%d %H:%M:%S")
                 id_tanaman = jadwal[2]
                 cursor.execute("INSERT INTO JadwalPenyiraman (id_tanaman, tanggal_penyiraman) VALUES (?,?);", (id_tanaman, output_tanggal))
                 tanggal_penyiraman = tanggal_penyiraman + timedelta(days = jadwal[3])
@@ -81,14 +83,35 @@ class JadwalPerawatanController:
         print(cursor.fetchall())
         conn.close()
 
-    def susun_jadwal_pemupukan():
-        pass #soon
+    def susun_jadwal_pemupukan(self, bulan_tahun_kalender: str):
+        bulan_tahun_kalender = datetime.strptime(bulan_tahun_kalender, "%Y-%m-%d %H:%M:%S")
+        conn = sqlite3.connect("tunaz.db")
+        cursor = conn.cursor() 
+        cursor.execute("CREATE TEMPORARY TABLE IF NOT EXISTS JadwalPemupukan (id_tanaman INT NOT NULL, tanggal_pemupukan TEXT NOT NULL);")
+        cursor.execute("CREATE TEMPORARY TABLE IF NOT EXISTS TempJadwalPerawatan AS SELECT * FROM dataJadwalPerawatan;")
+        cursor.execute("SELECT * FROM TempJadwalPerawatan;")
+        jadwal_perawatan = cursor.fetchall()
+        for jadwal in jadwal_perawatan:
+            waktu_pupuk = datetime.strptime(jadwal[6], "%Y-%m-%d %H:%M:%S")
+            selisih_hari = (bulan_tahun_kalender - waktu_pupuk).days
+            tanggal_pemupukan = waktu_pupuk + timedelta(days=selisih_hari - (selisih_hari % jadwal[4]))
+            while(tanggal_pemupukan.month != bulan_tahun_kalender.month):
+                tanggal_pemupukan = tanggal_pemupukan + timedelta(days = jadwal[4])
+            while tanggal_pemupukan.month == bulan_tahun_kalender.month:
+                output_tanggal = tanggal_pemupukan.strftime("%Y-%m-%d %H:%M:%S")
+                id_tanaman = jadwal[2]
+                cursor.execute("INSERT INTO JadwalPemupukan (id_tanaman, tanggal_pemupukan) VALUES (?,?);", (id_tanaman, output_tanggal))
+                tanggal_pemupukan = tanggal_pemupukan + timedelta(days = jadwal[4])
+        conn.commit()
+        cursor.execute("SELECT * FROM JadwalPemupukan;")
+        print(cursor.fetchall())
+        conn.close()
 
-jadwal_perawatan = JadwalPerawatanController()
-jadwal_perawatan1 = JadwalPerawatan(3, 5, "2024-12-04", "2024-12-04", True)
+# jadwal_perawatan = JadwalPerawatanController()
+# jadwal_perawatan1 = JadwalPerawatan(3, 5, "2024-12-04 07:00:00", "2024-12-04 07:00:00", True)
 # jadwal_perawatan.tambah_data_jadwal_perawatan("JERUK", 2, jadwal_perawatan1)
 # jadwal_perawatan2 = JadwalPerawatan(2, 4, "08:00", "08:00", False)
 # jadwal_perawatan.ubah_data_jadwal_perawatan("JERUK", 2, jadwal_perawatan2)
 # jadwal_perawatan.hapus_data_jadwal_perawatan("JERUK", 2)
 # jadwal_perawatan.lihatsemua()
-jadwal_perawatan.susun_jadwal_penyiraman("2024-12-01")
+# jadwal_perawatan.susun_jadwal_pemupukan("2024-12-01 00:00:00")
