@@ -45,7 +45,33 @@ class TanamanController:
         # print(x[0][1])
         # print(x[0][2])
         conn.close()
+
+    def get_all_jenis_tanaman(self):
+        conn = sqlite3.connect("tunaz.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT jenis_tanaman FROM tanaman;")
+        # make it unique (delete if theres same value)
+        x = cursor.fetchall()
+        y = []
+        for i in x:
+            if i not in y:
+                y.append(i[0])
+        conn.close()
+        return y
+
+    def get_all_index_tanaman(self, jenis_tanaman):
+        conn = sqlite3.connect("tunaz.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT index_tanaman FROM tanaman WHERE jenis_tanaman = ?", (jenis_tanaman,))
+        x = cursor.fetchall()
+        y = []
+        for i in x:
+            y.append(i[0])
+        conn.close()
+        return y
+
 # tanaman_controller = TanamanController()
+# tanaman_controller.get_all_jenis_tanaman()
 # tanaman1 = Tanaman(jenis_tanaman="JERUKkkzz", index_tanaman=1, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None)
 # tanaman_controller.tambah_tanaman(tanaman1)
 # tanaman_controller.lihat_tanaman()

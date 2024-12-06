@@ -40,25 +40,6 @@ class JadwalPerawatanController:
         print(cursor.fetchall())
         conn.close()
 
-    # I.S. frekuensi_penyiraman dan waktu_penyiraman tanaman terdefinisi, tidak ada jadwal_penyiraman pada bulan yang ingin ditampilkan di kalender.
-    # F.S. Jadwal penyiraman untuk setiap tanaman telah dibuat berdasarkan frekuensi dan waktu penyiraman untuk bulan yang diminta.
-    # Algoritma:
-    # CREATE TEMPORARY TABLE JadwalPenyiraman ( 
-    #     id_tanaman INT NOT NULL, 
-    #     tanggal_penyiraman DATE NOT NULL);
-    # CREATE TEMPORARY TABLE TempJadwalPerawatan AS
-    # SELECT *
-    # FROM DataJadwalPerawatan 
-    # WHERE waktu_tanam >= {bulan_tahun_kalender} 
-    # FOR jadwal in TempJadwalPerawatan DO
-    #     SET selisih_hari ={bulan_tahun_kalender} - jadwal.waktu_penyiraman
-    #     SET tanggal_penyiraman = jadwal.waktu_penyiraman + selisih_hari - selisih_hari %   
-    #     jadwal.frekuensi_penyiraman
-    #     WHILE tanggal_penyiraman IS within bulan_tahun_kalender DO
-    #         INSERT INTO JadwalPenyiraman (index_tanaman, tanggal_penyiraman)
-    #         VALUES (jadwal.index_tanaman, tanggal_penyiraman);
-    #         tanggal_penyiraman = tanggal_penyiraman + frekuensi_penyiraman
-
     def susun_jadwal_penyiraman(self, bulan_tahun_kalender: str):
         bulan_tahun_kalender = datetime.strptime(bulan_tahun_kalender, "%Y-%m-%d %H:%M:%S")
         conn = sqlite3.connect("tunaz.db")
