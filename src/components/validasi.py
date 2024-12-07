@@ -16,15 +16,15 @@ def create_dialog(page: ft.Page, go_back):
         actions=[
             ft.Row(
                 controls=[
-                    ft.OutlinedButton(text="YA", on_click=handle_close_yes, width=110, style=ft.ButtonStyle(color=ft.Colors.WHITE, bgcolor=ft.Colors.GREEN, shape=ft.RoundedRectangleBorder(radius=10))),
-                    ft.OutlinedButton(text="TIDAK", on_click=handle_close_no, width=110, style=ft.ButtonStyle(color=ft.Colors.WHITE, bgcolor=ft.Colors.RED, shape=ft.RoundedRectangleBorder(radius=10))),
+                    ft.OutlinedButton(text="YA", on_click=handle_close_yes, width=110, style=ft.ButtonStyle(color=ft.Colors.WHITE, bgcolor="#42AD55", shape=ft.RoundedRectangleBorder(radius=10))),
+                    ft.OutlinedButton(text="TIDAK", on_click=handle_close_no, width=110, style=ft.ButtonStyle(color=ft.Colors.WHITE, bgcolor="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10))),
                 ],
                 alignment="center"
             )
         ],
         actions_alignment=ft.MainAxisAlignment.END,
         on_dismiss=lambda e: page.add(),
-        bgcolor=ft.colors.YELLOW_100,
+        bgcolor="#FDFFEA",
         shadow_color=ft.colors.GREY_400,
     )
     return dialog
