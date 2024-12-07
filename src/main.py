@@ -1,9 +1,16 @@
 import flet as ft
+from datetime import date, timedelta
 # import plotly.graph_objects as go
 from src.components.button1 import create_button1
 from src.components.navBar import create_navbar
 from src.components.addButton import create_floating_action_button
-
+from src.controllers.datainformasitanaman import DataInformasiTanaman
+from src.controllers.datainformasitanamancontroller import DataInformasiTanamanController
+from src.controllers.jadwalperawatan import JadwalPerawatan
+from src.controllers.tanaman import Tanaman
+from src.controllers.jadwalperawatancontroller import JadwalPerawatanController
+from src.controllers.grafikpertumbuhan import GrafikPertumbuhan
+from src.controllers.tanamancontroller import TanamanController
 
 class State:
     toggle = True
@@ -12,8 +19,50 @@ s = State()
 
 
 def main(page: ft.Page):
-    page.title = "Flet app"
+    page.bgcolor = "white"
+
+    # Create a dropdown choice
+    def dropdown_changed(e):
+        t.value = f"Dropdown changed to {pilihan_jenis.value}"
+        pilihan_index.options.clear()
+        if(pilihan_jenis.value != None):
+            index_tanaman = tanaman_controller.get_all_index_tanaman(pilihan_jenis.value)
+            pilihan_index.options = [ft.dropdown.Option(option) for option in index_tanaman]
+            pilihan_index.disabled = False
+        else:
+            pilihan_index.disabled = True
+        pilihan_index.value = None
+        pilihan_index.update()
+        page.update()   
+
+    t = ft.Text()
+    def dropdown_choice(judul: str, pilihan: list, bcolor: any):
+        return ft.Dropdown(
+            on_change=dropdown_changed,
+            text_style=ft.TextStyle(size=16, color="black", overflow="hidden"),
+            bgcolor=bcolor,
+            label=judul,
+            label_style=ft.TextStyle(size=16, color="black"),
+            options=[ft.dropdown.Option(option) for option in pilihan],
+            width=102,
+            height=44,
+            icon_enabled_color="black",
+            border_width=0,
+            disabled=True,
+        )
     
+    tanaman_controller = TanamanController()
+    jenis_tanaman = tanaman_controller.get_all_jenis_tanaman()
+    pilihan_jenis = dropdown_choice("Jenis", jenis_tanaman, ft.colors.GREEN_300)
+    pilihan_jenis.disabled = False
+    # index_tanaman = tanaman_controller.get_all_index_tanaman(pilihan_jenis.value)
+    pilihan_index = dropdown_choice("Index", [], ft.colors.BROWN_300)
+        # page.add(pilihan_index)
+    # if(index_tanaman != []):
+    #     pilihan_index.options.append(ft.dropdown.Option(index_tanaman[i]) for i in range(len(index_tanaman)))
+    #     # pilihan_index.update()
+    #     page.update()
+    # Create an add button
     def button_clicked(e):
         page.add(ft.Text("Button clicked!"))
 
@@ -39,7 +88,15 @@ def main(page: ft.Page):
         ft.LineChartDataPoint(9.5, 3.44),
         ft.LineChartDataPoint(11, 3.44),
     ]
-
+    def to_date(dt_date):
+        yy, mm, dd = map(int, dt_date.split('-'))
+        return date(yy, mm, dd)
+    
+    graph = GrafikPertumbuhan()
+    data1_set1, data_tanggal = graph.tinggi_terhadap_waktu(Tanaman(jenis_tanaman="JERUK", index_tanaman=2, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None))
+    range_tanggal = (to_date(data_tanggal[-1]) - to_date(data_tanggal[0])).days
+    
+    data1_set1 = [ft.LineChartDataPoint((to_date(data_tanggal[i])-to_date(data_tanggal[0])).days/range_tanggal*11, data1_set1[i]) for i in range(len(data1_set1))]
     # Create a LineChart
     data_1 = [
         ft.LineChartData(
@@ -64,17 +121,9 @@ def main(page: ft.Page):
             title=ft.Text("Tinggi Tanaman (cm)", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
             labels=[
                 ft.ChartAxisLabel(
-                    value=1,
+                    value=i,
                     label=ft.Text("10K", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ),
-                ft.ChartAxisLabel(
-                    value=3,
-                    label=ft.Text("30K", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ),
-                ft.ChartAxisLabel(
-                    value=5,
-                    label=ft.Text("50K", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ),
+                ) for i in range(len(data1_set1))
             ],
             labels_size=40,
         ),
@@ -82,10 +131,22 @@ def main(page: ft.Page):
             title=ft.Text("Tanggal", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
             labels=[
                 ft.ChartAxisLabel(
+                    value=0,
+                    label=ft.Container(
+                        ft.Text(
+                            to_date(data_tanggal[0]),
+                            size=16,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.Colors.BLACK,
+                        ),
+                        margin=ft.margin.only(top=10),
+                    ),
+                ),
+                ft.ChartAxisLabel(
                     value=2,
                     label=ft.Container(
                         ft.Text(
-                            "MAR",
+                            to_date(data_tanggal[0])  + timedelta(days=round(range_tanggal/11*2)),
                             size=16,
                             weight=ft.FontWeight.BOLD,
                             color=ft.Colors.BLACK,
@@ -94,10 +155,10 @@ def main(page: ft.Page):
                     ),
                 ),
                 ft.ChartAxisLabel(
-                    value=5,
+                    value=4,
                     label=ft.Container(
                         ft.Text(
-                            "JUN",
+                            to_date(data_tanggal[0])  + timedelta(days=round(range_tanggal/11*4)),
                             size=16,
                             weight=ft.FontWeight.BOLD,
                             color=ft.Colors.BLACK,
@@ -106,10 +167,34 @@ def main(page: ft.Page):
                     ),
                 ),
                 ft.ChartAxisLabel(
-                    value=8,
+                    value=7,
                     label=ft.Container(
                         ft.Text(
-                            "SEP",
+                            to_date(data_tanggal[0])  + timedelta(days=round(range_tanggal/11*7)),
+                            size=16,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.Colors.BLACK,
+                        ),
+                        margin=ft.margin.only(top=10),
+                    ),
+                ),
+                ft.ChartAxisLabel(
+                    value=9,
+                    label=ft.Container(
+                        ft.Text(
+                            to_date(data_tanggal[0])  + timedelta(days=round(range_tanggal/11*9)),
+                            size=16,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.Colors.BLACK,
+                        ),
+                        margin=ft.margin.only(top=10),
+                    ),
+                ),
+                ft.ChartAxisLabel(
+                    value=11,
+                    label=ft.Container(
+                        ft.Text(
+                            to_date(data_tanggal[-1]),
                             size=16,
                             weight=ft.FontWeight.BOLD,
                             color=ft.Colors.BLACK,
@@ -185,5 +270,31 @@ def main(page: ft.Page):
     )
    
     page.add(
-        ft.Text("Hello, Flet!"),
-    )
+        create_navbar(page),
+        ft.Column(
+            controls=[
+                ft.Row(
+                    controls=[
+                        pilihan_jenis,
+                        pilihan_index,
+                        create_button1("Cari!", toggle_data, tcolor='black', bcolor='white'),
+                    ],
+                    alignment="start",
+                    vertical_alignment="center",
+                ),
+                ft.Row(
+                    controls=[
+                        chart_container,
+                        data_container,
+                    ],
+                    alignment="spaceEvenly",
+                    vertical_alignment="center",
+                ),
+            ],
+        ),
+        fab,
+        
+        
+    ) 
+
+    page.update()

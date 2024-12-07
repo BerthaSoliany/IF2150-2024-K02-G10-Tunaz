@@ -54,7 +54,7 @@ class TanamanController:
         x = cursor.fetchall()
         y = []
         for i in x:
-            if i not in y:
+            if i[0] not in y:
                 y.append(i[0])
         conn.close()
         return y

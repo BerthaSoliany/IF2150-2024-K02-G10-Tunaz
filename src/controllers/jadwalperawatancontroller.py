@@ -1,5 +1,5 @@
 import sqlite3
-from jadwalperawatan import JadwalPerawatan 
+from src.controllers.jadwalperawatan import JadwalPerawatan 
 from datetime import datetime, timedelta
 class JadwalPerawatanController:
     def __init__(self):
