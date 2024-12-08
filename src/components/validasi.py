@@ -1,13 +1,13 @@
 import flet as ft
 
-def create_dialog(page: ft.Page, go_back):
+def validasi(page: ft.Page, link):
     def handle_close_no(e):
         page.close(dialog)
         # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
 
     def handle_close_yes(e):
         page.close(dialog)
-        go_back(e)
+        page.go(link)
         # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
 
     dialog = ft.AlertDialog(
