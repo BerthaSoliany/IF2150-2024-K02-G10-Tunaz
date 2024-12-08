@@ -1,5 +1,6 @@
 import flet as ft
 
+# ini dummy page
 # Home page function
 def home_page(page: ft.Page):
     page.controls.clear()

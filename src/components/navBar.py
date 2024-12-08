@@ -18,7 +18,7 @@ def create_navbar(page: ft.Page):
                 ft.Row(
                     controls=[
                         ft.Image(
-                            src="/img/logo1.png",  
+                            src="./img/logo1.png",  
                             width=90, 
                             height=90,  
                             fit="contain" 

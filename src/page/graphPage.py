@@ -276,6 +276,7 @@ def graph_page(page: ft.Page):
                     controls=[
                         pilihan_jenis,
                         pilihan_index,
+                        # tombol cari ini diilangin dan masukin function toggle data ke pilihan_index yaw
                         create_button1("Cari!", toggle_data, tcolor='black', bcolor='white'),
                     ],
                     alignment="start",

@@ -1,6 +1,6 @@
 import flet as ft
 
-def create_dialog(page: ft.Page, link):
+def validasi(page: ft.Page, link):
     def handle_close_no(e):
         page.close(dialog)
         # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
