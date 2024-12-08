@@ -1,5 +1,5 @@
 import sqlite3
-from datapertumbuhantanaman import DataPertumbuhanTanaman
+from src.controllers.datapertumbuhantanaman import DataPertumbuhanTanaman
 
 class DataPertumbuhanTanamanController:
     def __init__(self):
