@@ -1,11 +1,11 @@
 import flet as ft
 # import plotly.graph_objects as go
-from components.button1 import create_button1
-from components.navBar import create_navbar
-from components.addButton import create_floating_action_button
-from components.clickCard import create_click_card
-from components.graphAddFormEntry import graph_add_form_entry_page
-from components.graphViewPage import graph_view_page
+from src.components.button1 import create_button1
+from src.components.navBar import create_navbar
+from src.components.addButton import create_floating_action_button
+from src.components.clickCard import create_click_card
+from src.components.graphAddFormEntry import graph_add_form_entry_page
+from src.components.graphViewPage import graph_view_page
 
 
 class State:
@@ -208,7 +208,7 @@ def graph_page(page: ft.Page, go_back):
         margin=10,
         bgcolor=ft.Colors.WHITE,
         width=800,
-        height=450,
+        height=ft.Column(expand=True),
         shadow=ft.BoxShadow(
             blur_radius=10,
             spread_radius=2,
@@ -230,7 +230,7 @@ def graph_page(page: ft.Page, go_back):
         # border_radius=10,
         # bgcolor=ft.Colors.WHITE,
         width=300,
-        height=450,
+        height=300,
     )
 
     header = ft.Container(
@@ -239,6 +239,7 @@ def graph_page(page: ft.Page, go_back):
         alignment=ft.alignment.center,
         bgcolor="#5F9356",
         border_radius=ft.border_radius.only(top_left=10, top_right=10),
+        width=300,
     )
     
     bordered_container = ft.Container(
@@ -261,11 +262,14 @@ def graph_page(page: ft.Page, go_back):
             color=ft.Colors.GREY_400,
             offset=ft.Offset(0, 4),
         ),
+        expand=True,
         # shadow=ft.BoxShadow
         # alignment=ft.alignment.center,
     )
-   
-    return ft.Column(
+
+    return ft.Stack([
+        ft.Container(content=fab, alignment=ft.alignment.bottom_right, bgcolor=ft.Colors.WHITE),
+        ft.Column(
             controls=[
                 create_navbar(page),
                 ft.Row(
@@ -285,6 +289,6 @@ def graph_page(page: ft.Page, go_back):
                     alignment="spaceEvenly",
                     vertical_alignment="center",
                 ),
-                fab
-            ]
-        )
+            ], 
+        ),
+    ], expand=True)
