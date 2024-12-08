@@ -14,7 +14,7 @@ class State:
 s = State()
 
 
-def graph_page(page: ft.Page, go_back):
+def graph_page(page: ft.Page):
     page.bgcolor = "white"
     page.theme = ft.Theme(font_family="Kantumruy-Regular")
     page.horizontal_alignment = ft.alignment.center
@@ -266,8 +266,8 @@ def graph_page(page: ft.Page, go_back):
         # shadow=ft.BoxShadow
         # alignment=ft.alignment.center,
     )
-
-    return ft.Stack([
+    page.controls.clear()
+    page.controls.append(ft.Stack([
         ft.Container(content=fab, alignment=ft.alignment.bottom_right, bgcolor=ft.Colors.WHITE),
         ft.Column(
             controls=[
@@ -291,4 +291,6 @@ def graph_page(page: ft.Page, go_back):
                 ),
             ], 
         ),
-    ], expand=True)
+    ], expand=True))
+    page.update()
+    return page

@@ -1,7 +1,7 @@
 import flet as ft
 from src.components.button1 import create_button1
 
-def graph_edit_form_entry_page(page: ft.Page, go_back):
+def graph_edit_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.bgcolor = "white"
@@ -13,7 +13,7 @@ def graph_edit_form_entry_page(page: ft.Page, go_back):
                 controls=[
                     ft.Row(
                         controls=[
-                            create_button1("Back", go_back, ft.Colors.WHITE, "#F47A6F"),
+                            create_button1("Back", lambda e: page.go("/src/components/graphViewPage"), ft.Colors.WHITE, "#F47A6F"),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                         vertical_alignment=ft.CrossAxisAlignment.START,
@@ -43,7 +43,7 @@ def graph_edit_form_entry_page(page: ft.Page, go_back):
                             horizontal_alignment=ft.CrossAxisAlignment.START,),
                             ft.Column([
                                 ft.Text("Status Tanaman", size=20, color="black"),
-                                ft.Dropdown(bgcolor="white", width=126, label="Hidup",border_width=0, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")]), # Change this to the status of the plant
+                                ft.Dropdown(bgcolor="white", width=126, hint_content=ft.Text(value="Hidup", color="grey400"), border_width=0, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")]), # Change this to the status of the plant
                             ],
                             alignment=ft.MainAxisAlignment.START,
                             horizontal_alignment=ft.CrossAxisAlignment.START,),  
@@ -55,8 +55,8 @@ def graph_edit_form_entry_page(page: ft.Page, go_back):
                     ft.CupertinoTextField(bgcolor="white", placeholder_text="Masukkan kondisi", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400)), # Change this to the state of the leaves
                     ft.Row(
                         controls=[
-                        ft.OutlinedButton(text="SIMPAN", on_click=go_back, width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
-                        ft.OutlinedButton(text="BATAL", on_click=go_back, width=142, style=ft.ButtonStyle(color="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#F47A6F", width=2))),
+                        ft.OutlinedButton(text="SIMPAN", on_click=lambda e: page.go("/src/components/graphViewPage"), width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
+                        ft.OutlinedButton(text="BATAL", on_click=lambda e: page.go("/src/components/graphViewPage"), width=142, style=ft.ButtonStyle(color="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#F47A6F", width=2))),
                         ], 
                         alignment=ft.MainAxisAlignment.END),
                 ],
@@ -72,19 +72,20 @@ def graph_edit_form_entry_page(page: ft.Page, go_back):
         color="#FDFFEA",
     )
 
-    # page.controls.clear()
-    # page.controls.append(
-    #     ft.Container(
-    #         content=form_card,
-    #         alignment=ft.alignment.center,
-    #         padding=20,
-    #     )
-    # )
-    # page.update()
-
-    return ft.Container(
+    page.controls.clear()
+    page.controls.append(
+        ft.Container(
             content=form_card,
             alignment=ft.alignment.center,
             padding=20,
-            bgcolor="white"
         )
+    )
+    page.update()
+    return page
+
+    # return ft.Container(
+    #         content=form_card,
+    #         alignment=ft.alignment.center,
+    #         padding=20,
+    #         bgcolor="white"
+    #     )

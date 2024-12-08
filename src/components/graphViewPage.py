@@ -4,13 +4,13 @@ from src.components.button1 import create_button1
 from src.components.validasi import create_dialog
 
 
-def graph_view_page(page: ft.Page, go_back):
-    page.horizontal_alignment = ft.alignment.center
-    page.vertical_alignment = ft.alignment.center
+def graph_view_page(page: ft.Page):
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.theme = ft.Theme(font_family="Kantumruy-Regular")
     page.bgcolor = "white"
 
-    dialog = create_dialog(page, go_back)
+    dialog = create_dialog(page, "/src/page/graphPage")
     def show_dialog(e):
             page.open(dialog)
     
@@ -22,7 +22,7 @@ def graph_view_page(page: ft.Page, go_back):
                 controls=[
                     ft.Row(
                         controls=[
-                            create_button1("Back", go_back, ft.Colors.WHITE, "#F47A6F"),
+                            create_button1("Back", lambda e: page.go("/src/page/graphPage"), ft.Colors.WHITE, "#F47A6F"),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                         vertical_alignment=ft.CrossAxisAlignment.START,
@@ -52,7 +52,7 @@ def graph_view_page(page: ft.Page, go_back):
                             horizontal_alignment=ft.CrossAxisAlignment.START,),
                             ft.Column([
                                 ft.Text("Status Tanaman", size=20, color="black"),
-                                ft.Dropdown(bgcolor="white", width=126, label="Hidup", label_style=ft.TextStyle(color="grey400"),options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")], disabled=True), # Change this to the status of the plant
+                                ft.Dropdown(bgcolor="white", width=126, hint_content=ft.Text(value="Hidup", color="grey400", size="16"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")], disabled=True), # Change this to the status of the plant
                             ],
                             alignment=ft.MainAxisAlignment.START,
                             horizontal_alignment=ft.CrossAxisAlignment.START,),  
@@ -81,18 +81,19 @@ def graph_view_page(page: ft.Page, go_back):
         color="#FDFFEA",
     )
 
-    # page.controls.clear()
-    # page.controls.append(
-    #     ft.Container(
-    #         content=form_card,
-    #         alignment=ft.alignment.center,
-    #         padding=20,
-    #     )
-    # )
-    # page.update()
-    return ft.Container(
-        content=form_card,
-        alignment=ft.alignment.center,
-        padding=20,
-        bgcolor="white"
+    page.controls.clear()
+    page.controls.append(
+        ft.Container(
+            content=form_card,
+            alignment=ft.alignment.center,
+            padding=20,
+        )
     )
+    page.update()
+    return page
+    # return ft.Container(
+    #     content=form_card,
+    #     alignment=ft.alignment.center,
+    #     padding=20,
+    #     bgcolor="white"
+    # )
