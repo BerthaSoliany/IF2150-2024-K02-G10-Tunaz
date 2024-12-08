@@ -14,6 +14,13 @@ def init_db():
     )
     """)
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS jenisTracker (
+        jenis_tanaman VARCHAR(25) NOT NULL,
+        last_tanaman_index INTEGER,
+    )
+    """)
+
     # Tabel DataInformasiTanaman
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS dataInformasiTanaman (
@@ -23,6 +30,8 @@ def init_db():
         waktu_tanam TEXT,
         kebutuhan_perawatan VARCHAR(200),
         FOREIGN KEY (index_tanaman, jenis_tanaman) REFERENCES tanaman (index_tanaman, jenis_tanaman)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
     )
     """)
 
@@ -37,6 +46,8 @@ def init_db():
         tanggal_catatan TEXT,
         kondisi_daun VARCHAR(25),
         FOREIGN KEY (index_tanaman, jenis_tanaman) REFERENCES tanaman (index_tanaman, jenis_tanaman)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
     )
     """)
 
@@ -46,16 +57,27 @@ def init_db():
         id_perawatan INTEGER PRIMARY KEY AUTOINCREMENT,
         jenis_tanaman VARCHAR(25) NOT NULL,
         index_tanaman INTEGER NOT NULL,
-        frekuensi_penyiraman INTEGER,
-        frekuensi_pemupukan INTEGER,
-        waktu_penyiraman TEXT, 
-        waktu_pemupukan TEXT,
+        group_id INTEGER,
+        frekuensi_perawatan INTEGER, 
+        waktu_perawatan TEXT, 
+        jenis_perawatan VARCHAR(25),
         pilihan_notifikasi BOOLEAN DEFAULT TRUE,
         FOREIGN KEY (index_tanaman, jenis_tanaman) REFERENCES tanaman (index_tanaman, jenis_tanaman)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
     )
     """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS groupJadwalPerawatan (
+        last_group_id INTEGER
+    )
+    """)
+    cursor.execute("INSERT INTO groupJadwalPerawatan (last_group_id) VALUES (0)")
+    
     conn.commit()
     conn.close()
+
 
 if __name__ == "__main__":
     init_db()
