@@ -1,24 +1,22 @@
 import flet as ft
-from components.button1 import create_button1
+from src.components.button1 import create_button1
 
 
-def graph_add_form_entry_page(page: ft.Page, go_back):
-    page.horizontal_alignment = ft.alignment.center
-    page.vertical_alignment = ft.alignment.center
+def graph_add_form_entry_page(page: ft.Page, navigate_to, go_back):
     form_card = ft.Card(
         content=ft.Container(
             content=ft.Column(
                 controls=[
                     ft.Row(
                         controls=[
-                            create_button1("Back", go_back, ft.Colors.WHITE, "#F47A6F"),
+                            create_button1("Back", go_back, ft.Colors.WHITE, ft.Colors.RED),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                         vertical_alignment=ft.CrossAxisAlignment.START,
                     ),
                     ft.Row(
                         controls=[
-                            ft.Text("Jagung 001", size=36, weight=ft.FontWeight.BOLD, color="#5F9356"),
+                            ft.Text("Jagung 001", size=36, weight=ft.FontWeight.BOLD, color=ft.Colors.GREEN_700),
                             ft.Image(
                             src="./img/icon1.png",  
                             width=55, 
@@ -53,8 +51,8 @@ def graph_add_form_entry_page(page: ft.Page, go_back):
                     ft.CupertinoTextField(placeholder_text="Masukkan kondisi daun di sini...", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400)),
                     ft.Row(
                         controls=[
-                        ft.OutlinedButton(text="SIMPAN", on_click=go_back, width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
-                        ft.OutlinedButton(text="HAPUS", on_click=go_back, width=142, style=ft.ButtonStyle(color="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#F47A6F", width=2))),
+                        ft.OutlinedButton(text="SIMPAN", on_click=go_back, width=142, style=ft.ButtonStyle(color=ft.Colors.GREEN_600, shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color=ft.Colors.GREEN_600, width=2))),
+                        ft.OutlinedButton(text="HAPUS", on_click=go_back, width=142, style=ft.ButtonStyle(color=ft.Colors.RED, shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color=ft.Colors.RED, width=2))),
                         ], 
                         alignment=ft.MainAxisAlignment.END),
                 ],
@@ -67,20 +65,15 @@ def graph_add_form_entry_page(page: ft.Page, go_back):
         ),
         width=974,
         height=564,
-        color="#FDFFEA",
+        color=ft.Colors.YELLOW_100,
     )
 
-    # page.controls.clear()
-    # page.controls.append(
-    # ft.Container(
-    #         content=form_card,
-    #         alignment=ft.alignment.center,
-    #         padding=20,
-    #     )
-    # )
-    # page.update()
-    return ft.Container(
+    page.controls.clear()
+    page.controls.append(
+        ft.Container(
             content=form_card,
             alignment=ft.alignment.center,
-            padding=10
+            padding=20,
+        )
     )
+    page.update()

@@ -2,10 +2,9 @@ import flet as ft
 
 def create_floating_action_button(on_click):
     return ft.FloatingActionButton(
-        content=ft.Text("+", size=24, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
-        # icon=ft.icons.ADD,
+        icon=ft.icons.ADD,
         on_click=on_click,
-        bgcolor="#5A3E2A",
+        bgcolor=ft.colors.BROWN_700,
         shape=ft.RoundedRectangleBorder(10),
         tooltip="Add"
     )

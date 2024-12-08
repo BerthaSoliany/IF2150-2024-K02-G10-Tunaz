@@ -1,11 +1,11 @@
 import flet as ft
 # import plotly.graph_objects as go
-from components.button1 import create_button1
-from components.navBar import create_navbar
-from components.addButton import create_floating_action_button
-from components.clickCard import create_click_card
-from components.graphAddFormEntry import graph_add_form_entry_page
-from components.graphViewPage import graph_view_page
+from src.components.button1 import create_button1
+from src.components.navBar import create_navbar
+from src.components.addButton import create_floating_action_button
+from src.components.clickCard import create_click_card
+from src.page.graphAddFormEntry import graph_add_form_entry_page
+from src.page.graphViewPage import graph_view_page
 
 
 class State:
@@ -14,40 +14,47 @@ class State:
 s = State()
 
 
-def graph_page(page: ft.Page, go_back):
-    page.bgcolor = "white"
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
-    page.horizontal_alignment = ft.alignment.center
-    page.vertical_alignment = ft.alignment.center
+def graph_page(page: ft.Page):
+    page.navigation_stack =[]
 
+    page.bgcolor = "white"
+
+    def navigate_to(new_page):
+        page.navigation_stack.append(page.controls.copy())
+        page.controls.clear()
+        new_page(page, navigate_to, go_back)
+        page.update()
+
+    def go_back(e):
+        if page.navigation_stack:
+            previous_controls = page.navigation_stack.pop()
+            page.controls.clear()
+            page.controls.extend(previous_controls)
+            page.update()
 
     # Create a dropdown choice
     def dropdown_choice(judul: str, pilihan: list, bcolor: any):
         return ft.Dropdown(
             text_style=ft.TextStyle(size=16, color="black", overflow="hidden"),
             bgcolor="white",
-            # label=judul,
-            # label_style=ft.TextStyle(size=16, color="black"),
+            label=judul,
+            label_style=ft.TextStyle(size=16, color="black"),
             options=[ft.dropdown.Option(option) for option in pilihan],
             width=102,
             height=44,
-            # max_menu_height=200,
             icon_enabled_color="black",
             border_width=0,
             border_radius=10,
             fill_color=bcolor,
-            hint_content=ft.Text(value=judul, size=16, color="black"),
-            content_padding=10,
-            alignment=ft.alignment.center,
         )
-    pilihan_jenis = dropdown_choice("Jenis", ["pisang", "jambu"], "#AADBA3")
-    pilihan_index = dropdown_choice("Index", ["1", "2"], "#DBC4AB")
+    pilihan_jenis = dropdown_choice("Jenis", ["pisang", "jambu"], ft.colors.GREEN_300)
+    pilihan_index = dropdown_choice("Index", ["1", "2"], ft.colors.BROWN_300)
 
     # Create an add button
-    # def button_clicked(e):
-    #     navigate_to(graph_add_form_entry_page)
+    def button_clicked(e):
+        navigate_to(graph_add_form_entry_page)
 
-    fab = create_floating_action_button(lambda e: page.go("/src/components/graphAddFormEntry"))
+    fab = create_floating_action_button(button_clicked)
 
     # Its graph time baby
      # Create initial data sets
@@ -75,14 +82,14 @@ def graph_page(page: ft.Page, go_back):
         ft.LineChartData(
             data_points=data1_set1,
             stroke_width=5,
-            color="#5F9356",
+            color=ft.Colors.GREEN_600,
             curved=True,
             stroke_cap_round=True,
         )
     ]
 
-    # def on_card_click(e):
-    #     navigate_to(graph_view_page)
+    def on_card_click(e):
+        navigate_to(graph_view_page)
 
     chart = ft.LineChart(
         data_series=data_1,
@@ -177,23 +184,17 @@ def graph_page(page: ft.Page, go_back):
         data_1[0].data_points = new_data_points
         chart.update()
 
-        # data_container.controls = [
-        #     ft.Text("Catatan Pertumbuhan", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-        #     *[
-        #         ft.Text(f"Point {i+1}: x={point.x}, y={point.y}", size=14, color=ft.Colors.BLACK)
-        #         for i, point in enumerate(new_data_points)
-        #     ]
-        # ]
-        data_container.controls = [
+        data_container.content.controls = [
+            ft.Text("Catatan Pertumbuhan", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
             *[
-                create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", f"Tanggal: {point.x}")
+                ft.Text(f"Point {i+1}: x={point.x}, y={point.y}", size=14, color=ft.Colors.BLACK)
                 for i, point in enumerate(new_data_points)
             ]
         ]
         data_container.update()
         s.toggle = not s.toggle
         
-    title = ft.Text("Grafik Pertumbuhan Tanaman", size=20, color="#5F9356", weight=ft.FontWeight.BOLD)
+    title = ft.Text("Grafik Pertumbuhan Tanaman", size=20, color=ft.Colors.GREEN_600, weight=ft.FontWeight.BOLD)
 
     chart_container = ft.Container(
         content=ft.Column(
@@ -220,7 +221,7 @@ def graph_page(page: ft.Page, go_back):
     data_container = ft.ListView(
         controls=[
             *[
-                create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", f"Tanggal: {point.x}")
+                create_click_card(page, on_card_click, f"Tinggi: {point.y}", f"Tanggal: {point.x}")
                 for point in data1_set1
             ]
         ],
@@ -237,7 +238,7 @@ def graph_page(page: ft.Page, go_back):
         content=ft.Text("Catatan Pertumbuhan", size=20, color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD),
         padding=10,
         alignment=ft.alignment.center,
-        bgcolor="#5F9356",
+        bgcolor=ft.Colors.GREEN_600,
         border_radius=ft.border_radius.only(top_left=10, top_right=10),
     )
     
@@ -265,9 +266,12 @@ def graph_page(page: ft.Page, go_back):
         # alignment=ft.alignment.center,
     )
    
-    return ft.Column(
+    page.add(
+        create_navbar(page),
+        # create_click_card(toggle_data),
+
+        ft.Column(
             controls=[
-                create_navbar(page),
                 ft.Row(
                     controls=[
                         pilihan_jenis,
@@ -285,6 +289,11 @@ def graph_page(page: ft.Page, go_back):
                     alignment="spaceEvenly",
                     vertical_alignment="center",
                 ),
-                fab
-            ]
-        )
+            ],
+        ),
+        fab,
+        
+        
+    ) 
+
+    page.update()
