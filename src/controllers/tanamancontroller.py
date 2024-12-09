@@ -2,10 +2,6 @@ import sqlite3
 from tanaman import Tanaman
 
 class TanamanController:
-    def __init__(self):
-        self.conn = sqlite3.connect("tunaz.db")
-        self.conn.execute("PRAGMA foreign_keys = ON")
-        self.cursor = self.conn.cursor()
 
     def tambah_tanaman(self, tanaman: Tanaman):
         conn = sqlite3.connect("tunaz.db")
@@ -46,5 +42,5 @@ class TanamanController:
         conn.close()
 
 # tanaman_controller = TanamanController()
-# tanaman1 = Tanaman(jenis_tanaman="JERUKkkzz", index_tanaman=1, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None)
+# tanaman1 = Tanaman(jenis_tanaman="JERUK", index_tanaman=1, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None)
 # tanaman_controller.tambah_tanaman(tanaman1)

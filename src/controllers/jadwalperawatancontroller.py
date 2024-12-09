@@ -3,10 +3,6 @@ from jadwalperawatan import JadwalPerawatan
 from datetime import datetime, timedelta
 
 class JadwalPerawatanController:
-    def __init__(self):
-        self.conn = sqlite3.connect("tunaz.db")
-        self.conn.execute("PRAGMA foreign_keys = ON")
-        self.cursor = self.conn.cursor()
 
     def tambah_data_satu_jadwal_perawatan(self, jenis_tanaman: str, index_tanaman: int, jadwal_perawatan: JadwalPerawatan):
         conn = sqlite3.connect("tunaz.db")

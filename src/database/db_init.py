@@ -17,7 +17,7 @@ def init_db():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS jenisTracker (
         jenis_tanaman VARCHAR(25) NOT NULL,
-        last_tanaman_index INTEGER,
+        last_tanaman_index INTEGER
     )
     """)
 

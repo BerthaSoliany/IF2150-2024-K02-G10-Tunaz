@@ -2,10 +2,6 @@ import sqlite3
 from datainformasitanaman import DataInformasiTanaman
 
 class DataInformasiTanamanController:
-    def __init__(self):
-        self.conn = sqlite3.connect("tunaz.db")
-        self.conn.execute("PRAGMA foreign_keys = ON")
-        self.cursor = self.conn.cursor()
 
     def tambah_data_informasi_tanaman(self, jenis_tanaman: str, index_tanaman: int, data_informasi_tanaman: DataInformasiTanaman):
         conn = sqlite3.connect("tunaz.db")

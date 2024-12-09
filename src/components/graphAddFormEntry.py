@@ -40,14 +40,14 @@ def graph_add_form_entry_page(page: ft.Page):
                             color="white"),
         width=1000,)
     tanggal_pertumbuhan_field = ft.Stack([text_tanggal,pilih_tanggal])
-    tinggi_tanaman_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan tinggi tanaman di sini... (dalam cm)", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
+    tinggi_tanaman_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan tinggi tanaman di sini... (dalam cm)", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), keyboard_type=ft.KeyboardType.NUMBER)
     status_tanaman_dropdown = ft.Dropdown(border_radius=5, border_color="#D7D7D7",bgcolor="white", width=126, hint_content=ft.Text(value="Status", color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")])
     kondisi_daun_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan kondisi daun di sini...", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     jenis_index = "Jagung 001" # nanti diganti sesuai tanamannya
     icon = "icon1" # nanti diganti sesuai icon tanamannya
     def on_click_add(e):
         data_pertumbuhan_controller = DataPertumbuhanTanamanController()
-        data_pertumbuhan = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, text_tanggal.value, kondisi_daun_field.value)
+        data_pertumbuhan = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, text_tanggal.value[8:], kondisi_daun_field.value)
         data_pertumbuhan_controller.tambah_data_pertumbuhan("JERUK", 2, data_pertumbuhan) # nanti jeruk, 2 nya diganti sesuai tanamannya
         page.go("/src/page/graphPage")
 
