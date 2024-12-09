@@ -231,7 +231,7 @@ def graph_page(page: ft.Page):
         # border=ft.border.all(3, ft.Colors.GREY_200),
         # border_radius=10,
         # bgcolor=ft.Colors.WHITE,
-        divider_thickness=2,
+        divider_thickness=0,
         expand=True,
         width=300,
         height=400,
