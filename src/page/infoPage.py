@@ -15,14 +15,15 @@ def info_page(page: ft.Page):
         return ft.Dropdown(
             text_style=ft.TextStyle(size=16, color="black", overflow="hidden", font_family="Verdana"),
             bgcolor=bcolor,
-            label=judul,
+            hint_content=ft.Text(value=judul, size=16, color="black"),
             border_radius=12,
-            label_style=ft.TextStyle(size=16, color="black"),
+            # label_style=ft.TextStyle(size=16, color="black"),
             options=[ft.dropdown.Option(option) for option in pilihan],
             width=260,
             height=44,
             icon_enabled_color="black",
             border_width=0,
+            content_padding=10,
         )
     
     opt_sortby = dropdown_choice("Urutkan Berdasarkan", ["Jenis Tanaman (asc)", "Jenis Tanaman (desc)", "Tanggal Penanaman (asc)", "Tanggal Penanaman (desc)"], "#DBC4AB")
@@ -30,6 +31,7 @@ def info_page(page: ft.Page):
     def create_search_bar():
         return ft.TextField(
             label="Cari Tanaman",  
+            label_style=ft.TextStyle(size=16, color="black"),
             expand=True,
             height=40,
             border_radius=16,
@@ -38,12 +40,14 @@ def info_page(page: ft.Page):
             bgcolor="#FFFFFF",
             #icon="search",
             content_padding=ft.Padding(left=20, right=10, top=10, bottom=10),
+            text_style=ft.TextStyle(size=16, color="black"),
         )
     
     def create_search_button():
         return ft.IconButton(
             icon=ft.icons.SEARCH,
-            on_click=lambda e: print("Search button clicked"),
+            icon_color="black",
+            # on_click=lambda e: print("Search button clicked"),
             icon_size=24,
             height=40,
             width=40,
@@ -51,14 +55,13 @@ def info_page(page: ft.Page):
             tooltip="Search"
         )
     
-    def button_clicked(e):
-        page.add(ft.Text("")) # remove print "button clicked" to page, "+" nya masih black, not white
-    fab = create_floating_action_button(button_clicked)
+    
+    fab = create_floating_action_button(lambda e: page.go("/src/components/infoAddFormEntry"))
 
     def create_scrollable_info_cards():
         cards = []
         for i in range(10):  # ex ada 10 cards
-            card = create_info_tanaman_card(page)
+            card = create_info_tanaman_card(page, lambda e: page.go("/src/components/infoViewPage"))
             cards.append(card)
 
         # origanize cards in rows of 3
@@ -70,23 +73,37 @@ def info_page(page: ft.Page):
                 spacing=10,
                 expand=True, 
             ),
-            height=500,  
+            height=480,  
             width=1440,  
             padding=10,
         )
 
-    page.add(
-        create_navbar(page),
-        ft.Column(
-            controls=[
-                ft.Row(
-                    controls=[create_search_button(), create_search_bar(), opt_sortby],
-                    alignment="start",
-                    vertical_alignment="center",
-                ),
-                create_scrollable_info_cards(),  
-            ],
-        ), 
-        fab,
-    )
+    
+    page.controls.clear()
+    page.controls.append(ft.Stack([
+        ft.Column(controls=[
+            create_navbar(page),
+            ft.Row(
+            controls=[create_search_button(), create_search_bar(), opt_sortby], 
+            alignment="start", 
+            vertical_alignment="center"), 
+            create_scrollable_info_cards()
+            ]), 
+        fab
+        ], 
+        expand=True, alignment=ft.Alignment(1,1)))
+    #     create_navbar(page),
+    #     ft.Column(
+    #         controls=[
+    #             ft.Row(
+    #                 controls=[create_search_button(), create_search_bar(), opt_sortby],
+    #                 alignment="start",
+    #                 vertical_alignment="center",
+    #             ),
+    #             create_scrollable_info_cards(),  
+    #         ],
+    #     ), 
+    #     fab,
+    # )
     page.update()
+    return page

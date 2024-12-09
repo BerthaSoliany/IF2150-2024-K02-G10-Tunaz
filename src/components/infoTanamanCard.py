@@ -1,6 +1,11 @@
 import flet as ft
 
-def create_info_tanaman_card(page: ft.Page):
+def create_info_tanaman_card(page: ft.Page, on_click=None):
+    def handle_click(e):
+        if on_click:
+            on_click(e)
+        # page.update()  # Update the page to reflect changes
+
     return ft.Container(
         content=ft.Column(
             controls=[
@@ -51,8 +56,9 @@ def create_info_tanaman_card(page: ft.Page):
         bgcolor="#FDFFEA",
         padding=20,
         border_radius=12,
-        width=ft.Column(expand=True), 
-        height=ft.Column(expand=True), 
+        width=None, 
+        height=None, 
         border=ft.border.all(1, "#D7D7D7"),
         expand=True,  # how to make width n height sesuai window size tapi kalo dia ga pas 3 ga expand...?
+        on_click=handle_click,
     )
