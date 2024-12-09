@@ -2,12 +2,13 @@ import flet as ft
 
 def create_navbar(page: ft.Page):
     page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.bgcolor = "#FDFFEA"
 
     def on_home_click(e):
         page.go("/src/page/homePage")
 
     def on_informasi_click(e):
-        page.go("/informasi")
+        page.go("/src/page/infoPage")
 
     def on_pertumbuhan_click(e):
         page.go("/src/page/graphPage")        

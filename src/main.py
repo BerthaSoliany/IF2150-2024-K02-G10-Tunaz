@@ -2,9 +2,14 @@ import flet as ft
 from src.components.navBar import create_navbar
 from src.page.homePage import home_page
 from src.page.graphPage import graph_page
+from src.page.infoPage import info_page
 from src.components.graphAddFormEntry import graph_add_form_entry_page
 from src.components.graphViewPage import graph_view_page
 from src.components.graphEditFormEntry import graph_edit_form_entry_page
+from src.components.infoAddFormEntry import info_add_form_entry_page
+from src.components.infoEditFormEntry import info_edit_form_entry_page
+from src.components.infoViewPage import info_view_page
+
 
 def route_change(e: ft.RouteChangeEvent):
     page = e.page
@@ -12,14 +17,20 @@ def route_change(e: ft.RouteChangeEvent):
         home_page(page)
     elif page.route == "/src/page/graphPage":
         graph_page(page)
-    elif page.route == "/informasi":
-        page.views.append(ft.View("/informasi", controls=[ft.Text("Informasi Tanaman Page")]))
+    elif page.route == "/src/page/infoPage":
+        info_page(page)
     elif page.route == "/src/components/graphAddFormEntry":
         graph_add_form_entry_page(page)
     elif page.route == "/src/components/graphViewPage":
         graph_view_page(page)
     elif page.route == "/src/components/graphEditFormEntry":
         graph_edit_form_entry_page(page)
+    elif page.route == "/src/components/infoEditFormEntry":
+        info_edit_form_entry_page(page)
+    elif page.route == "/src/components/infoAddFormEntry":
+        info_add_form_entry_page(page)
+    elif page.route == "/src/components/infoViewPage":
+        info_view_page(page)
     page.update()
 
 def main(page: ft.Page):

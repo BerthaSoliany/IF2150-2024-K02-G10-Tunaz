@@ -4,8 +4,8 @@ from src.components.button1 import create_button1
 from src.components.navBar import create_navbar
 from src.components.addButton import create_floating_action_button
 from src.components.clickCard import create_click_card
-from src.components.graphAddFormEntry import graph_add_form_entry_page
-from src.components.graphViewPage import graph_view_page
+# from src.components.graphAddFormEntry import graph_add_form_entry_page
+# from src.components.graphViewPage import graph_view_page
 
 
 class State:
@@ -25,7 +25,7 @@ def graph_page(page: ft.Page):
     def dropdown_choice(judul: str, pilihan: list, bcolor: any):
         return ft.Dropdown(
             text_style=ft.TextStyle(size=16, color="black", overflow="hidden"),
-            bgcolor="white",
+            bgcolor=bcolor,
             # label=judul,
             # label_style=ft.TextStyle(size=16, color="black"),
             options=[ft.dropdown.Option(option) for option in pilihan],
@@ -192,7 +192,8 @@ def graph_page(page: ft.Page):
         ]
         data_container.update()
         s.toggle = not s.toggle
-        
+    
+    #judulnya harusnya jenis tanaman dan index
     title = ft.Text("Grafik Pertumbuhan Tanaman", size=20, color="#5F9356", weight=ft.FontWeight.BOLD)
 
     chart_container = ft.Container(
@@ -208,13 +209,14 @@ def graph_page(page: ft.Page):
         margin=10,
         bgcolor=ft.Colors.WHITE,
         width=800,
-        height=ft.Column(expand=True),
-        shadow=ft.BoxShadow(
-            blur_radius=10,
-            spread_radius=2,
-            color=ft.Colors.GREY_400,
-            offset=ft.Offset(0, 4),
-        ),
+        height=400,
+        expand=True,
+        # shadow=ft.BoxShadow(
+        #     blur_radius=1,
+        #     spread_radius=1,
+        #     color=ft.Colors.GREY_400,
+        #     offset=ft.Offset(0, 1),
+        # ),
     )
 
     data_container = ft.ListView(
@@ -224,13 +226,15 @@ def graph_page(page: ft.Page):
                 for point in data1_set1
             ]
         ],
-        padding=10,
+        # padding=10,
         # margin=10,
         # border=ft.border.all(3, ft.Colors.GREY_200),
         # border_radius=10,
         # bgcolor=ft.Colors.WHITE,
+        divider_thickness=2,
+        expand=True,
         width=300,
-        height=300,
+        height=400,
     )
 
     header = ft.Container(
@@ -239,7 +243,7 @@ def graph_page(page: ft.Page):
         alignment=ft.alignment.center,
         bgcolor="#5F9356",
         border_radius=ft.border_radius.only(top_left=10, top_right=10),
-        width=300,
+        width=ft.Column(expand=True),
     )
     
     bordered_container = ft.Container(
@@ -249,26 +253,29 @@ def graph_page(page: ft.Page):
                 data_container,
             ],
             alignment=ft.MainAxisAlignment.START,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            horizontal_alignment=ft.CrossAxisAlignment.END,
+
         ),
         # border=ft.border.all(3, ft.Colors.GREY_200),
         border_radius=10,
         bgcolor=ft.Colors.WHITE,
-        padding=10,
+        padding=ft.padding.only(top=0, right=0),
         margin=10,
         shadow=ft.BoxShadow(
-            blur_radius=10,
-            spread_radius=2,
+            blur_radius=1,
+            spread_radius=1,
             color=ft.Colors.GREY_400,
-            offset=ft.Offset(0, 4),
+            offset=ft.Offset(0, 1),
         ),
-        expand=True,
+        # expand=True,
+        width=300,
+        # width=ft.Column(expand=True),
+        alignment=ft.Alignment(1,0),
         # shadow=ft.BoxShadow
         # alignment=ft.alignment.center,
     )
     page.controls.clear()
     page.controls.append(ft.Stack([
-        ft.Container(content=fab, alignment=ft.alignment.bottom_right, bgcolor=ft.Colors.WHITE),
         ft.Column(
             controls=[
                 create_navbar(page),
@@ -287,11 +294,11 @@ def graph_page(page: ft.Page):
                         chart_container,
                         bordered_container,
                     ],
-                    alignment="spaceEvenly",
+                    alignment="spaceBetween",
                     vertical_alignment="center",
                 ),
             ], 
-        ),
-    ], expand=True))
+        ), fab
+    ], expand=True, alignment=ft.Alignment(1,1)))
     page.update()
     return page
