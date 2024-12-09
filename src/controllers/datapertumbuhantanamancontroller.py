@@ -7,9 +7,11 @@ class DataPertumbuhanTanamanController:
         conn = sqlite3.connect("tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
-        if not isinstance(data_pertumbuhan_tanaman.get_tinggi_tanaman(), (int, float)):
-            print("HOI")
-            raise ValueError("Tinggi tanaman must be a number (real).")
+        try:
+            tinggi_tanaman = float(data_pertumbuhan_tanaman.get_tinggi_tanaman())  # Convert to float
+            data_pertumbuhan_tanaman.set_tinggi_tanaman(tinggi_tanaman)
+        except ValueError:
+            raise ValueError("Tinggi tanaman must be a valid number (real).")
 
         cursor.execute("SELECT * FROM Tanaman WHERE jenis_tanaman = ? AND index_tanaman = ?;", (jenis_tanaman, index_tanaman))
         print(cursor.fetchall())
@@ -39,8 +41,16 @@ class DataPertumbuhanTanamanController:
         # print(cursor.fetchall())
         conn.close()
 
+    def get_data_pertumbuhan(self, jenis_tanaman: str, index_tanaman: int, data_pertumbuhan_tanaman: DataPertumbuhanTanaman):
+        conn = sqlite3.connect("tunaz.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM dataPertumbuhanTanaman WHERE jenis_tanaman = ? AND index_tanaman = ? AND tinggi_tanaman = ? AND tanggal_catatan = ?", (jenis_tanaman, index_tanaman, data_pertumbuhan_tanaman.get_tinggi_tanaman(), data_pertumbuhan_tanaman.get_tanggal_catatan()))
+        x = cursor.fetchone()
+        conn.close()
+        x = DataPertumbuhanTanaman(x[3], x[4], x[5], x[6])
+        return x
 # data_pertumbuhan_tanaman = DataPertumbuhanTanamanController()
-# data_pertumbuhan_tanaman1 = DataPertumbuhanTanaman("Sehat", 20, "2021-01-01", "Daun berwarna hijau")
+# data_pertumbuhan_tanaman1 = DataPertumbuhanTanaman("Sehat", 5, "2024-12-12", "Daun berwarna hijau")
 # data_pertumbuhan_tanaman.tambah_data_pertumbuhan("JERUK", 2, data_pertumbuhan_tanaman1)
 # data_pertumbuhan_tanaman.hapus_data_pertumbuhan("JERUK", 2, data_pertumbuhan_tanaman1)
 
