@@ -3,7 +3,7 @@ from src.controllers.datapertumbuhantanamancontroller import DataPertumbuhanTana
 from src.controllers.datapertumbuhantanaman import DataPertumbuhanTanaman
 def validasi(page: ft.Page, link):
     def handle_close_no(e):
-        del page.session["action"]
+        page.session.set("action", None)
         page.close(dialog)
         # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
 
@@ -11,8 +11,11 @@ def validasi(page: ft.Page, link):
         if(page.session.get("action") == "hapus_data_pertumbuhan"):
             data_pertumbuhan_tanaman_controller = DataPertumbuhanTanamanController()
             data_pertumbuhan_tanaman_controller.hapus_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"), page.session.get("data_pertumbuhan_tanaman"))  
-            del page.session["data_pertumbuhan_tanaman"]
-        del page.session["action"]
+            page.session.set("data_pertumbuhan_tanaman", None)
+            page.session.set("jenis_tanaman", None)
+            page.session.set("index_tanaman", None)
+
+        page.session.set("action", None)
         page.close(dialog)
         page.go(link)
         # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
