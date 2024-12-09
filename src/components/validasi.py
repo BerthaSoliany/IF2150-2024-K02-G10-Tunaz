@@ -1,11 +1,18 @@
 import flet as ft
-
+from src.controllers.datapertumbuhantanamancontroller import DataPertumbuhanTanamanController
+from src.controllers.datapertumbuhantanaman import DataPertumbuhanTanaman
 def validasi(page: ft.Page, link):
     def handle_close_no(e):
+        del page.session["action"]
         page.close(dialog)
         # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
 
     def handle_close_yes(e):
+        if(page.session.get("action") == "hapus_data_pertumbuhan"):
+            data_pertumbuhan_tanaman_controller = DataPertumbuhanTanamanController()
+            data_pertumbuhan_tanaman_controller.hapus_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"), page.session.get("data_pertumbuhan_tanaman"))  
+            del page.session["data_pertumbuhan_tanaman"]
+        del page.session["action"]
         page.close(dialog)
         page.go(link)
         # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))

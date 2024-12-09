@@ -15,7 +15,8 @@ def graph_view_page(page: ft.Page):
 
     dialog = validasi(page, "/src/page/graphPage")
     def show_dialog(e):
-            page.open(dialog)
+        page.session.set("action", "hapus_data_pertumbuhan")
+        page.open(dialog)
 
     def to_date(dt_date):
         yy, mm, dd = map(int, dt_date.split('-'))
@@ -28,7 +29,7 @@ def graph_view_page(page: ft.Page):
     data_pertumbuhan_tanaman.set_tanggal_catatan(to_date(data_tanggal[0]) + timedelta(days=page.session.get("tanggal_catatan")))
     data_pertumbuhan_tanaman.set_tanggal_catatan(data_pertumbuhan_tanaman.get_tanggal_catatan().strftime('%Y-%m-%d'))
     data_pertumbuhan_tanaman = data_pertumbuhan_tanaman_controller.get_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"), data_pertumbuhan_tanaman)
-
+    page.session.set("data_pertumbuhan_tanaman", data_pertumbuhan_tanaman)
     tanggal_pertumbuhan_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text=data_pertumbuhan_tanaman.get_tanggal_catatan(), placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
     tinggi_tanaman_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text=data_pertumbuhan_tanaman.get_tinggi_tanaman(), placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
     status_tanaman_dropdown = ft.Dropdown(border_radius=5, border_color="black",bgcolor="white", width=126, hint_content=ft.Text(value=data_pertumbuhan_tanaman.get_status_tanaman(), color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")], disabled=True)
