@@ -1,6 +1,6 @@
-from datainformasitanaman import DataInformasiTanaman
-from datapertumbuhantanaman import DataPertumbuhanTanaman
-from jadwalperawatan import JadwalPerawatan
+from src.controllers.datainformasitanaman import DataInformasiTanaman
+from src.controllers.datapertumbuhantanaman import DataPertumbuhanTanaman
+from src.controllers.jadwalperawatan import JadwalPerawatan
 
 class Tanaman:
     def __init__(self, jenis_tanaman: str, index_tanaman: int, data_informasi_tanaman: DataInformasiTanaman, data_pertumbuhan_tanaman: DataPertumbuhanTanaman, data_jadwal_perawatan: JadwalPerawatan):
