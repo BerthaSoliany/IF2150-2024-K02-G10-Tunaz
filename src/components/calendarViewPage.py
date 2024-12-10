@@ -57,8 +57,8 @@ def calendar_view_page(page: ft.Page):
                     ft.Row(controls=[ft.Text("Notifikasi:", size=20, color="black"), notifikasi_switch], alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER, spacing=3),
                     ft.Row(
                         controls=[
-                        ft.OutlinedButton(text="EDIT", on_click=lambda e: page.go("/src/components/calendarEditFormEntry"), width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ft.OutlinedButton(text="HAPUS", on_click=show_dialog, width=142, style=ft.ButtonStyle(color="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#F47A6F", width=2))),
+                        ft.OutlinedButton(text="EDIT", on_click=lambda e: page.go("/src/components/calendarEditFormEntry"), width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ], 
                         alignment=ft.MainAxisAlignment.END),
                 ],

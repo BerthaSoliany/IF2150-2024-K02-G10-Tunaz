@@ -92,8 +92,8 @@ def graph_add_form_entry_page(page: ft.Page):
                     kondisi_daun_field, 
                     ft.Row(
                         controls=[
-                        ft.OutlinedButton(text="TAMBAH", on_click=on_click_add, width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ft.OutlinedButton(text="BATAL", on_click=lambda e: page.go("/src/page/graphPage"), width=142, style=ft.ButtonStyle(color="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#F47A6F", width=2))),
+                        ft.OutlinedButton(text="TAMBAH", on_click=on_click_add, width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ], 
                         alignment=ft.MainAxisAlignment.END),
                 ],

@@ -115,8 +115,8 @@ def calendar_add_form_entry_page(page: ft.Page):
                     ft.Row(controls=[ft.Text("Notifikasi:", size=20, color="black"), notifikasi_switch], alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER, spacing=3),
                     ft.Row(
                         controls=[
-                        ft.OutlinedButton(text="TAMBAH", on_click=lambda e: page.go("/src/main"), width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ft.OutlinedButton(text="BATAL", on_click=lambda e: page.go("/src/main"), width=142, style=ft.ButtonStyle(color="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#F47A6F", width=2))),
+                        ft.OutlinedButton(text="TAMBAH", on_click=lambda e: page.go("/src/main"), width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ], 
                         alignment=ft.MainAxisAlignment.END),
                 ],
