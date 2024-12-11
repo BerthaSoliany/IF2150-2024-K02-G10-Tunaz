@@ -30,7 +30,7 @@ def create_info_tanaman_card(page: ft.Page, on_click=None):
                     "Disiram dengan pupuk quality extra pulen yang tiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadak mengandung red 40. Penyiraman dilakukan dengan spray bottle atau selang dengan ukuran nozzle 0,1 mmjbdasdhvfluaevfluasdv",
                     size=16,
                     color="black",
-                    style=ft.TextStyle(font_family="Verdana"),
+                    # style=ft.TextStyle(font_family="Verdana"),
                     overflow=ft.TextOverflow.ELLIPSIS,
                     max_lines=5
                 ),
@@ -47,7 +47,7 @@ def create_info_tanaman_card(page: ft.Page, on_click=None):
                             size=16,
                             color="#8C8C8C",
                             weight="bold",
-                            style=ft.TextStyle(font_family="Verdana"),
+                            # style=ft.TextStyle(font_family="Verdana"),
                         ),
                     ],
                     alignment="start",

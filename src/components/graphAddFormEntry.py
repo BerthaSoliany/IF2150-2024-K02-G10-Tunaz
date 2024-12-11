@@ -6,7 +6,7 @@ from src.controllers.datapertumbuhantanamancontroller import DataPertumbuhanTana
 def graph_add_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     def handle_change(e):
         tanggal_pertumbuhan.value = "        " #

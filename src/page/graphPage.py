@@ -21,23 +21,25 @@ def graph_page(page: ft.Page):
 
 
     # Create a dropdown choice
-    def dropdown_choice(judul: str, pilihan: list, bcolor: any):
+    def dropdown_choice(judul: str, pilihan: list, bcolor: any, disabled=False):
         return ft.Dropdown(
             text_style=ft.TextStyle(size=16, color="black", overflow="hidden"),
-            bgcolor=bcolor,
+            bgcolor=bcolor if disabled==False else "#E0E0E0",
             # label=judul,
             # label_style=ft.TextStyle(size=16, color="black"),
             options=[ft.dropdown.Option(option) for option in pilihan],
             width=102,
             height=44,
             # max_menu_height=200,
-            icon_enabled_color="black",
+            select_icon_enabled_color="black",
+            # icon=ft.Icon(size=16, color="black"),
             border_width=0,
             border_radius=10,
-            fill_color=bcolor,
+            fill_color=bcolor if disabled==False else "#E0E0E0",
             hint_content=ft.Text(value=judul, size=16, color="black"),
             content_padding=10,
             alignment=ft.alignment.center,
+            disabled=disabled,
         )
     pilihan_jenis = dropdown_choice("Jenis", ["pisang", "jambu"], "#AADBA3")
     pilihan_index = dropdown_choice("Index", ["1", "2"], "#DBC4AB")
@@ -233,7 +235,7 @@ def graph_page(page: ft.Page):
         divider_thickness=0,
         expand=True,
         width=300,
-        height=400,
+        height=380,
     )
 
     header = ft.Container(
@@ -273,11 +275,13 @@ def graph_page(page: ft.Page):
         # shadow=ft.BoxShadow
         # alignment=ft.alignment.center,
     )
-    page.controls.clear()
-    page.controls.append(ft.Stack([
+
+    konten = ft.Stack([
+    ft.Column(controls=[
+        create_navbar(page),
+        ft.Stack([
         ft.Column(
             controls=[
-                create_navbar(page),
                 ft.Row(
                     controls=[
                         pilihan_jenis,
@@ -296,8 +300,13 @@ def graph_page(page: ft.Page):
                     alignment="spaceBetween",
                     vertical_alignment="center",
                 ),
-            ], 
-        ), fab
-    ], expand=True, alignment=ft.Alignment(1,1)))
+            ], right=20, bottom=20, left=20, top=5
+        )
+    ])
+    ]),
+    fab], expand=True, alignment=ft.Alignment(1,1))
+
+    page.controls.clear()
+    page.controls.append(konten)
     page.update()
     return page

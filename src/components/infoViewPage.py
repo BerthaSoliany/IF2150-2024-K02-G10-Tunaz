@@ -5,7 +5,7 @@ from src.components.validasi import validasi
 def info_view_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     dialog = validasi(page, "/src/page/infoPage")
     def show_dialog(e):

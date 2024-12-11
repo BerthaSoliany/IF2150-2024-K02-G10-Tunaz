@@ -1,7 +1,7 @@
 import flet as ft
 
 def create_navbar(page: ft.Page):
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
     # page.bgcolor = "#FDFFEA"
 
     def on_home_click(e):
@@ -39,7 +39,7 @@ def create_navbar(page: ft.Page):
             vertical_alignment="center",
         ),
         bgcolor="#FDFFEA",
-        padding=4,
+        padding=10,
         margin=0
     )
 

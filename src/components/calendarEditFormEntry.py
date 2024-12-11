@@ -5,7 +5,7 @@ from src.components.validasi import validasi_edit_jadwal
 def calendar_edit_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     dialog = validasi_edit_jadwal(page)
     def show_dialog(e):

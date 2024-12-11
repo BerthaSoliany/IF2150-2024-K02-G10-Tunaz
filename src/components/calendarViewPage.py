@@ -6,7 +6,7 @@ from src.components.validasi import validasi_hapus_jadwal
 def calendar_view_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     dialog = validasi_hapus_jadwal(page, "/src/main")
     def show_dialog(e):

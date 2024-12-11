@@ -3,7 +3,7 @@ import flet as ft
 def info_add_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     icon_option = [
         {"value": "icon1", "image": "./img/icon1.png"},
