@@ -3,15 +3,21 @@ import flet as ft
 def create_click_card(page, on_click, tinggi, tanggal):
     def handle_click(e):
         on_click(e)
-        page.update()  # Update the page to reflect changes
+        page.update()
     
     def handle_hover(e):
-        card.content.color = ft.Colors.GREY_200 if e.data == "true" else ft.Colors.WHITE
+        card.content.color = ft.Colors.GREY_200
+        card.content.update()
+
+    def handle_exit(e):
+        card.content.color = ft.Colors.WHITE
         card.content.update()
 
     card = ft.GestureDetector(
+        mouse_cursor=ft.MouseCursor.CLICK,
         on_tap=handle_click,
         on_hover=handle_hover,
+        on_exit=handle_exit,
         content=ft.Card(
             width=300,
             height=80,
@@ -26,7 +32,6 @@ def create_click_card(page, on_click, tinggi, tanggal):
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 ),
-                bgcolor=ft.Colors.WHITE,
                 padding=10,
                 alignment=ft.alignment.center,
                 border_radius=10,
@@ -41,15 +46,21 @@ def create_click_card(page, on_click, tinggi, tanggal):
 def create_click_card2(page, on_click, waktu, perawatan_jenis_index, kebutuhan_perawatan):
     def handle_click(e):
         on_click(e)
-        page.update()  # Update the page to reflect changes
+        page.update()
     
     def handle_hover(e):
-        card.content.color = ft.Colors.GREY_200 if e.data == "true" else ft.Colors.WHITE
+        card.content.color = ft.Colors.GREY_200
+        card.content.update()
+
+    def handle_exit(e):
+        card.content.color = ft.Colors.WHITE
         card.content.update()
 
     card = ft.GestureDetector(
+        mouse_cursor=ft.MouseCursor.CLICK,
         on_tap=handle_click,
         on_hover=handle_hover,
+        on_exit=handle_exit,
         content=ft.Card(
             width=342,
             height=100,
@@ -64,9 +75,8 @@ def create_click_card2(page, on_click, waktu, perawatan_jenis_index, kebutuhan_p
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.START,
-                    spacing=2,
+                    spacing=1,
                 ),
-                bgcolor=ft.Colors.WHITE,
                 padding=5,
                 alignment=ft.Alignment(-1, 0),
                 border_radius=10,

@@ -46,12 +46,12 @@ def route_change(e: ft.RouteChangeEvent):
 def main(page: ft.Page):
     page.on_route_change = route_change
     page.title = "Flet app"
-    # page.fonts = {
-    #     "Kantumruy-Regular": "./fonts/kantumruy-3/Kantumruy-Regular.ttf",
-    #     "Kantumruy-Bold": "./fonts/kantumruy-3/Kantumruy-Bold.ttf",
-    #     "Kantumruy-Light": "./fonts/kantumruy-3/Kantumruy-Light.ttf",
-    # }
-    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    page.fonts = {
+        "Kantumruy-Regular": "./fonts/kantumruy-3/Kantumruy-Regular.ttf",
+        "Kantumruy-Bold": "./fonts/kantumruy-3/Kantumruy-Bold.ttf",
+        "Kantumruy-Light": "./fonts/kantumruy-3/Kantumruy-Light.ttf",
+    }
+    page.theme = ft.Theme(font_family="Kantumruy-Regular")
     page.bgcolor = "white"
     # page.padding = ft.padding.only(top=0, bottom=10, left=10, right=10)
     page.padding = ft.padding.all(0)
@@ -82,7 +82,7 @@ def main(page: ft.Page):
         expand=True,
         width=300,
         height=400,
-        spacing=10,
+        spacing=5,
     )
     hari = "Minggu,"
     tanggal = " 1 Desember 2024"
