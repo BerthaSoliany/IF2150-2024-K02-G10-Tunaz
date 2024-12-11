@@ -46,14 +46,15 @@ def route_change(e: ft.RouteChangeEvent):
 def main(page: ft.Page):
     page.on_route_change = route_change
     page.title = "Flet app"
-    page.fonts = {
-        "Kantumruy-Regular": "./fonts/kantumruy-3/Kantumruy-Regular.ttf",
-        "Kantumruy-Bold": "./fonts/kantumruy-3/Kantumruy-Bold.ttf",
-        "Kantumruy-Light": "./fonts/kantumruy-3/Kantumruy-Light.ttf",
-    }
+    # page.fonts = {
+    #     "Kantumruy-Regular": "./fonts/kantumruy-3/Kantumruy-Regular.ttf",
+    #     "Kantumruy-Bold": "./fonts/kantumruy-3/Kantumruy-Bold.ttf",
+    #     "Kantumruy-Light": "./fonts/kantumruy-3/Kantumruy-Light.ttf",
+    # }
     # page.theme = ft.Theme(font_family="Kantumruy-Regular")
     page.bgcolor = "white"
-    page.padding = ft.padding.only(top=0, bottom=10, left=10, right=10)
+    # page.padding = ft.padding.only(top=0, bottom=10, left=10, right=10)
+    page.padding = ft.padding.all(0)
 
     data1_set1 = [
         ft.LineChartDataPoint(0, 3),
@@ -169,12 +170,13 @@ def main(page: ft.Page):
         page.open(dialog)
     fab = create_floating_action_button(show_dialog)
 
-    page.controls.clear()
-    page.controls.append(
+
+    konten = ft.Stack([
+    ft.Column(controls=[
+        create_navbar(page),
         ft.Stack([
         ft.Column(
             controls=[
-                create_navbar(page),
                 ft.Row(
                     controls=[
                       bordered_container
@@ -182,10 +184,14 @@ def main(page: ft.Page):
                     alignment="spaceBetween",
                     vertical_alignment="center",
                 ),
-            ], 
-        ), fab
-    ], expand=True, alignment=ft.Alignment(1,1))
-    )
+            ], right=20, bottom=20, left=20, top=5
+        )
+    ])
+    ]),
+    fab], expand=True, alignment=ft.Alignment(1, 1))
+
+    page.controls.clear()
+    page.controls.append(konten)
 
     page.update()
     return page
