@@ -2,7 +2,10 @@ import flet as ft
 from src.components.navBar import create_navbar
 from src.components.addButton import create_floating_action_button
 from src.components.infoTanamanCard import create_info_tanaman_card
-
+from src.controllers.tanamancontroller import TanamanController
+from src.controllers.datainformasitanamancontroller import DataInformasiTanamanController
+from src.controllers.tanaman import Tanaman
+from src.controllers.datainformasitanaman import DataInformasiTanaman
 class State:
     toggle = True
 
@@ -60,6 +63,7 @@ def info_page(page: ft.Page):
 
     def create_scrollable_info_cards():
         cards = []
+        daftar_tanaman = TanamanController()
         for i in range(10):  # ex ada 10 cards
             card = create_info_tanaman_card(page, lambda e: page.go("/src/components/infoViewPage"))
             cards.append(card)

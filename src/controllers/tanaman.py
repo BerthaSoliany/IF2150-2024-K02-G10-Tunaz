@@ -1,11 +1,12 @@
-from src.controllers.datainformasitanaman import DataInformasiTanaman
-from src.controllers.datapertumbuhantanaman import DataPertumbuhanTanaman
-from src.controllers.jadwalperawatan import JadwalPerawatan
+from datainformasitanaman import DataInformasiTanaman
+from datapertumbuhantanaman import DataPertumbuhanTanaman
+from jadwalperawatan import JadwalPerawatan
 
 class Tanaman:
-    def __init__(self, jenis_tanaman: str, index_tanaman: int, data_informasi_tanaman: DataInformasiTanaman, data_pertumbuhan_tanaman: DataPertumbuhanTanaman, data_jadwal_perawatan: JadwalPerawatan):
+    def __init__(self, jenis_tanaman: str, index_tanaman: int, icon_tanaman: str, data_informasi_tanaman: DataInformasiTanaman, data_pertumbuhan_tanaman: DataPertumbuhanTanaman, data_jadwal_perawatan: JadwalPerawatan):
         self.jenis_tanaman = jenis_tanaman
         self.index_tanaman = index_tanaman
+        self.icon_tanaman = icon_tanaman    
         self.data_informasi_tanaman = data_informasi_tanaman
         self.data_pertumbuhan_tanaman = data_pertumbuhan_tanaman
         self.data_jadwal_perawatan = data_jadwal_perawatan
@@ -15,6 +16,9 @@ class Tanaman:
 
     def get_index(self):
         return self.index_tanaman
+    
+    def get_icon(self):
+        return self.icon_tanaman
     
     def get_data_informasi_tanaman(self):
         return self.data_informasi_tanaman
@@ -31,6 +35,9 @@ class Tanaman:
     def set_index(self, index_tanaman):
         self.index_tanaman = index_tanaman
 
+    def set_icon(self, icon_tanaman):
+        self.icon_tanaman = icon_tanaman
+        
     def set_data_informasi_tanaman(self, data_informasi_tanaman):
         self.data_informasi_tanaman = data_informasi_tanaman
 

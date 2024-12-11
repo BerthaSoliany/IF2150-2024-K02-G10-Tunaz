@@ -53,7 +53,7 @@ def graph_view_page(page: ft.Page):
                 controls=[
                     ft.Row(
                         controls=[
-                            ft.IconButton(icon="arrow_back", on_click=lambda e: page.go("/src/page/graphPage"), icon_color="#5F9356"),
+                            ft.IconButton(icon="arrow_back", on_click=on_click_back_to_graph_page, icon_color="#5F9356"),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                         vertical_alignment=ft.CrossAxisAlignment.START,

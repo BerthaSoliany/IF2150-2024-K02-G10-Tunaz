@@ -80,6 +80,7 @@ def graph_add_form_entry_page(page: ft.Page):
         data_pertumbuhan_controller = DataPertumbuhanTanamanController()
         data_pertumbuhan = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, tanggal_pertumbuhan.value[8:], kondisi_daun_field.value)
         data_pertumbuhan_controller.tambah_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"), data_pertumbuhan) # nanti jeruk, 2 nya diganti sesuai tanamannya
+        page.go("/src/page/graphPage")
     
     form_card = ft.Card(
         content=ft.Container(
