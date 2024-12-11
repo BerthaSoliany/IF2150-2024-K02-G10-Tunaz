@@ -4,7 +4,7 @@ from src.controllers.tanaman import Tanaman
 class GrafikPertumbuhan:
     
     def tinggi_terhadap_waktu(self, tanaman: Tanaman):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         cursor = conn.cursor()
         cursor.execute("SELECT tanggal_catatan, tinggi_tanaman FROM dataPertumbuhanTanaman WHERE jenis_tanaman = ? AND index_tanaman = ? ORDER BY tanggal_catatan ASC", (tanaman.get_jenis(), tanaman.get_index()))
         conn.commit()

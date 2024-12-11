@@ -1,6 +1,8 @@
 import flet as ft
 from src.controllers.datapertumbuhantanamancontroller import DataPertumbuhanTanamanController
 from src.controllers.datapertumbuhantanaman import DataPertumbuhanTanaman
+from src.controllers.datainformasitanamancontroller import DataInformasiTanamanController
+from src.controllers.tanamancontroller import TanamanController
 def validasi(page: ft.Page, link):
     def handle_close_no(e):
         page.session.set("action", None)
@@ -14,6 +16,13 @@ def validasi(page: ft.Page, link):
             page.session.set("data_pertumbuhan_tanaman", None)
             page.session.set("jenis_tanaman", None)
             page.session.set("index_tanaman", None)
+
+        elif(page.session.get("action") == "hapus_data_informasi"):
+            # data_informasi_tanaman_controller = DataInformasiTanamanController()
+            # data_informasi_tanaman_controller.hapus_data_informasi_tanaman(page.session.get("Tanaman").get_jenis(), page.session.get("Tanaman").get_index())
+            tanaman_controller = TanamanController()
+            tanaman_controller.hapus_tanaman(page.session.get("Tanaman"))
+            page.session.set("Tanaman", None)
 
         page.session.set("action", None)
         page.close(dialog)

@@ -5,7 +5,6 @@ from src.components.validasi import validasi_edit_jadwal
 def calendar_edit_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.bgcolor = "white"
     page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     dialog = validasi_edit_jadwal(page)
@@ -14,18 +13,43 @@ def calendar_edit_form_entry_page(page: ft.Page):
 
     def handle_change1(e):
         waktu_tanggal.value = "        " #
-        waktu_tanggal.value += e.control.value.strftime('%Y-%m-%d')
+        waktu_tanggal.value += e.control.value.strftime('%d/%m/%Y')
         page.update()
     
     def handle_change2(e):
         sampai_tanggal.value = "        " #
-        sampai_tanggal.value += e.control.value.strftime('%Y-%m-%d')
+        sampai_tanggal.value += e.control.value.strftime('%d/%m/%Y')
         page.update()
 
     def handle_change3(e):
         waktu_jam.value = "        " #
         waktu_jam.value += e.control.value.strftime('%H:%M:%S')
         page.update()
+
+    def cek_kosong(e):
+        if waktu_tanggal.value =="":
+            waktu_text.value = "Kolom tidak boleh kosong"
+        if waktu_jam.value == "":
+            jam_text.value = "Kolom tidak boleh kosong"
+        if frekuensi.value != "" and sampai_tanggal.value=="":
+            tanggal_text.value = "Kolom tidak boleh kosong"
+        if sampai_tanggal.value != "" and frekuensi.value =="":
+            frekuensi_text.value = "Kolom tidak boleh kosong"
+        page.update()
+
+    def check_number(e):
+        if all(char.isdigit() for char in e.control.value):
+            frekuensi_text.value = ""
+            if len(e.control.value) == 2:
+                frekuensi_text.value = "Frekuensi tidak boleh lebih dari 2 digit"
+        else:
+            frekuensi_text.value = "Frekuensi harus berupa angka"
+        page.update()
+
+    waktu_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
+    jam_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
+    tanggal_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
+    frekuensi_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
 
     waktu_tanggal = ft.CupertinoTextField(read_only=True, width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        01/12/2024", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     pilih_tanggal_perawatan = ft.OutlinedButton(
@@ -65,7 +89,7 @@ def calendar_edit_form_entry_page(page: ft.Page):
                             color="white"),
         width=1000,)
     waktu_jam_field = ft.Stack([waktu_jam,pilih_waktu])
-    frekuensi = ft.CupertinoTextField(width=120, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="2", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
+    frekuensi = ft.CupertinoTextField(max_length=2, on_change=check_number,width=120, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="2", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     frekuensi1 = ft.Row(controls=[frekuensi, ft.Text("hari", size=20, color="black")], expand=True)
     sampai_tanggal = ft.CupertinoTextField(read_only=True, width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="       01/11/2025", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     pilih_tanggal_akhir = ft.OutlinedButton(
@@ -92,6 +116,7 @@ def calendar_edit_form_entry_page(page: ft.Page):
     jenis_index = "Jagung 001" # nanti diganti sesuai tanamannya
     icon = "icon1" # nanti diganti sesuai icon tanamannya
     tipe = "Penyiraman"
+    space = ft.Text()
 
     form_card = ft.Card(
         content=ft.Container(
@@ -110,18 +135,19 @@ def calendar_edit_form_entry_page(page: ft.Page):
                         alignment="spaceBetween",
                     ),
                     ft.Row(controls=[
-                        ft.Column(expand=True, controls=[ft.Text("Waktu "+tipe, size=20, color="black"), waktu_tanggal_field], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
-                        ft.Column(expand=True,controls=[ft.Text("Jam "+tipe, size=20, color="black"), waktu_jam_field], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
-                        ft.Column(expand=True,controls=[ft.Text("Sampai tanggal", size=20, color="black"), sampai_tanggal_field], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
-                        ft.Column(expand=True,controls=[ft.Text("Frekuensi "+tipe, size=20, color="black"), frekuensi1], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
+                        ft.Column(expand=True, controls=[ft.Text("Waktu "+tipe, size=20, color="black"), waktu_tanggal_field, waktu_text], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
+                        ft.Column(expand=True,controls=[ft.Text("Jam "+tipe, size=20, color="black"), waktu_jam_field, jam_text], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
+                        ft.Column(expand=True,controls=[ft.Text("Sampai tanggal", size=20, color="black"), sampai_tanggal_field, tanggal_text], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
+                        ft.Column(expand=True,controls=[ft.Text("Frekuensi "+tipe, size=20, color="black"), frekuensi1, frekuensi_text], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
                     ], alignment=ft.MainAxisAlignment.CENTER, vertical_alignment=ft.CrossAxisAlignment.START),
                     ft.Text("Kebutuhan Perawatan", size=20, color="black"),
                     kebutuhan_perawatan_field,
+                    space,
                     ft.Row(controls=[ft.Text("Notifikasi:", size=20, color="black"), notifikasi_switch], alignment=ft.MainAxisAlignment.START, vertical_alignment=ft.CrossAxisAlignment.CENTER, spacing=3),
                     ft.Row(
                         controls=[
-                        ft.OutlinedButton(text="SIMPAN", on_click=show_dialog, width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ft.OutlinedButton(text="BATAL", on_click=lambda e: page.go("/src/components/calendarViewPage"), width=142, style=ft.ButtonStyle(color="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#F47A6F", width=2))),
+                        ft.OutlinedButton(text="SIMPAN", on_click=show_dialog, width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ], 
                         alignment=ft.MainAxisAlignment.END),
                 ],
@@ -137,6 +163,7 @@ def calendar_edit_form_entry_page(page: ft.Page):
         color="#FDFFEA",
     )
 
+    page.bgcolor = "grey400"
     page.controls.clear()
     page.controls.append(
         ft.Container(
