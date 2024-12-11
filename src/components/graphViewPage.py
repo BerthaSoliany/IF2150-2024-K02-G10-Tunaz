@@ -7,7 +7,6 @@ def graph_view_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.theme = ft.Theme(font_family="Kantumruy-Regular")
-    page.bgcolor = "white"
 
     dialog = validasi(page, "/src/page/graphPage")
     def show_dialog(e):
@@ -16,7 +15,7 @@ def graph_view_page(page: ft.Page):
 
     tanggal_pertumbuhan_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan tanggal", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
     tinggi_tanaman_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan tinggi", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
-    status_tanaman_dropdown = ft.Dropdown(border_radius=5, border_color="black",bgcolor="white", width=126, hint_content=ft.Text(value="Hidup", color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")], disabled=True)
+    status_tanaman_dropdown = ft.Dropdown(icon_enabled_color="black", border_radius=5, border_color="black",bgcolor="white", width=126, hint_content=ft.Text(value="Hidup", color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")], disabled=True)
     kondisi_daun_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan kondisi", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
     jenis_index = "Jagung 001" # nanti diganti sesuai tanamannya
     icon = "icon1" # nanti diganti sesuai icon tanamannya
@@ -27,7 +26,7 @@ def graph_view_page(page: ft.Page):
                 controls=[
                     ft.Row(
                         controls=[
-                            create_button1("Back", lambda e: page.go("/src/page/graphPage"), ft.Colors.WHITE, "#F47A6F"),
+                            ft.IconButton(icon="arrow_back", on_click=lambda e: page.go("/src/page/graphPage"), icon_color="#5F9356"),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                         vertical_alignment=ft.CrossAxisAlignment.START,
@@ -86,6 +85,7 @@ def graph_view_page(page: ft.Page):
         color="#FDFFEA",
     )
 
+    page.bgcolor = "grey400"
     page.controls.clear()
     page.controls.append(
         ft.Container(

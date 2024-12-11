@@ -6,7 +6,6 @@ def info_view_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.theme = ft.Theme(font_family="Kantumruy-Regular")
-    page.bgcolor = "white"
 
     dialog = validasi(page, "/src/page/infoPage")
     def show_dialog(e):
@@ -18,8 +17,8 @@ def info_view_page(page: ft.Page):
         placeholder_text="Disiram dengan pupuk quality extra pulen yang tidak mengandung red 40. Penyiraman dilakukan dengan spray bottle atau selang dengan ukuran nozzle 0,1 mm karena daun mudah robek.", 
         placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), 
         multiline=True, 
-        min_lines=10, 
-        max_lines=10, 
+        min_lines=8, 
+        max_lines=8, 
         read_only=True, 
         bgcolor="white") # Change this
     jenis_index = "Jagung 001" # nanti diganti sesuai tanamannya
@@ -30,7 +29,7 @@ def info_view_page(page: ft.Page):
                 controls=[
                     ft.Row(
                         controls=[
-                            create_button1("Back", lambda e: page.go("/src/page/infoPage"), ft.Colors.WHITE, "#F47A6F"),
+                            ft.IconButton(icon="arrow_back", on_click=lambda e: page.go("/src/page/infoPage"), icon_color="#5F9356"),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                         vertical_alignment=ft.CrossAxisAlignment.START,

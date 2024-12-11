@@ -27,10 +27,12 @@ def create_info_tanaman_card(page: ft.Page, on_click=None):
                     alignment="spaceBetween",
                 ),
                 ft.Text(
-                    "Disiram dengan pupuk quality extra pulen yang tidak mengandung red 40. Penyiraman dilakukan dengan spray bottle atau selang dengan ukuran nozzle 0,1 mm...",
+                    "Disiram dengan pupuk quality extra pulen yang tiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadak mengandung red 40. Penyiraman dilakukan dengan spray bottle atau selang dengan ukuran nozzle 0,1 mmjbdasdhvfluaevfluasdv",
                     size=16,
                     color="black",
                     style=ft.TextStyle(font_family="Verdana"),
+                    overflow=ft.TextOverflow.ELLIPSIS,
+                    max_lines=5
                 ),
                 ft.Row(
                     controls=[

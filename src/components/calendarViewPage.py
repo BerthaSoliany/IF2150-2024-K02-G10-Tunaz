@@ -7,7 +7,6 @@ def calendar_view_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.theme = ft.Theme(font_family="Kantumruy-Regular")
-    page.bgcolor = "white"
 
     dialog = validasi_hapus_jadwal(page, "/src/main")
     def show_dialog(e):
@@ -29,7 +28,7 @@ def calendar_view_page(page: ft.Page):
                 controls=[
                     ft.Row(
                         controls=[
-                            create_button1("Back", lambda e: page.go("/src/main"), ft.Colors.WHITE, "#F47A6F"),
+                            ft.IconButton(icon="arrow_back", on_click=lambda e: page.go("/src/main"), icon_color="#5F9356"),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                         vertical_alignment=ft.CrossAxisAlignment.START,
@@ -73,6 +72,7 @@ def calendar_view_page(page: ft.Page):
         color="#FDFFEA",
     )
 
+    page.bgcolor = "grey400"
     page.controls.clear()
     page.controls.append(
         ft.Container(
