@@ -2,6 +2,8 @@ import flet as ft
 
 def create_click_card(page, on_click, tinggi, tanggal):
     def handle_click(e):
+        page.session.set("tinggi_tanaman", tinggi[8:])
+        page.session.set("tanggal_catatan", int(tanggal[9:]))
         on_click(e)
         page.update()
     
