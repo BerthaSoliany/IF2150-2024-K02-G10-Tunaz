@@ -51,7 +51,7 @@ def main(page: ft.Page):
         "Kantumruy-Bold": "./fonts/kantumruy-3/Kantumruy-Bold.ttf",
         "Kantumruy-Light": "./fonts/kantumruy-3/Kantumruy-Light.ttf",
     }
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
     page.bgcolor = "white"
     page.padding = ft.padding.only(top=0, bottom=10, left=10, right=10)
 

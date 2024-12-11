@@ -20,7 +20,6 @@ s = State()
 
 def graph_page(page: ft.Page):
     page.bgcolor = "white"
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
     page.horizontal_alignment = ft.alignment.center
     page.vertical_alignment = ft.alignment.center
 
