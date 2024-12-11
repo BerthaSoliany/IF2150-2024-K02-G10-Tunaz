@@ -46,7 +46,7 @@ def graph_page(page: ft.Page):
         page.session.set("jenis_tanaman", pilihan_jenis.value)
         page.session.set("index_tanaman", pilihan_index.value)
         graph = GrafikPertumbuhan()
-        new_data_points, data_tanggal = graph.tinggi_terhadap_waktu(Tanaman(jenis_tanaman=pilihan_jenis.value, index_tanaman=pilihan_index.value, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None))
+        new_data_points, data_tanggal = graph.tinggi_terhadap_waktu(Tanaman(jenis_tanaman=pilihan_jenis.value, index_tanaman=pilihan_index.value, icon_tanaman=None, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None))
         if(len(new_data_points) != 0):
             range_tanggal = (to_date(data_tanggal[-1]) - to_date(data_tanggal[0])).days
             range_tinggi = max(new_data_points)
@@ -111,27 +111,27 @@ def graph_page(page: ft.Page):
     pilihan_jenis = ft.Dropdown(
             on_change=dropdown_changed1,
             text_style=ft.TextStyle(size=16, color="black", overflow="hidden"),
-            bgcolor="white",
+            bgcolor="#AADBA3",
             # label=judul,
             # label_style=ft.TextStyle(size=16, color="black"),
             options=[ft.dropdown.Option(option) for option in jenis_tanaman],
             width=102,
             height=44,
             # max_menu_height=200,
-            icon_enabled_color="black",
+            select_icon_enabled_color="black",
             border_width=0,
             border_radius=10,
             fill_color="#AADBA3",
             hint_content=ft.Text(value="Jenis", size=16, color="black"),
             content_padding=10,
-            alignment=ft.alignment.center,
+            alignment=ft.Alignment(-1,0),
             disabled = False,
         )
     
     pilihan_index = ft.Dropdown(
             on_change=toggle_data,
             text_style=ft.TextStyle(size=16, color="black", overflow="hidden"),
-            bgcolor="white",
+            bgcolor="DBC4AB",
             # label=judul,
             # label_style=ft.TextStyle(size=16, color="black"),
             options=[ft.dropdown.Option(option) for option in []],
@@ -141,7 +141,7 @@ def graph_page(page: ft.Page):
             icon_enabled_color="black",
             border_width=0,
             border_radius=10,
-            fill_color="#DBC4AB",
+            fill_color="#DBC4AB", #if pilihan_jenis.value else "#E0E0E0",
             hint_content=ft.Text(value="Index", size=16, color="black"),
             content_padding=10,
             alignment=ft.alignment.center,

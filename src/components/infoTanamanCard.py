@@ -1,24 +1,30 @@
 import flet as ft
-
-def create_info_tanaman_card(page: ft.Page, on_click=None):
+from src.controllers.tanaman import Tanaman
+from datetime import date
+def create_info_tanaman_card(page: ft.Page, x: Tanaman, on_click=None):
     def handle_click(e):
         if on_click:
+            page.session.set("Tanaman", x)
             on_click(e)
         # page.update()  # Update the page to reflect changes
 
+    def to_date(dt_date):
+        yy, mm, dd = map(int, dt_date.split('-'))
+        return date(yy, mm, dd)
+    
     return ft.Container(
         content=ft.Column(
             controls=[
                 ft.Row(
                     controls=[
                         ft.Text(
-                            "Jagung 002",
+                            x.get_jenis() + " " + str(x.get_index()),
                             size=24,
                             weight="bold",
                             color="#5F9356",
                         ),
                         ft.Image(
-                            src="./img/card_icon1.png",
+                            src="./img/" + x.get_icon() +".png",
                             width=40,
                             height=40,
                             fit="contain",
@@ -27,7 +33,7 @@ def create_info_tanaman_card(page: ft.Page, on_click=None):
                     alignment="spaceBetween",
                 ),
                 ft.Text(
-                    "Disiram dengan pupuk quality extra pulen yang tiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadak mengandung red 40. Penyiraman dilakukan dengan spray bottle atau selang dengan ukuran nozzle 0,1 mmjbdasdhvfluaevfluasdv",
+                    x.get_data_informasi_tanaman().get_kebutuhan_perawatan(),
                     size=16,
                     color="black",
                     style=ft.TextStyle(font_family="Verdana"),
@@ -43,7 +49,7 @@ def create_info_tanaman_card(page: ft.Page, on_click=None):
                             fit="contain",
                         ),
                         ft.Text(
-                            "1 bulan",
+                            str((date.today() - to_date(x.get_data_informasi_tanaman().get_waktu_tanam())).days) + " hari",
                             size=16,
                             color="#8C8C8C",
                             weight="bold",

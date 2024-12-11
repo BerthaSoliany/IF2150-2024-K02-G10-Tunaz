@@ -1,5 +1,5 @@
 import sqlite3
-from tanaman import Tanaman
+from src.controllers.tanaman import Tanaman
 
 class TanamanController:
 
@@ -81,6 +81,14 @@ class TanamanController:
         conn.close()
         return y
     
+    def get_tanaman(self, jenis_tanaman, index_tanaman):
+        conn = sqlite3.connect("src/database/tunaz.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM tanaman WHERE jenis_tanaman = ? AND index_tanaman = ?", (jenis_tanaman, index_tanaman))
+        x = cursor.fetchone()
+        conn.close()
+        return x
 # tanaman_controller = TanamanController()
-# tanaman1 = Tanaman(jenis_tanaman="KAKTUS", index_tanaman=1, data_informasi_tanaman=None, icon_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None)
+# tanaman1 = Tanaman(jenis_tanaman="JERUK", index_tanaman=2, data_informasi_tanaman=None, icon_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None)
 # tanaman_controller.tambah_tanaman(tanaman1)
+# tanaman_controller.hapus_tanaman(tanaman1)
