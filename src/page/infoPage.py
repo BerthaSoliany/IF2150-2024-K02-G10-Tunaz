@@ -16,7 +16,7 @@ def info_page(page: ft.Page):
 
     def dropdown_choice(judul: str, pilihan: list, bcolor: any): # dropdown sort by
         return ft.Dropdown(
-            text_style=ft.TextStyle(size=16, color="black", overflow="hidden", font_family="Verdana"),
+            text_style=ft.TextStyle(size=16, color="black", overflow="hidden"),
             bgcolor=bcolor,
             hint_content=ft.Text(value=judul, size=16, color="black"),
             border_radius=12,
@@ -109,24 +109,29 @@ def info_page(page: ft.Page):
                 spacing=10,
                 expand=True, 
             ),
-            height=480,  
+            height=470,  
             width=1440,  
             padding=10,
         )
 
-    page.controls.clear()
-    page.controls.append(ft.Stack([
+    konten = ft.Stack([
+    ft.Column(controls=[
+        create_navbar(page),
+        ft.Stack([
         ft.Column(controls=[
-            create_navbar(page),
             ft.Row(
             controls=[create_search_button(), create_search_bar(), opt_sortby], 
             alignment="start", 
             vertical_alignment="center"), 
             scrollable_info_cards,
-            ]), 
-        fab
+            ], right=20, bottom=20, left=20, top=5), 
         ], 
-        expand=True, alignment=ft.Alignment(1,1)))
+        expand=True, alignment=ft.Alignment(1,1))
+    ]),
+    fab], expand=True, alignment=ft.Alignment(1,1))
+
+    page.controls.clear()
+    page.controls.append(konten)
     #     create_navbar(page),
     #     ft.Column(
     #         controls=[

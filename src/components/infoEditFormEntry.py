@@ -5,7 +5,7 @@ from src.controllers.datainformasitanamancontroller import DataInformasiTanamanC
 def info_edit_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     def max_karakter(e):
         if len(e.control.value) == 200:

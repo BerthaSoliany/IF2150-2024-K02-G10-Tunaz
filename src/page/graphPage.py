@@ -138,7 +138,8 @@ def graph_page(page: ft.Page):
             width=102,
             height=44,
             # max_menu_height=200,
-            icon_enabled_color="black",
+            select_icon_enabled_color="black",
+            # icon=ft.Icon(size=16, color="black"),
             border_width=0,
             border_radius=10,
             fill_color="#DBC4AB", #if pilihan_jenis.value else "#E0E0E0",
@@ -338,7 +339,7 @@ def graph_page(page: ft.Page):
         divider_thickness=0,
         expand=True,
         width=300,
-        height=400,
+        height=380,
     )
 
     header = ft.Container(
@@ -378,11 +379,13 @@ def graph_page(page: ft.Page):
         # shadow=ft.BoxShadow
         # alignment=ft.alignment.center,
     )
-    page.controls.clear()
-    page.controls.append(ft.Stack([
+
+    konten = ft.Stack([
+    ft.Column(controls=[
+        create_navbar(page),
+        ft.Stack([
         ft.Column(
             controls=[
-                create_navbar(page),
                 ft.Row(
                     controls=[
                         pilihan_jenis,
@@ -399,8 +402,13 @@ def graph_page(page: ft.Page):
                     alignment="spaceBetween",
                     vertical_alignment="center",
                 ),
-            ], 
-        ), fab
-    ], expand=True, alignment=ft.Alignment(1,1)))
+            ], right=20, bottom=20, left=20, top=5
+        )
+    ])
+    ]),
+    fab], expand=True, alignment=ft.Alignment(1,1))
+
+    page.controls.clear()
+    page.controls.append(konten)
     page.update()
     return page

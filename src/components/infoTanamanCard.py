@@ -36,7 +36,7 @@ def create_info_tanaman_card(page: ft.Page, x: Tanaman, on_click=None):
                     x.get_data_informasi_tanaman().get_kebutuhan_perawatan(),
                     size=16,
                     color="black",
-                    style=ft.TextStyle(font_family="Verdana"),
+                    # style=ft.TextStyle(font_family="Verdana"),
                     overflow=ft.TextOverflow.ELLIPSIS,
                     max_lines=5
                 ),
@@ -53,7 +53,7 @@ def create_info_tanaman_card(page: ft.Page, x: Tanaman, on_click=None):
                             size=16,
                             color="#8C8C8C",
                             weight="bold",
-                            style=ft.TextStyle(font_family="Verdana"),
+                            # style=ft.TextStyle(font_family="Verdana"),
                         ),
                     ],
                     alignment="start",

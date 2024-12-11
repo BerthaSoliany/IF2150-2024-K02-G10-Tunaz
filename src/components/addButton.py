@@ -7,7 +7,9 @@ def create_floating_action_button(on_click):
         on_click=on_click,
         bgcolor="#5A3E2A",
         shape=ft.RoundedRectangleBorder(10),
-        tooltip="Add"
+        tooltip="Add",
+        bottom=10,
+        right=10,
     )
 
 """

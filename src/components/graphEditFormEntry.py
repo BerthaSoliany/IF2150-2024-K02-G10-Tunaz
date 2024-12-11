@@ -6,7 +6,7 @@ from src.controllers.datapertumbuhantanaman import DataPertumbuhanTanaman
 def graph_edit_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     def handle_change(e):
         text_tanggal.value = "        " #
@@ -18,12 +18,15 @@ def graph_edit_form_entry_page(page: ft.Page):
         page.add()
 
     def check_number(e):
-        if all(char.isdigit() for char in e.control.value):
+        value = e.control.value
+        try:
+            float(value) 
             tinggi_text.value = ""
-            if len(e.control.value) == 10:
+            if len(value) == 10: 
                 tinggi_text.value = "Tinggi tidak boleh lebih dari 10 digit"
-        else:
-            tinggi_text.value = "Tinggi tanaman harus berupa angka"
+        except ValueError:
+            tinggi_text.value = "Tinggi tanaman harus berupa angka (misalnya, 10 atau 10.5)"
+        
         page.update()
 
     def cek_kosong(e):
