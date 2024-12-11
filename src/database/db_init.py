@@ -1,7 +1,7 @@
 import sqlite3
 
 def init_db():
-    conn = sqlite3.connect("tunaz.db")
+    conn = sqlite3.connect("src/database/tunaz.db")
     cursor = conn.cursor()
 
     # Tabel Tanaman
@@ -82,4 +82,6 @@ def init_db():
 
 
 if __name__ == "__main__":
+    
     init_db()
+    print("Database initialized")

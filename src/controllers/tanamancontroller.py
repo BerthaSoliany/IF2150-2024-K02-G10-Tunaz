@@ -4,7 +4,7 @@ from tanaman import Tanaman
 class TanamanController:
 
     def tambah_tanaman(self, tanaman: Tanaman):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
         cursor.execute("INSERT OR IGNORE INTO jenisTracker (jenis_tanaman, last_tanaman_index) VALUES (?, ?)", (tanaman.get_jenis(), 0))  
@@ -16,12 +16,12 @@ class TanamanController:
         else: 
             cursor.execute("INSERT INTO tanaman (jenis_tanaman, index_tanaman, icon_tanaman) VALUES (?, ?, ?)", (tanaman.get_jenis(), index_tanaman, tanaman.get_icon()))
         conn.commit()
-        # cursor.execute("SELECT * FROM tanaman;")
-        # print(cursor.fetchall())
+        cursor.execute("SELECT * FROM tanaman;")
+        print(cursor.fetchall())
         conn.close()
 
     def perbarui_tanaman(self, tanaman: Tanaman, tanaman_baru: Tanaman):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
         cursor.execute("INSERT OR IGNORE INTO jenisTracker (jenis_tanaman, last_tanaman_index) VALUES (?, ?)", (tanaman_baru.get_jenis(), 0))  
@@ -35,7 +35,7 @@ class TanamanController:
         conn.close()
     
     def hapus_tanaman(self, tanaman: Tanaman):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
         cursor.execute("DELETE FROM tanaman WHERE jenis_tanaman = ? AND index_tanaman = ?", (tanaman.get_jenis(), tanaman.get_index()))
@@ -45,7 +45,7 @@ class TanamanController:
         conn.close()
 
     def lihat_tanaman(self):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM tanaman;")
         # print(cursor.fetchall())
@@ -58,7 +58,7 @@ class TanamanController:
         conn.close()
 
     def get_all_jenis_tanaman(self):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         cursor = conn.cursor()
         cursor.execute("SELECT jenis_tanaman FROM tanaman;")
         # make it unique (delete if theres same value)
@@ -71,7 +71,7 @@ class TanamanController:
         return y
 
     def get_all_index_tanaman(self, jenis_tanaman):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         cursor = conn.cursor()
         cursor.execute("SELECT index_tanaman FROM tanaman WHERE jenis_tanaman = ?", (jenis_tanaman,))
         x = cursor.fetchall()
@@ -81,13 +81,6 @@ class TanamanController:
         conn.close()
         return y
     
-    def delete_all_tanaman(self):
-        conn = sqlite3.connect("tunaz.db")
-        cursor = conn.cursor()
-        cursor.execute("DELETE * FROM tanaman;")
-        conn.commit()
-        conn.close()
-tanaman_controller = TanamanController()
-tanaman1 = Tanaman(jenis_tanaman="JERUK", index_tanaman=1, data_informasi_tanaman=None, icon_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None)
-tanaman_controller.tambah_tanaman(tanaman1)
-tanaman_controller.delete_all_tanaman()
+# tanaman_controller = TanamanController()
+# tanaman1 = Tanaman(jenis_tanaman="KAKTUS", index_tanaman=1, data_informasi_tanaman=None, icon_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None)
+# tanaman_controller.tambah_tanaman(tanaman1)

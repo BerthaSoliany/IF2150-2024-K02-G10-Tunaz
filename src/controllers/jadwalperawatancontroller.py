@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 class JadwalPerawatanController:
 
     def tambah_data_satu_jadwal_perawatan(self, jenis_tanaman: str, index_tanaman: int, jadwal_perawatan: JadwalPerawatan):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
         cursor.execute("SELECT last_group_id FROM groupJadwalPerawatan;")
@@ -19,7 +19,7 @@ class JadwalPerawatanController:
         conn.close()
 
     def tambah_data_group_jadwal_perawatan(self, jenis_tanaman: str, index_tanaman: int, jadwal_perawatan: JadwalPerawatan):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
         cursor.execute("SELECT last_group_id FROM groupJadwalPerawatan;")
@@ -39,7 +39,7 @@ class JadwalPerawatanController:
         # print(cursor.fetchall())
 
     def ubah_data_satu_jadwal_perawatan(self, jenis_tanaman: str, index_tanaman: int, jadwal_perawatan_lama: JadwalPerawatan, jadwal_perawatan_baru: JadwalPerawatan):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
         cursor.execute("SELECT last_group_id FROM groupJadwalPerawatan;")
@@ -58,7 +58,7 @@ class JadwalPerawatanController:
         # print(cursor.fetchall())
 
     def hapus_data_satu_jadwal_perawatan(self, jenis_tanaman: str, index_tanaman: int, jadwal_perawatan: JadwalPerawatan):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
         cursor.execute("DELETE FROM dataJadwalPerawatan WHERE jenis_tanaman = ? AND index_tanaman = ? AND group_id = ? AND waktu_perawatan = ? AND jenis_perawatan = ?;", (jenis_tanaman, index_tanaman, jadwal_perawatan.get_group_id(), jadwal_perawatan.get_waktu_perawatan(), jadwal_perawatan.get_jenis_perawatan()))
@@ -68,7 +68,7 @@ class JadwalPerawatanController:
         conn.close()
     
     def hapus_data_group_jadwal_perawatan(self, jadwal_perawatan: JadwalPerawatan):
-        conn = sqlite3.connect("tunaz.db")
+        conn = sqlite3.connect("src/database/tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
         cursor.execute("DELETE FROM dataJadwalPerawatan WHERE group_id = ?;", (jadwal_perawatan.get_group_id(),))
