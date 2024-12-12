@@ -1,4 +1,9 @@
 import flet as ft
+from datetime import date
+from src.controllers.tanaman import Tanaman
+from src.controllers.tanamancontroller import TanamanController 
+from src.controllers.datainformasitanaman import DataInformasiTanaman
+from src.controllers.datainformasitanamancontroller import DataInformasiTanamanController
 
 def info_add_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -44,6 +49,16 @@ def info_add_form_entry_page(page: ft.Page):
             for option in icon_option
         ]
 
+    def tambah(e):
+        if jenis_tanaman_field.value:
+            tanaman_controller = TanamanController()
+            tanaman = Tanaman(jenis_tanaman=jenis_tanaman_field.value, index_tanaman=0, icon_tanaman=selected_icon.current, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None)
+            tanaman.set_index(tanaman_controller.tambah_tanaman(tanaman))
+            tanaman.set_data_informasi_tanaman(DataInformasiTanaman(kebutuhan_perawatan=kebutuhan_perawatan_field.value, waktu_tanam=date.today()))
+            data_informasi_tanaman_controller = DataInformasiTanamanController()
+            data_informasi_tanaman_controller.tambah_data_informasi_tanaman(tanaman.get_jenis(), tanaman.get_index(), tanaman.get_data_informasi_tanaman())
+            page.go("/src/page/infoPage")
+
     def build_ui():
         return ft.Column(
             controls=[
@@ -69,7 +84,7 @@ def info_add_form_entry_page(page: ft.Page):
                         ),
                         ft.OutlinedButton(
                             text="TAMBAH",
-                            on_click=lambda e: page.go("/src/page/infoPage"),
+                            on_click=tambah,
                             width=142,
                             style=ft.ButtonStyle(
                                 color="#5F9356",
