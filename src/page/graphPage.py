@@ -113,7 +113,7 @@ def graph_page(page: ft.Page):
             text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
             bgcolor="#AADBA3",
             options=[ft.dropdown.Option(option) for option in jenis_tanaman],
-            width=200,
+            width=300,
             height=44,
             # max_menu_height=200,
             select_icon_enabled_color="black",

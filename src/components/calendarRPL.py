@@ -12,7 +12,7 @@ HORIZONTAL_LENGTH = 750
 TODAY_DATE = datetime.date.today()
 
 class SetCalendar(UserControl): 
-    def __init__(self, start_year=datetime.date.today().year):
+    def __init__(self, start_year=datetime.date.today().year, on_date_selected=None):
         self.notes = {} #dict
         self.current_year = start_year
         
@@ -32,6 +32,7 @@ class SetCalendar(UserControl):
         )
 
         self.previous_selected_container = None #track prev
+        self.on_date_selected = on_date_selected
         super().__init__()
 
 
@@ -77,6 +78,10 @@ class SetCalendar(UserControl):
         self.selected_date = e.control.data
         globals()["TODAY_DATE"] = self.selected_date
         print(TODAY_DATE)
+
+        if(self.on_date_selected):
+            self.on_date_selected(self.selected_date)
+
         e.control.content.bgcolor = "lightgreen, 0.5"
         e.control.content.update()
         # self.previous_selected_container_2 = self.previous_selected_container
@@ -88,13 +93,13 @@ class SetCalendar(UserControl):
     def create_circle(self, datee, colorr):
         datee = str(datee)
         return Container(
-            content=Text(datee, size=12, color="black", weight=FontWeight.BOLD),
-            width=30,  # Diameter of the circle
-            height=30,
+            content=Text(datee, size=20, color="black", weight=FontWeight.BOLD),
+            width=45,  # Diameter of the circle
+            height=45,
             bgcolor=colorr,  # Background color of the circle
             border_radius=25,  # Half of the width/height
             alignment=alignment.center,
-
+            
         )
 
     def create_month_calendar(self, year):
@@ -119,13 +124,13 @@ class SetCalendar(UserControl):
             weekday_labels = [
                 Container(
                     border=border.all(0.5, Colors.WHITE),
-                    width=60,
+                    width=90,
                     height=60,
                     bgcolor=  "brown",
                     alignment=alignment.center,
                     content=Text(
                         weekday,
-                        size=12,
+                        size=20,
                         color= "white",
                     )
                 )
@@ -142,10 +147,10 @@ class SetCalendar(UserControl):
                 if week < len(month_matrix):
                     for day in month_matrix[week]:
                         if day == 0:
-                            day_container = Container(width=60, height=60, bgcolor="red",border=border.all(0.5, "brown"),)
+                            day_container = Container(width=90, height=60, bgcolor="red",border=border.all(0.5, "brown"),)
                         else:
                             day_container = Container(
-                                width=60,
+                                width=90,
                                 height=60,
                                 bgcolor="white",
                                 border=border.all(0.5, "brown"),
@@ -172,7 +177,7 @@ class SetCalendar(UserControl):
                 else:
                     # Add empty week rows to maintain height
                     for _ in range(7):
-                        week_container.controls.append(Container(width=60, height=60))
+                        week_container.controls.append(Container(width=90, height=60))
                 month_grid.controls.append(week_container)
 
             self.calendar_grid.controls.append(month_grid)
@@ -191,14 +196,14 @@ class SetCalendar(UserControl):
                 weight="white",
             ),
             bgcolor="green",
-            width=600,
+            width=900,
             height=50
         )
         self.notes_display = Container(
             content=Text("No notes for this date.", size=12, color="black"),
             bgcolor="white",
             padding=10,
-            width=600,
+            width=900,
             height=200,
         )
 
@@ -216,8 +221,8 @@ class SetCalendar(UserControl):
                 # spacing=20,
             )
 
-def calendarBody(page: Page):
-    calendar = SetCalendar()
+def calendarBody(page: Page, on_date_selected=None):
+    calendar = SetCalendar(on_date_selected=on_date_selected)
     return calendar
 
 
