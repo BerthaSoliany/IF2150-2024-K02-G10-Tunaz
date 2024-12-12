@@ -9,11 +9,11 @@ def graph_add_form_entry_page(page: ft.Page):
     # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     def cek_tanggal(tanggal):
-        data_pertumbuhan_controller = DataPertumbuhanTanamanController()
-        data_pertumbuhan = data_pertumbuhan_controller.get_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"))
-        for data in data_pertumbuhan:
-            if data.get_tanggal_catatan() == tanggal:
-                return True
+        # data_pertumbuhan_controller = DataPertumbuhanTanamanController()
+        # data_pertumbuhan = data_pertumbuhan_controller.get_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"))
+        # for data in data_pertumbuhan:
+        #     if data.get_tanggal_catatan() == tanggal:
+        #         return True
         return False
     
     def handle_change(e):

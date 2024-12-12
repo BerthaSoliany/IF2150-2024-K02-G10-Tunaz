@@ -73,6 +73,8 @@ def info_page(page: ft.Page):
             #icon="search",
             content_padding=ft.Padding(left=20, right=10, top=10, bottom=10),
             text_style=ft.TextStyle(size=16, color="black"),
+            cursor_width=1,
+            cursor_color="black",
         )
     
     def create_search_button():
