@@ -33,7 +33,7 @@ def info_edit_form_entry_page(page: ft.Page):
         page.update()
 
     kebutuhan_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
-    kebutuhan_perawatan_field = ft.CupertinoTextField(on_focus=on_focus, on_blur=on_blur, on_change= max_karakter, max_length=200, border_radius=5, border=ft.border.all(1,"#D7D7D7"), text_style=ft.TextStyle(color="black"), placeholder_text=x.get_data_informasi_tanaman().get_kebutuhan_perawatan(), multiline=True, min_lines=8, max_lines=8,placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), bgcolor="white") # Change this
+    kebutuhan_perawatan_field = ft.CupertinoTextField(cursor_width=1,cursor_color="black", on_focus=on_focus, on_blur=on_blur, on_change= max_karakter, max_length=200, border_radius=5, border=ft.border.all(1,"#D7D7D7"), text_style=ft.TextStyle(color="black"), placeholder_text=x.get_data_informasi_tanaman().get_kebutuhan_perawatan(), multiline=True, min_lines=8, max_lines=8,placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), bgcolor="white") # Change this
     kebutuhan_perawatan_field.value = x.get_data_informasi_tanaman().get_kebutuhan_perawatan()
     jenis_index = x.get_jenis() + " " + str(x.get_index()) # nanti diganti sesuai tanamannya
     icon = x.get_icon() # nanti diganti sesuai icon tanamannya

@@ -98,7 +98,7 @@ def calendar_edit_form_entry_page(page: ft.Page):
                             color="white"),
         width=1000,)
     waktu_jam_field = ft.Stack([waktu_jam,pilih_waktu])
-    frekuensi = ft.CupertinoTextField(on_blur=on_blur, on_focus=on_focus,max_length=2, on_change=check_number,width=120, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="2", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
+    frekuensi = ft.CupertinoTextField(cursor_width=1,cursor_color="black",on_blur=on_blur, on_focus=on_focus,max_length=2, on_change=check_number,width=120, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="2", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     frekuensi1 = ft.Row(controls=[frekuensi, ft.Text("hari", size=20, color="black")], expand=True)
     sampai_tanggal = ft.CupertinoTextField(read_only=True, width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="       01/11/2025", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     pilih_tanggal_akhir = ft.OutlinedButton(

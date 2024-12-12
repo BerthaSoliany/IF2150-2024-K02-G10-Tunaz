@@ -116,6 +116,8 @@ def info_add_form_entry_page(page: ft.Page):
     jenis_text = ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
 
     jenis_tanaman_field = ft.CupertinoTextField(
+        cursor_width=1,
+        cursor_color="black",
         on_focus=on_focus,
         on_blur=on_blur,
         on_change=max_karakter_jenis,
@@ -129,6 +131,8 @@ def info_add_form_entry_page(page: ft.Page):
     )
 
     kebutuhan_perawatan_field = ft.CupertinoTextField(
+        cursor_width=1,
+        cursor_color="black",
         on_focus=on_focus,
         on_blur=on_blur,
         on_change=max_karakter_kebutuhan,
