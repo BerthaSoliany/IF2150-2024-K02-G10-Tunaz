@@ -24,8 +24,16 @@ def info_edit_form_entry_page(page: ft.Page):
         data_informasi_tanaman_controller.perbarui_data_informasi_tanaman(x.get_jenis(), x.get_index(), x.get_data_informasi_tanaman())
         page.go("/src/components/infoViewPage")
 
+    def on_focus(e):
+        e.control.border = ft.border.all(1,"black")
+        page.update()
+
+    def on_blur(e):
+        e.control.border = ft.border.all(1,"#D7D7D7")
+        page.update()
+
     kebutuhan_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
-    kebutuhan_perawatan_field = ft.CupertinoTextField(on_change= max_karakter, max_length=200, border_radius=5, border=ft.border.all(1,"#D7D7D7"), text_style=ft.TextStyle(color="black"), placeholder_text=x.get_data_informasi_tanaman().get_kebutuhan_perawatan(), multiline=True, min_lines=8, max_lines=8,placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), bgcolor="white") # Change this
+    kebutuhan_perawatan_field = ft.CupertinoTextField(on_focus=on_focus, on_blur=on_blur, on_change= max_karakter, max_length=200, border_radius=5, border=ft.border.all(1,"#D7D7D7"), text_style=ft.TextStyle(color="black"), placeholder_text=x.get_data_informasi_tanaman().get_kebutuhan_perawatan(), multiline=True, min_lines=8, max_lines=8,placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), bgcolor="white") # Change this
     kebutuhan_perawatan_field.value = x.get_data_informasi_tanaman().get_kebutuhan_perawatan()
     jenis_index = x.get_jenis() + " " + str(x.get_index()) # nanti diganti sesuai tanamannya
     icon = x.get_icon() # nanti diganti sesuai icon tanamannya

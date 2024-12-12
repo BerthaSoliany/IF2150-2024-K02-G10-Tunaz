@@ -103,11 +103,21 @@ def info_add_form_entry_page(page: ft.Page):
         else:
             jenis_text.value = ""
         page.update()
+    
+    def on_focus(e):
+        e.control.border = ft.border.all(1,"black")
+        page.update()
+
+    def on_blur(e):
+        e.control.border = ft.border.all(1,"#D7D7D7")
+        page.update()
 
     kebutuhan_text = ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     jenis_text = ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
 
     jenis_tanaman_field = ft.CupertinoTextField(
+        on_focus=on_focus,
+        on_blur=on_blur,
         on_change=max_karakter_jenis,
         max_length=25,
         border_radius=5,
@@ -119,6 +129,8 @@ def info_add_form_entry_page(page: ft.Page):
     )
 
     kebutuhan_perawatan_field = ft.CupertinoTextField(
+        on_focus=on_focus,
+        on_blur=on_blur,
         on_change=max_karakter_kebutuhan,
         max_length=200,
         border_radius=5,

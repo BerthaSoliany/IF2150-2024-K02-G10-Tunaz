@@ -8,14 +8,22 @@ def graph_add_form_entry_page(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
+    def cek_tanggal(tanggal):
+        data_pertumbuhan_controller = DataPertumbuhanTanamanController()
+        data_pertumbuhan = data_pertumbuhan_controller.get_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"))
+        for data in data_pertumbuhan:
+            if data.get_tanggal_catatan() == tanggal:
+                return True
+        return False
+    
     def handle_change(e):
-        tanggal_pertumbuhan.value = "        " #
-        tanggal_pertumbuhan.value += e.control.value.strftime('%d/%m/%Y')
+        tanggal_pertumbuhan.value = "        " 
+        tanggal = e.control.value.strftime('%d/%m/%Y')
+        if cek_tanggal(tanggal) == True:
+            tanggal_text.value = "Tanggal pertumbuhan sudah ada di database. Silahkan pilih tanggal lain"
+        else:
+            tanggal_pertumbuhan.value += tanggal
         page.update()
-
-    def handle_dismissal(e):
-        # page.add(ft.Text(f"DatePicker dismissed"))
-        page.add()
 
     def check_number(e):
         value = e.control.value
@@ -45,13 +53,21 @@ def graph_add_form_entry_page(page: ft.Page):
             kondisi_text.value = ""
         page.update()
 
+    def on_focus(e):
+        e.control.border = ft.border.all(1,"black")
+        page.update()
+
+    def on_blur(e):
+        e.control.border = ft.border.all(1,"#D7D7D7")
+        page.update()
+
     tanggal_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     tinggi_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     status_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     kondisi_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
 
     # ganti placeholder textnya. kalo NONE tampilin yg masukkan, kalo ada valuenya
-    tanggal_pertumbuhan = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        Masukkan tanggal pertumbuhan di sini... (DD/MM/YYYY)", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
+    tanggal_pertumbuhan = ft.CupertinoTextField(on_focus=on_focus, on_blur=on_blur,border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        Masukkan tanggal pertumbuhan di sini... (DD/MM/YYYY)", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
     pilih_tanggal = ft.OutlinedButton(
         "",
         icon=ft.Icons.CALENDAR_MONTH,
@@ -60,7 +76,6 @@ def graph_add_form_entry_page(page: ft.Page):
             ft.DatePicker(first_date=datetime.datetime(year=2023,month=1,day=1),
                           last_date=datetime.datetime.now(), 
                           on_change=handle_change,
-                          on_dismiss=handle_dismissal,
                           cancel_text="Batal",
                           confirm_text="Pilih",
                           error_format_text="Format input tidak valid", 
@@ -73,9 +88,9 @@ def graph_add_form_entry_page(page: ft.Page):
         width=1000,)
 
     tanggal_pertumbuhan_field = ft.Stack([tanggal_pertumbuhan,pilih_tanggal])
-    tinggi_tanaman_field = ft.CupertinoTextField(max_length=10, on_change=check_number, border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan tinggi", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), keyboard_type=ft.KeyboardType.NUMBER)
+    tinggi_tanaman_field = ft.CupertinoTextField(on_focus=on_focus, on_blur=on_blur, max_length=10, on_change=check_number, border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan tinggi", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), keyboard_type=ft.KeyboardType.NUMBER)
     status_tanaman_dropdown = ft.Dropdown(icon_enabled_color="black", border_radius=5, border_color="#D7D7D7",bgcolor="white", width=126, hint_content=ft.Text(value="Status", color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")])
-    kondisi_daun_field = ft.CupertinoTextField(on_change=max_karakter, max_length=25,border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan kondisi daun di sini...", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
+    kondisi_daun_field = ft.CupertinoTextField(on_focus=on_focus, on_blur=on_blur, on_change=max_karakter, max_length=25,border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan kondisi daun di sini...", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     jenis_index = page.session.get("jenis_tanaman") + " " + page.session.get("index_tanaman") # nanti diganti sesuai tanamannya
     icon = "icon1" # nanti diganti sesuai icon tanamannya
 
