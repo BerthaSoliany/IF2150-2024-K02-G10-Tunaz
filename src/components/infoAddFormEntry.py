@@ -161,6 +161,7 @@ def info_add_form_entry_page(page: ft.Page):
         multiline=True,
         min_lines=3,
         max_lines=3,
+        text_align=ft.TextAlign.START,
     )
 
     form_card = ft.Card(

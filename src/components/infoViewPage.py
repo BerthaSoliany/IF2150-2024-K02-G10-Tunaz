@@ -27,7 +27,9 @@ def info_view_page(page: ft.Page):
         min_lines=8, 
         max_lines=8, 
         read_only=True, 
-        bgcolor="white") # Change this
+        bgcolor="white",
+        text_align=ft.TextAlign.START,
+        ) # Change this
     jenis_index = x.get_jenis() + " " + str(x.get_index()) # nanti diganti sesuai tanamannya
     icon = x.get_icon() # nanti diganti sesuai icon tanamannya
     form_card = ft.Card(

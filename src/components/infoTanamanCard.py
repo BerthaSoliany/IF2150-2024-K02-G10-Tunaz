@@ -22,6 +22,7 @@ def create_info_tanaman_card(page: ft.Page, x: Tanaman, on_click=None):
                             size=24,
                             weight="bold",
                             color="#5F9356",
+                            overflow=ft.TextOverflow.ELLIPSIS,
                         ),
                         ft.Image(
                             src="./img/" + x.get_icon() +".png",
@@ -54,6 +55,7 @@ def create_info_tanaman_card(page: ft.Page, x: Tanaman, on_click=None):
                             color="#8C8C8C",
                             weight="bold",
                             # style=ft.TextStyle(font_family="Verdana"),
+                            overflow=ft.TextOverflow.ELLIPSIS,
                         ),
                     ],
                     alignment="start",
