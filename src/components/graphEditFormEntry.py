@@ -102,6 +102,8 @@ def graph_edit_form_entry_page(page: ft.Page):
     icon = "icon1" # nanti diganti sesuai icon tanamannya
 
     def on_click_update(e):
+        if(tanggal_pertumbuhan.value == "" or tanggal_pertumbuhan.value == None or tinggi_tanaman_field.value == "" or  tinggi_tanaman_field.value == None or status_tanaman_dropdown.value == "" or status_tanaman_dropdown.value == None):
+            return
         data_pertumbuhan_controller = DataPertumbuhanTanamanController()
         data_pertumbuhan_baru = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, datetime.datetime.strptime(tanggal_pertumbuhan.value[8:],"%d/%m/%Y").strftime("%Y-%m-%d"), kondisi_daun_field.value)
         data_pertumbuhan_controller.perbarui_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"), page.session.get("data_pertumbuhan_tanaman"),data_pertumbuhan_baru)
