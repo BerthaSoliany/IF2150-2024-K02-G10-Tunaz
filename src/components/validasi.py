@@ -16,8 +16,8 @@ def validasi(page: ft.Page, link):
             data_pertumbuhan_tanaman_controller = DataPertumbuhanTanamanController()
             data_pertumbuhan_tanaman_controller.hapus_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"), page.session.get("data_pertumbuhan_tanaman"))  
             page.session.set("data_pertumbuhan_tanaman", None)
-            page.session.set("jenis_tanaman", None)
-            page.session.set("index_tanaman", None)
+            # page.session.set("jenis_tanaman", None)
+            # page.session.set("index_tanaman", None)
 
         elif(page.session.get("action") == "hapus_data_informasi"):
             # data_informasi_tanaman_controller = DataInformasiTanamanController()

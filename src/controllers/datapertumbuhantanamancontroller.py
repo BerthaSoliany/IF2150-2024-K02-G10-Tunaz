@@ -47,8 +47,19 @@ class DataPertumbuhanTanamanController:
         cursor.execute("SELECT * FROM dataPertumbuhanTanaman WHERE jenis_tanaman = ? AND index_tanaman = ? AND tinggi_tanaman = ? AND tanggal_catatan = ?", (jenis_tanaman, index_tanaman, data_pertumbuhan_tanaman.get_tinggi_tanaman(), data_pertumbuhan_tanaman.get_tanggal_catatan()))
         x = cursor.fetchone()
         conn.close()
-        x = DataPertumbuhanTanaman(x[3], x[4], x[5], x[6])
+        x = DataPertumbuhanTanaman(status_tanaman=x[3], tinggi_tanaman=x[4], tanggal_catatan=x[5], kondisi_daun=x[6])
         return x
+    
+    def get_all_data_pertumbuhan(self, jenis_tanaman: str, index_tanaman: int):
+        conn = sqlite3.connect("src/database/tunaz.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM dataPertumbuhanTanaman WHERE jenis_tanaman = ? AND index_tanaman = ?", (jenis_tanaman, index_tanaman))
+        x = cursor.fetchall()
+        conn.close()
+        data_pertumbuhan = []
+        for data in x:
+            data_pertumbuhan.append(DataPertumbuhanTanaman(status_tanaman=data[3], tinggi_tanaman=data[4], tanggal_catatan=data[5], kondisi_daun=data[6]))
+        return data_pertumbuhan
 # data_pertumbuhan_tanaman = DataPertumbuhanTanamanController()
 # data_pertumbuhan_tanaman1 = DataPertumbuhanTanaman("Sehat", 5, "2024-12-12", "Daun berwarna hijau")
 # data_pertumbuhan_tanaman.tambah_data_pertumbuhan("JERUK", 2, data_pertumbuhan_tanaman1)

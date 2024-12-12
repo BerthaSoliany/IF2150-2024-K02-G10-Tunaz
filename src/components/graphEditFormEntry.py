@@ -10,9 +10,11 @@ def graph_edit_form_entry_page(page: ft.Page):
 
     def cek_tanggal(tanggal):
         data_pertumbuhan_controller = DataPertumbuhanTanamanController()
-        data_pertumbuhan = data_pertumbuhan_controller.get_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"))
+        data_pertumbuhan = data_pertumbuhan_controller.get_all_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"))
         for data in data_pertumbuhan:
-            if data.get_tanggal_catatan() == tanggal:
+            if data.get_tanggal_catatan() == page.session.get("data_pertumbuhan_tanaman").get_tanggal_catatan():
+                return False
+            if data.get_tanggal_catatan() == datetime.datetime.strptime(tanggal,"%d/%m/%Y").strftime("%Y-%m-%d"):
                 return True
         return False
     
@@ -69,7 +71,7 @@ def graph_edit_form_entry_page(page: ft.Page):
     kondisi_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
 
     tanggal_pertumbuhan = ft.CupertinoTextField(on_focus=on_focus, on_blur=on_blur, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        Masukkan tanggal", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
-    tanggal_pertumbuhan.value = "        " + page.session.get("data_pertumbuhan_tanaman").get_tanggal_catatan()
+    tanggal_pertumbuhan.value = "        " + datetime.datetime.strptime(page.session.get("data_pertumbuhan_tanaman").get_tanggal_catatan(),"%Y-%m-%d").strftime("%d/%m/%Y")
     pilih_tanggal = ft.OutlinedButton(
         "",
         icon=ft.Icons.CALENDAR_MONTH,
@@ -101,7 +103,7 @@ def graph_edit_form_entry_page(page: ft.Page):
 
     def on_click_update(e):
         data_pertumbuhan_controller = DataPertumbuhanTanamanController()
-        data_pertumbuhan_baru = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, tanggal_pertumbuhan.value[8:], kondisi_daun_field.value)
+        data_pertumbuhan_baru = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, datetime.datetime.strptime(tanggal_pertumbuhan.value[8:],"%d/%m/%Y").strftime("%Y-%m-%d"), kondisi_daun_field.value)
         data_pertumbuhan_controller.perbarui_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"), page.session.get("data_pertumbuhan_tanaman"),data_pertumbuhan_baru)
         page.session.set("data_pertumbuhan_tanaman", data_pertumbuhan_baru)
         page.go("/src/components/graphViewPage")
@@ -152,7 +154,7 @@ def graph_edit_form_entry_page(page: ft.Page):
                     ft.Row(
                         controls=[
                         ft.OutlinedButton(text="BATAL", on_click=lambda e: page.go("/src/components/graphViewPage"), width=142, style=ft.ButtonStyle(color="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#F47A6F", width=2))),
-                        ft.OutlinedButton(text="SIMPAN", on_click=lambda e: page.go("/src/components/graphViewPage"), width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
+                        ft.OutlinedButton(text="SIMPAN", on_click=on_click_update, width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ], 
                         alignment=ft.MainAxisAlignment.END),
                 ],

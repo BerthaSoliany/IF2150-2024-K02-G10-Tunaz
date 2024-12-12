@@ -9,11 +9,11 @@ def graph_add_form_entry_page(page: ft.Page):
     # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     def cek_tanggal(tanggal):
-        # data_pertumbuhan_controller = DataPertumbuhanTanamanController()
-        # data_pertumbuhan = data_pertumbuhan_controller.get_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"))
-        # for data in data_pertumbuhan:
-        #     if data.get_tanggal_catatan() == tanggal:
-        #         return True
+        data_pertumbuhan_controller = DataPertumbuhanTanamanController()
+        data_pertumbuhan = data_pertumbuhan_controller.get_all_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"))
+        for data in data_pertumbuhan:
+            if data.get_tanggal_catatan() == datetime.datetime.strptime(tanggal,"%d/%m/%Y").strftime("%Y-%m-%d"):
+                return True
         return False
     
     def handle_change(e):
@@ -22,6 +22,7 @@ def graph_add_form_entry_page(page: ft.Page):
         if cek_tanggal(tanggal) == True:
             tanggal_text.value = "Tanggal pertumbuhan sudah ada di database. Silahkan pilih tanggal lain"
         else:
+            tanggal_text.value = ""
             tanggal_pertumbuhan.value += tanggal
         page.update()
 
@@ -98,7 +99,7 @@ def graph_add_form_entry_page(page: ft.Page):
 
     def on_click_add(e):
         data_pertumbuhan_controller = DataPertumbuhanTanamanController()
-        data_pertumbuhan = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, tanggal_pertumbuhan.value[8:], kondisi_daun_field.value)
+        data_pertumbuhan = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, datetime.datetime.strptime(tanggal_pertumbuhan.value[8:],"%d/%m/%Y").strftime("%Y-%m-%d"), kondisi_daun_field.value)
         data_pertumbuhan_controller.tambah_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"), data_pertumbuhan) # nanti jeruk, 2 nya diganti sesuai tanamannya
         page.go("/src/page/graphPage")
     

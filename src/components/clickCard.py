@@ -1,5 +1,5 @@
 import flet as ft
-from datetime import datetime
+from datetime import datetime, date
 from src.controllers.tanaman import Tanaman
 from src.controllers.datainformasitanaman import DataInformasiTanaman
 from src.controllers.jadwalperawatan import JadwalPerawatan
@@ -7,7 +7,8 @@ from src.controllers.jadwalperawatan import JadwalPerawatan
 def create_click_card(page, on_click, tinggi, tanggal):
     def handle_click(e):
         page.session.set("tinggi_tanaman", tinggi[8:])
-        page.session.set("tanggal_catatan", int(tanggal[9:]))
+        # page.session.set("tanggal_catatan", int(tanggal[9:]))
+        page.session.set("tanggal_catatan", datetime.strptime(tanggal[9:],"%d/%m/%Y").strftime("%Y-%m-%d"))
         on_click(e)
         page.update()
     

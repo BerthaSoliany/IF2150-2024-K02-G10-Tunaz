@@ -1,5 +1,5 @@
 import flet as ft
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime, datetime
 # import plotly.graph_objects as go
 from src.components.button1 import create_button1
 from src.components.navBar import create_navbar
@@ -27,6 +27,10 @@ def graph_page(page: ft.Page):
 
     def to_date(dt_date):
         yy, mm, dd = map(int, dt_date.split('-'))
+        return date(yy, mm, dd)
+    
+    def to_date2(dt_date):
+        dd, mm, yy = map(int, dt_date.split('/'))
         return date(yy, mm, dd)
     
     def dropdown_changed1(e):
@@ -69,7 +73,7 @@ def graph_page(page: ft.Page):
             # data catatan
             data_container.controls = [
                 *[
-                    create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", f"Tanggal: {point.x}")
+                    create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", "Tanggal: " + datetime.strptime(data_tanggal[i],"%Y-%m-%d").strftime("%d/%m/%Y"))
                     for i, point in enumerate(new_data_points)
                 ]
             ]
@@ -147,7 +151,6 @@ def graph_page(page: ft.Page):
             disabled=True,
         )
     # index_tanaman = tanaman_controller.get_all_index_tanaman(pilihan_jenis.value)
-    
 
     # Create an add button
     # def button_clicked(e):
@@ -409,4 +412,15 @@ def graph_page(page: ft.Page):
     page.controls.clear()
     page.controls.append(konten)
     page.update()
+
+    if page.session.get("jenis_tanaman") != None:
+        pilihan_jenis.value = page.session.get("jenis_tanaman")
+        dropdown_changed1(None)
+
+    if page.session.get("index_tanaman") != None:
+        pilihan_index.value = page.session.get("index_tanaman")
+        toggle_data(None)
+        
+    page.update()
+        
     return page
