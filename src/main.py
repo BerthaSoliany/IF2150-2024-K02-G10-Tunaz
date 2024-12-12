@@ -13,6 +13,11 @@ from src.components.calendarEditFormEntry import calendar_edit_form_entry_page
 from src.components.calendarAddFormEntry import calendar_add_form_entry_page
 from src.components.addButton import create_floating_action_button
 from src.components.clickCard import create_click_card2
+from src.components.calendarRPL import calendarBody
+from src.components.calendarRPL import TODAY_DATE
+
+import datetime
+import calendar
 
 
 def route_change(e: ft.RouteChangeEvent):
@@ -42,6 +47,8 @@ def route_change(e: ft.RouteChangeEvent):
     elif page.route == "/src/components/calendarAddFormEntry":
         calendar_add_form_entry_page(page)
     page.update()
+
+
 
 def main(page: ft.Page):
     page.on_route_change = route_change
@@ -84,8 +91,9 @@ def main(page: ft.Page):
         height=400,
         spacing=5,
     )
-    hari = "Minggu,"
-    tanggal = " 1 Desember 2024"
+    hari = TODAY_DATE.strftime("%A")
+    bulan = calendar.month_name[TODAY_DATE.month]
+    tanggal = str(TODAY_DATE.day) +' ' + bulan +' ' + str(TODAY_DATE.year)
 
     header = ft.Container(
         content=ft.Column(
@@ -102,7 +110,17 @@ def main(page: ft.Page):
         border_radius=ft.border_radius.only(top_left=10, top_right=10),
         width=ft.Column(expand=True),
     )
-    
+    def on_date_selected(date):
+        hari = date.strftime("%A")
+        bulan = calendar.month_name[date.month]
+        tanggal = str(date.day) +' ' + bulan +' ' + str(date.year)
+        header.content.controls[0].value = hari
+        header.content.controls[1].value = tanggal
+        header.update()
+        
+
+    calBody = calendarBody(page, on_date_selected=on_date_selected)
+
     bordered_container = ft.Container(
         content=ft.Column(
             controls=[
@@ -170,7 +188,6 @@ def main(page: ft.Page):
         page.open(dialog)
     fab = create_floating_action_button(show_dialog)
 
-
     konten = ft.Stack([
     ft.Column(controls=[
         create_navbar(page),
@@ -179,6 +196,7 @@ def main(page: ft.Page):
             controls=[
                 ft.Row(
                     controls=[
+                      calBody,
                       bordered_container
                     ],
                     alignment="spaceBetween",
