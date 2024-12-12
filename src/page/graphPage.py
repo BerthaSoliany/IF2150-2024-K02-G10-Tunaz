@@ -113,7 +113,7 @@ def graph_page(page: ft.Page):
             text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
             bgcolor="#AADBA3",
             options=[ft.dropdown.Option(option) for option in jenis_tanaman],
-            width=200,
+            width=300,
             height=44,
             # max_menu_height=200,
             select_icon_enabled_color="black",
@@ -123,7 +123,7 @@ def graph_page(page: ft.Page):
             hint_content=ft.Text(value="Jenis", size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
             content_padding=10,
             alignment=ft.Alignment(-1,0),
-            disabled = False,            
+            disabled = False,
         )
     
     pilihan_index = ft.Dropdown(
@@ -133,7 +133,7 @@ def graph_page(page: ft.Page):
             # label=judul,
             # label_style=ft.TextStyle(size=16, color="black"),
             options=[ft.dropdown.Option(option) for option in []],
-            width=80,
+            width=100,
             height=44,
             # max_menu_height=200,
             select_icon_enabled_color="black",

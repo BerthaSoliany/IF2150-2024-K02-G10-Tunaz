@@ -58,7 +58,7 @@ def calendar_edit_form_entry_page(page: ft.Page):
     jam_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     tanggal_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     frekuensi_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
-    space=ft.Text("Kebutuhan perawatan hanya bisa diubah melalui halaman informasi tanaman",weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
+    space=ft.Text()
 
     waktu_tanggal = ft.CupertinoTextField(read_only=True, width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        01/12/2024", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     pilih_tanggal_perawatan = ft.OutlinedButton(
