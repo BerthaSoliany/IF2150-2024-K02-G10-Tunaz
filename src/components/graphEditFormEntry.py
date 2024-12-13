@@ -99,7 +99,7 @@ def graph_edit_form_entry_page(page: ft.Page):
     kondisi_daun_field = ft.CupertinoTextField(cursor_width=1,cursor_color="black", on_focus=on_focus, on_blur=on_blur, on_change=max_karakter, max_length=25, border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan kondisi", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     kondisi_daun_field.value = page.session.get("data_pertumbuhan_tanaman").get_kondisi_daun()
     jenis_index = page.session.get("jenis_tanaman") + " " + page.session.get("index_tanaman") # nanti diganti sesuai tanamannya
-    icon = "icon1" # nanti diganti sesuai icon tanamannya
+    icon = page.session.get("icon_tanaman") # nanti diganti sesuai icon tanamannya
 
     def on_click_update(e):
         if(tanggal_pertumbuhan.value == "" or tanggal_pertumbuhan.value == None or tinggi_tanaman_field.value == "" or  tinggi_tanaman_field.value == None or status_tanaman_dropdown.value == "" or status_tanaman_dropdown.value == None):

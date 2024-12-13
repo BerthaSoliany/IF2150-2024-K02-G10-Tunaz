@@ -49,6 +49,10 @@ def graph_page(page: ft.Page):
         # tombol cari ini diilangin dan masukin function toggle data ke pilihan_index yaw
         page.session.set("jenis_tanaman", pilihan_jenis.value)
         page.session.set("index_tanaman", pilihan_index.value)
+        tanaman_controller = TanamanController()
+        icon_tanaman = tanaman_controller.get_tanaman(pilihan_jenis.value, pilihan_index.value)[3]
+        page.session.set("icon_tanaman", icon_tanaman)
+        
         graph = GrafikPertumbuhan()
         new_data_points, data_tanggal = graph.tinggi_terhadap_waktu(Tanaman(jenis_tanaman=pilihan_jenis.value, index_tanaman=pilihan_index.value, icon_tanaman=None, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None))
         if(len(new_data_points) != 0):

@@ -44,7 +44,7 @@ def graph_view_page(page: ft.Page):
     status_tanaman_dropdown = ft.Dropdown(icon_enabled_color="black", border_radius=5, border_color="black",bgcolor="white", width=126, hint_content=ft.Text(value=data_pertumbuhan_tanaman.get_status_tanaman(), color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")], disabled=True)
     kondisi_daun_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text=data_pertumbuhan_tanaman.get_kondisi_daun(), placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
     jenis_index = page.session.get("jenis_tanaman") + " " + page.session.get("index_tanaman") # nanti diganti sesuai tanamannya
-    icon = "icon1" # nanti diganti sesuai icon tanamannya
+    icon = page.session.get("icon_tanaman") # nanti diganti sesuai icon tanamannya
 
     def on_click_back_to_graph_page(e):
         page.session.set("data_pertumbuhan_tanaman", None)
