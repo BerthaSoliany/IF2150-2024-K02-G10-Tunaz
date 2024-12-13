@@ -66,7 +66,7 @@ def main(page: ft.Page):
     page.padding = ft.padding.all(0)
     
     data_container = ft.ListView(
-        controls=[ft.Text("Tidak ada jadwal perawatan tanaman.", size=16, color=ft.Colors.BLACK)],
+        controls=[ft.Text("Tidak ada jadwal perawatan tanaman.", size=16, color=ft.Colors.BLACK, text_align=ft.TextAlign.CENTER)],
         padding=10,
         divider_thickness=0,
         expand=True,

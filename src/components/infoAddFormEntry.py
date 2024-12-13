@@ -37,13 +37,12 @@ def info_add_form_entry_page(page: ft.Page):
                 ),
                 padding=5,
                 border=ft.border.all(
-                    1,
-                    ft.Colors.BROWN_100 if selected_icon.current == option["value"] else ft.Colors.TRANSPARENT
+                    2,
+                    "#5F9356" if selected_icon.current == option["value"] else ft.Colors.TRANSPARENT
                 ),
                 on_click=on_option_select,
                 data=option["value"],
                 border_radius=50,
-                bgcolor=ft.Colors.BROWN_100 if selected_icon.current == option["value"] else ft.Colors.TRANSPARENT,
             
             )
             for option in icon_option

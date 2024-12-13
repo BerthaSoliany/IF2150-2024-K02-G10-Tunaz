@@ -39,6 +39,9 @@ def graph_page(page: ft.Page):
             index_tanaman = tanaman_controller.get_all_index_tanaman(pilihan_jenis.value)
             pilihan_index.options = [ft.dropdown.Option(option) for option in index_tanaman]
             pilihan_index.disabled = False
+            pilihan_index.bgcolor = "#DBC4AB"
+            pilihan_index.fill_color = "#DBC4AB"
+            pilihan_index.update()
         else:
             pilihan_index.disabled = True
         pilihan_index.value = None
@@ -137,7 +140,7 @@ def graph_page(page: ft.Page):
     pilihan_index = ft.Dropdown(
             on_change=toggle_data,
             text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
-            bgcolor="#DBC4AB",
+            bgcolor="#E0E0E0",
             # label=judul,
             # label_style=ft.TextStyle(size=16, color="black"),
             options=[ft.dropdown.Option(option) for option in []],
@@ -148,7 +151,7 @@ def graph_page(page: ft.Page):
             # icon=ft.Icon(size=16, color="black"),
             border_width=0,
             border_radius=10,
-            fill_color="#DBC4AB", #if pilihan_jenis.value else "#E0E0E0",
+            fill_color="#E0E0E0", #if pilihan_jenis.value else "#E0E0E0",
             hint_content=ft.Text(value="Index", size=16, color="black"),
             content_padding=5,
             alignment=ft.Alignment(0,0),
@@ -323,9 +326,8 @@ def graph_page(page: ft.Page):
         padding=10,
         margin=10,
         bgcolor=ft.Colors.WHITE,
-        width=800,
+        width=850,
         height=400,
-        expand=True,
         # shadow=ft.BoxShadow(
         #     blur_radius=1,
         #     spread_radius=1,
@@ -406,6 +408,7 @@ def graph_page(page: ft.Page):
                     ],
                     alignment="spaceBetween",
                     vertical_alignment="center",
+                    spacing=10,
                 ),
             ], right=20, bottom=20, left=20, top=5
         )

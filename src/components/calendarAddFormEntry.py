@@ -125,7 +125,7 @@ def calendar_add_form_entry_page(page: ft.Page):
                           confirm_text="Pilih",
                           error_format_text="Format input tidak valid", 
                           field_label_text="Masukkan tanggal", 
-                          help_text="Pilih tanggal")), 
+                          help_text="Pilih tanggal")),
         style=ft.ButtonStyle(side=ft.BorderSide(color="transparent", width=0),
                             shape=ft.RoundedRectangleBorder(radius=5), 
                             alignment=ft.Alignment(-1,0),
@@ -220,6 +220,8 @@ def calendar_add_form_entry_page(page: ft.Page):
         
     pilihan_jenis = ft.Dropdown(
         on_change=dropdown_changed1,
+        on_focus=on_focus,
+        on_blur=on_blur,
         text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
         bgcolor="white",
         options=[ft.dropdown.Option(option) for option in jenis_tanaman],

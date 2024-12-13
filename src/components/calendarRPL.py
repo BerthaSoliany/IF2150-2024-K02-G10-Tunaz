@@ -93,7 +93,7 @@ class SetCalendar(UserControl):
     def create_circle(self, datee, colorr):
         datee = str(datee)
         return Container(
-            content=Text(datee, size=20, color="black", weight=FontWeight.BOLD),
+            content=Text(datee, size=20, color="#5A3E2A", weight=FontWeight.BOLD),
             width=45,  # Diameter of the circle
             height=45,
             bgcolor=colorr,  # Background color of the circle
