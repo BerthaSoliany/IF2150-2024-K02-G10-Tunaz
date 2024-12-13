@@ -86,6 +86,26 @@ class DataInformasiTanamanController:
         # print(cursor.fetchall())
         conn.close()
         return x
+    
+    def search_database(self, keyword: str, opt_sortby: str):
+        conn = sqlite3.connect("src/database/tunaz.db")
+        conn.execute("PRAGMA foreign_keys = ON")
+        cursor = conn.cursor()
+        search_keyword = f"%{keyword}%"  # Wildcard for partial matching
+
+        if opt_sortby == "Jenis Tanaman (asc)":
+            cursor.execute("SELECT * FROM dataInformasiTanaman WHERE jenis_tanaman LIKE ? OR index_tanaman LIKE ? ORDER BY jenis_tanaman ASC;", (search_keyword, search_keyword))
+        elif opt_sortby == "Jenis Tanaman (desc)":
+            cursor.execute("SELECT * FROM dataInformasiTanaman WHERE jenis_tanaman LIKE ? OR index_tanaman LIKE ? ORDER BY jenis_tanaman DESC;", (search_keyword, search_keyword))
+        elif opt_sortby == "Tanggal Penanaman (asc)":
+            cursor.execute("SELECT * FROM dataInformasiTanaman WHERE jenis_tanaman LIKE ? OR index_tanaman LIKE ? ORDER BY waktu_tanam ASC;", (search_keyword, search_keyword))
+        elif opt_sortby == "Tanggal Penanaman (desc)":
+            cursor.execute("SELECT * FROM dataInformasiTanaman WHERE jenis_tanaman LIKE ? OR index_tanaman LIKE ? ORDER BY waktu_tanam DESC;", (search_keyword, search_keyword))
+        else:
+            cursor.execute("SELECT * FROM dataInformasiTanaman WHERE jenis_tanaman LIKE ? OR index_tanaman LIKE ?", (search_keyword, search_keyword))
+        results = cursor.fetchall() 
+        conn.close()
+        return results
 # data_informasi_tanaman = DataInformasiTanamanController()
 # print(data_informasi_tanaman.get_all_informasi_tanaman())
 # data_informasi_tanaman1 = DataInformasiTanaman("2024-12-10", "Ini Kaktus")

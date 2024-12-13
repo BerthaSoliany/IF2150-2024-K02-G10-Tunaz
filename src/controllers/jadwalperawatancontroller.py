@@ -104,6 +104,22 @@ class JadwalPerawatanController:
         sorted_data = sorted(data, key=lambda x: x[5].split(" ")[1])
         return sorted_data
     
+    def get_all_jadwal_perawatan_by_month(self, waktu_perawatan: str):
+        waktu_perawatan = waktu_perawatan.split("-")
+        waktu_perawatan = waktu_perawatan[0] + "-" + waktu_perawatan[1]
+        conn = sqlite3.connect("src/database/tunaz.db")
+        conn.execute("PRAGMA foreign_keys = ON")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM dataJadwalPerawatan WHERE waktu_perawatan LIKE ?;", (waktu_perawatan + '%',))
+        data = cursor.fetchall()
+        conn.close()
+        if(data == None):
+            return None
+        data = [list(row) for row in data]
+        # sort by date, not time
+        sorted_data = sorted(data, key=lambda x: x[5].split(" ")[0])
+        return sorted_data
+
     def get_one_jadwal_perawatan(self, jenis_tanaman: str, index_tanaman: int, jadwal_perawatan: JadwalPerawatan):
         conn = sqlite3.connect("src/database/tunaz.db")
         conn.execute("PRAGMA foreign_keys = ON")
