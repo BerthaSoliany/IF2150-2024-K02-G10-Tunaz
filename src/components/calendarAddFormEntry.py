@@ -1,5 +1,6 @@
 import flet as ft
 import datetime
+from src.controllers.tanamancontroller import TanamanController
 
 def calendar_add_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -45,10 +46,12 @@ def calendar_add_form_entry_page(page: ft.Page):
 
     def on_focus(e):
         e.control.border = ft.border.all(1,"black")
+        e.control.border_color = "black"
         page.update()
 
     def on_blur(e):
         e.control.border = ft.border.all(1,"#D7D7D7")
+        e.control.border_color = "#D7D7D7"
         page.update()
 
     # helper text
@@ -124,13 +127,78 @@ def calendar_add_form_entry_page(page: ft.Page):
     icon = "icon1" # nanti diganti sesuai icon tanamannya
     tipe = "Penyiraman"
 
+    tanaman_controller = TanamanController()
+    jenis_tanaman = tanaman_controller.get_all_jenis_tanaman()
+
+    def dropdown_changed1(e):
+        pilihan_index.options.clear()
+        if(pilihan_jenis.value != None):
+            index_tanaman = tanaman_controller.get_all_index_tanaman(pilihan_jenis.value)
+            pilihan_index.options = [ft.dropdown.Option(option) for option in index_tanaman]
+            pilihan_index.disabled = False
+        else:
+            pilihan_index.disabled = True
+        pilihan_index.value = None
+        pilihan_index.update()
+        page.update()  
+
+    def toggle_data(e):
+        # tombol cari ini diilangin dan masukin function toggle data ke pilihan_index yaw
+        page.session.set("jenis_tanaman", pilihan_jenis.value)
+        page.session.set("index_tanaman", pilihan_index.value)
+
+    pilihan_jenis = ft.Dropdown(
+        on_change=dropdown_changed1,
+        text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
+        bgcolor="white",
+        options=[ft.dropdown.Option(option) for option in jenis_tanaman],
+        width=300,
+        height=44,
+        select_icon_enabled_color="black",
+        border_width=1,
+        border_radius=5,
+        border_color="#D7D7D7",
+        fill_color="white",
+        hint_content=ft.Text(value="Jenis", size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
+        content_padding=10,
+        alignment=ft.Alignment(-1,0),
+        disabled = False,
+        )
+    
+    pilihan_index = ft.Dropdown(
+        on_change=toggle_data,
+        on_focus=on_focus,
+        on_blur=on_blur,
+        text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
+        bgcolor="white",
+        options=[ft.dropdown.Option(option) for option in []],
+        width=100,
+        height=44,
+        select_icon_enabled_color="black",
+        border_width=1,
+        border_radius=5,
+        border_color="#D7D7D7",
+        fill_color="white", #if pilihan_jenis.value else "#E0E0E0",
+        hint_content=ft.Text(value="Index", size=16, color="black"),
+        content_padding=5,
+        alignment=ft.Alignment(0,0),
+        disabled=True,
+        )
+
     form_card = ft.Card(
         content=ft.Container(
             content=ft.Column(
                 controls=[
                     ft.Row(
                         controls=[
-                            ft.Text(jenis_index, size=36, weight=ft.FontWeight.BOLD, color="#5F9356"), # Change this to the name of the plant
+                            ft.Row(
+                                controls=[
+                                    pilihan_jenis,
+                                    pilihan_index,
+                                ],
+                                alignment=ft.MainAxisAlignment.START,
+                                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                            ),
                             ft.Image(
                             src="./img/"+icon+".png",  
                             width=55, 
