@@ -13,6 +13,13 @@ from src.components.calendarEditFormEntry import calendar_edit_form_entry_page
 from src.components.calendarAddFormEntry import calendar_add_form_entry_page
 from src.components.addButton import create_floating_action_button
 from src.components.clickCard import create_click_card2
+from src.components.calendarRPL import calendarBody
+from src.components.calendarRPL import TODAY_DATE
+from src.controllers.jadwalperawatancontroller import JadwalPerawatanController
+from src.controllers.jadwalperawatan import JadwalPerawatan
+from src.controllers.datainformasitanamancontroller import DataInformasiTanamanController
+import datetime
+import calendar
 
 
 def route_change(e: ft.RouteChangeEvent):
@@ -43,6 +50,8 @@ def route_change(e: ft.RouteChangeEvent):
         calendar_add_form_entry_page(page)
     page.update()
 
+
+
 def main(page: ft.Page):
     page.on_route_change = route_change
     page.title = "Flet app"
@@ -55,25 +64,10 @@ def main(page: ft.Page):
     page.bgcolor = "white"
     # page.padding = ft.padding.only(top=0, bottom=10, left=10, right=10)
     page.padding = ft.padding.all(0)
-
-    data1_set1 = [
-        ft.LineChartDataPoint(0, 3),
-        ft.LineChartDataPoint(2.6, 2),
-        ft.LineChartDataPoint(4.9, 5),
-        ft.LineChartDataPoint(6.8, 3.1),
-        ft.LineChartDataPoint(8, 4),
-        ft.LineChartDataPoint(9.5, 3),
-        ft.LineChartDataPoint(11, 4),
-    ]
-    dummy = "dummy"
+    
     data_container = ft.ListView(
-        controls=[
-            *[
-                create_click_card2(page, lambda e: page.go("/src/components/calendarViewPage"), f"waktu {point.y}", f"nama: {point.x}", dummy)
-                for point in data1_set1
-            ]
-        ],
-        # padding=10,
+        controls=[ft.Text("Tidak ada jadwal perawatan tanaman.", size=16, color=ft.Colors.BLACK)],
+        padding=10,
         # margin=10,
         # border=ft.border.all(3, ft.Colors.GREY_200),
         # border_radius=10,
@@ -84,9 +78,29 @@ def main(page: ft.Page):
         height=400,
         spacing=5,
     )
-    hari = "Minggu,"
-    tanggal = " 1 Desember 2024"
+    page.session.set("date", TODAY_DATE)
+    hari = TODAY_DATE.strftime("%A")
+    bulan = calendar.month_name[TODAY_DATE.month]
+    tanggal = str(TODAY_DATE.day) +' ' + bulan +' ' + str(TODAY_DATE.year)
+    jadwal_perawatan_controller = JadwalPerawatanController()
+    waktu_perawatan = TODAY_DATE.strftime("%Y-%m-%d")
+    data1_set1 = jadwal_perawatan_controller.get_all_jadwal_perawatan_by_date(waktu_perawatan)
+    if(len(data1_set1) != 0):
+        data_informasi_tanaman_controller = DataInformasiTanamanController()
+        for jadwal_perawatan in data1_set1:
+            jadwal_perawatan[5] = jadwal_perawatan[5][11:19]
+            jadwal_perawatan.append(data_informasi_tanaman_controller.get_data_informasi_tanaman(jadwal_perawatan[1], jadwal_perawatan[2])[4])
+        
+        data_container.controls=[
+            *[
+                create_click_card2(page, lambda e: page.go("/src/components/calendarViewPage"), data[5], f"{data[6]} {data[1]} {data[2]}", data[8])
+                for data in data1_set1
+            ]
+        ]
+    else:
+        data_container.controls=[ft.Text("Tidak ada jadwal perawatan tanaman.", size=16, color=ft.Colors.BLACK)]
 
+    
     header = ft.Container(
         content=ft.Column(
             controls=[
@@ -102,7 +116,35 @@ def main(page: ft.Page):
         border_radius=ft.border_radius.only(top_left=10, top_right=10),
         width=ft.Column(expand=True),
     )
-    
+    def on_date_selected(date):
+        page.session.set("date", date)
+        hari = date.strftime("%A")
+        bulan = calendar.month_name[date.month]
+        tanggal = str(date.day) +' ' + bulan +' ' + str(date.year)
+        header.content.controls[0].value = hari
+        header.content.controls[1].value = tanggal
+        header.update()
+        jadwal_perawatan_controller = JadwalPerawatanController()
+        waktu_perawatan = date.strftime("%Y-%m-%d")
+        data1_set1 = jadwal_perawatan_controller.get_all_jadwal_perawatan_by_date(waktu_perawatan)
+        if(len(data1_set1) != 0):
+            data_informasi_tanaman_controller = DataInformasiTanamanController()
+            for jadwal_perawatan in data1_set1:
+                jadwal_perawatan[5] = jadwal_perawatan[5][11:19]
+                jadwal_perawatan.append(data_informasi_tanaman_controller.get_data_informasi_tanaman(jadwal_perawatan[1], jadwal_perawatan[2])[4])
+            
+            data_container.controls=[
+                *[
+                    create_click_card2(page, lambda e: page.go("/src/components/calendarViewPage"), data[5], f"{data[6]} {data[1]} {data[2]}", data[8])
+                    for data in data1_set1
+                ]
+            ]
+        else:
+            data_container.controls=[ft.Text("Tidak ada jadwal perawatan tanaman.", size=16, color=ft.Colors.BLACK)]
+        data_container.update()
+
+    calBody = calendarBody(page, on_date_selected=on_date_selected)
+
     bordered_container = ft.Container(
         content=ft.Column(
             controls=[
@@ -137,13 +179,15 @@ def main(page: ft.Page):
     def pilihan_perawatan():
         def handle_close_no(e):
             page.close(dialog)
-            tipe = "Penyiraman"
+            tipe = "Pupuk"
+            page.session.set("tipe", tipe)
             page.go("/src/components/calendarAddFormEntry")
             # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
 
         def handle_close_yes(e):
             page.close(dialog)
-            tipe = "Pemupukan"
+            tipe = "Siram"
+            page.session.set("tipe", tipe)
             page.go("/src/components/calendarAddFormEntry")
             # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
 
@@ -170,7 +214,6 @@ def main(page: ft.Page):
         page.open(dialog)
     fab = create_floating_action_button(show_dialog)
 
-
     konten = ft.Stack([
     ft.Column(controls=[
         create_navbar(page),
@@ -179,6 +222,7 @@ def main(page: ft.Page):
             controls=[
                 ft.Row(
                     controls=[
+                      calBody,
                       bordered_container
                     ],
                     alignment="spaceBetween",

@@ -1,5 +1,5 @@
 import flet as ft
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime, datetime
 # import plotly.graph_objects as go
 from src.components.button1 import create_button1
 from src.components.navBar import create_navbar
@@ -29,6 +29,10 @@ def graph_page(page: ft.Page):
         yy, mm, dd = map(int, dt_date.split('-'))
         return date(yy, mm, dd)
     
+    def to_date2(dt_date):
+        dd, mm, yy = map(int, dt_date.split('/'))
+        return date(yy, mm, dd)
+    
     def dropdown_changed1(e):
         pilihan_index.options.clear()
         if(pilihan_jenis.value != None):
@@ -45,6 +49,10 @@ def graph_page(page: ft.Page):
         # tombol cari ini diilangin dan masukin function toggle data ke pilihan_index yaw
         page.session.set("jenis_tanaman", pilihan_jenis.value)
         page.session.set("index_tanaman", pilihan_index.value)
+        tanaman_controller = TanamanController()
+        icon_tanaman = tanaman_controller.get_tanaman(pilihan_jenis.value, pilihan_index.value)[3]
+        page.session.set("icon_tanaman", icon_tanaman)
+        
         graph = GrafikPertumbuhan()
         new_data_points, data_tanggal = graph.tinggi_terhadap_waktu(Tanaman(jenis_tanaman=pilihan_jenis.value, index_tanaman=pilihan_index.value, icon_tanaman=None, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None))
         if(len(new_data_points) != 0):
@@ -69,7 +77,7 @@ def graph_page(page: ft.Page):
             # data catatan
             data_container.controls = [
                 *[
-                    create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", f"Tanggal: {point.x}")
+                    create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", "Tanggal: " + datetime.strptime(data_tanggal[i],"%Y-%m-%d").strftime("%d/%m/%Y"))
                     for i, point in enumerate(new_data_points)
                 ]
             ]
@@ -147,7 +155,6 @@ def graph_page(page: ft.Page):
             disabled=True,
         )
     # index_tanaman = tanaman_controller.get_all_index_tanaman(pilihan_jenis.value)
-    
 
     # Create an add button
     # def button_clicked(e):
@@ -409,4 +416,15 @@ def graph_page(page: ft.Page):
     page.controls.clear()
     page.controls.append(konten)
     page.update()
+
+    if page.session.get("jenis_tanaman") != None:
+        pilihan_jenis.value = page.session.get("jenis_tanaman")
+        dropdown_changed1(None)
+
+    if page.session.get("index_tanaman") != None:
+        pilihan_index.value = page.session.get("index_tanaman")
+        toggle_data(None)
+        
+    page.update()
+        
     return page

@@ -1,9 +1,14 @@
 import flet as ft
+from datetime import datetime, date
+from src.controllers.tanaman import Tanaman
+from src.controllers.datainformasitanaman import DataInformasiTanaman
+from src.controllers.jadwalperawatan import JadwalPerawatan
 
 def create_click_card(page, on_click, tinggi, tanggal):
     def handle_click(e):
         page.session.set("tinggi_tanaman", tinggi[8:])
-        page.session.set("tanggal_catatan", int(tanggal[9:]))
+        # page.session.set("tanggal_catatan", int(tanggal[9:]))
+        page.session.set("tanggal_catatan", datetime.strptime(tanggal[9:],"%d/%m/%Y").strftime("%Y-%m-%d"))
         on_click(e)
         page.update()
     
@@ -47,6 +52,8 @@ def create_click_card(page, on_click, tinggi, tanggal):
 
 def create_click_card2(page, on_click, waktu, perawatan_jenis_index, kebutuhan_perawatan):
     def handle_click(e):
+        x = Tanaman(jenis_tanaman=perawatan_jenis_index.split()[1], index_tanaman=int(perawatan_jenis_index.split()[2]), icon_tanaman=None, data_informasi_tanaman=DataInformasiTanaman(kebutuhan_perawatan=kebutuhan_perawatan, waktu_tanam=None), data_pertumbuhan_tanaman=None, data_jadwal_perawatan=JadwalPerawatan(group_id=None, frekuensi_perawatan=None, waktu_perawatan=page.session.get("date").strftime("%Y-%m-%d") + " " + waktu, jenis_perawatan=perawatan_jenis_index.split()[0], pilihan_notifikasi=None))
+        page.session.set("Tanaman", x)
         on_click(e)
         page.update()
     

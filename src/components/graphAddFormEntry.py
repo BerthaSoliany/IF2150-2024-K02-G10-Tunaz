@@ -9,11 +9,11 @@ def graph_add_form_entry_page(page: ft.Page):
     # page.theme = ft.Theme(font_family="Kantumruy-Regular")
 
     def cek_tanggal(tanggal):
-        # data_pertumbuhan_controller = DataPertumbuhanTanamanController()
-        # data_pertumbuhan = data_pertumbuhan_controller.get_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"))
-        # for data in data_pertumbuhan:
-        #     if data.get_tanggal_catatan() == tanggal:
-        #         return True
+        data_pertumbuhan_controller = DataPertumbuhanTanamanController()
+        data_pertumbuhan = data_pertumbuhan_controller.get_all_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"))
+        for data in data_pertumbuhan:
+            if data.get_tanggal_catatan() == datetime.datetime.strptime(tanggal,"%d/%m/%Y").strftime("%Y-%m-%d"):
+                return True
         return False
     
     def handle_change(e):
@@ -22,6 +22,7 @@ def graph_add_form_entry_page(page: ft.Page):
         if cek_tanggal(tanggal) == True:
             tanggal_text.value = "Tanggal pertumbuhan sudah ada di database. Silahkan pilih tanggal lain"
         else:
+            tanggal_text.value = ""
             tanggal_pertumbuhan.value += tanggal
         page.update()
 
@@ -37,20 +38,37 @@ def graph_add_form_entry_page(page: ft.Page):
         
         page.update()
 
-    def cek_kosong(e):
-        if tanggal_pertumbuhan.value =="":
+    def cek_kosong(e): 
+        res = False
+        if tanggal_pertumbuhan.value == "" or tanggal_pertumbuhan.value == None:
             tanggal_text.value = "Kolom tidak boleh kosong"
-        if tinggi_tanaman_field.value == "":
+            res = True
+        if tinggi_tanaman_field.value == "" or  tinggi_tanaman_field.value == None:
             tinggi_text.value = "Kolom tidak boleh kosong"
-        if status_tanaman_dropdown.value == "":
+            res = True
+        if status_tanaman_dropdown.value == "" or status_tanaman_dropdown.value == None:
             status_text.value = "Kolom tidak boleh kosong"
+            res = True
+        else:
+            status_text.value = ""
+        if tanggal_text.value != "" and tanggal_text.value != None:
+            res = True
+        if tinggi_text.value != "" and tinggi_text.value != None:
+            res = True
+        if status_text.value != "" and status_text.value != None:
+            res = True
         page.update()
+        return res
 
     def max_karakter(e):
         if len(e.control.value) == 25:
             kondisi_text.value = "Maksimal karakter yang diinput adalah 25"
         else:
             kondisi_text.value = ""
+        page.update()
+
+    def on_change(e):
+        status_text.value = ""
         page.update()
 
     def on_focus(e):
@@ -91,14 +109,16 @@ def graph_add_form_entry_page(page: ft.Page):
 
     tanggal_pertumbuhan_field = ft.Stack([tanggal_pertumbuhan,pilih_tanggal])
     tinggi_tanaman_field = ft.CupertinoTextField(cursor_width=1,cursor_color="black", on_focus=on_focus, on_blur=on_blur, max_length=10, on_change=check_number, border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan tinggi", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), keyboard_type=ft.KeyboardType.NUMBER)
-    status_tanaman_dropdown = ft.Dropdown(on_focus=on_focus, on_blur=on_blur,icon_enabled_color="black", border_radius=5, border_color="#D7D7D7",bgcolor="white", width=126, hint_content=ft.Text(value="Status", color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")])
+    status_tanaman_dropdown = ft.Dropdown(on_change=on_change, on_focus=on_focus, on_blur=on_blur,icon_enabled_color="black", border_radius=5, border_color="#D7D7D7",bgcolor="white", width=126, hint_content=ft.Text(value="Status", color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")])
     kondisi_daun_field = ft.CupertinoTextField(cursor_width=1,cursor_color="black", on_focus=on_focus, on_blur=on_blur, on_change=max_karakter, max_length=25,border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan kondisi daun di sini...", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     jenis_index = page.session.get("jenis_tanaman") + " " + page.session.get("index_tanaman") # nanti diganti sesuai tanamannya
-    icon = "icon1" # nanti diganti sesuai icon tanamannya
+    icon = page.session.get("icon_tanaman") # nanti diganti sesuai icon tanamannya
 
     def on_click_add(e):
+        if(cek_kosong(e)):
+            return
         data_pertumbuhan_controller = DataPertumbuhanTanamanController()
-        data_pertumbuhan = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, tanggal_pertumbuhan.value[8:], kondisi_daun_field.value)
+        data_pertumbuhan = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, datetime.datetime.strptime(tanggal_pertumbuhan.value[8:],"%d/%m/%Y").strftime("%Y-%m-%d"), kondisi_daun_field.value)
         data_pertumbuhan_controller.tambah_data_pertumbuhan(page.session.get("jenis_tanaman"), page.session.get("index_tanaman"), data_pertumbuhan) # nanti jeruk, 2 nya diganti sesuai tanamannya
         page.go("/src/page/graphPage")
     

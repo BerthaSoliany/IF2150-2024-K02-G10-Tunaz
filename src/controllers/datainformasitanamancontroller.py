@@ -77,6 +77,15 @@ class DataInformasiTanamanController:
         # print(cursor.fetchall())
         conn.close()
         return x
+    
+    def get_data_informasi_tanaman(self, jenis_tanaman: str, index_tanaman: int):
+        conn = sqlite3.connect("src/database/tunaz.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM dataInformasiTanaman WHERE jenis_tanaman = ? AND index_tanaman = ?", (jenis_tanaman, index_tanaman))
+        x = cursor.fetchone()
+        # print(cursor.fetchall())
+        conn.close()
+        return x
 # data_informasi_tanaman = DataInformasiTanamanController()
 # print(data_informasi_tanaman.get_all_informasi_tanaman())
 # data_informasi_tanaman1 = DataInformasiTanaman("2024-12-10", "Ini Kaktus")

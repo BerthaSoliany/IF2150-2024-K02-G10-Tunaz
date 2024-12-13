@@ -16,9 +16,10 @@ class TanamanController:
         else: 
             cursor.execute("INSERT INTO tanaman (jenis_tanaman, index_tanaman, icon_tanaman) VALUES (?, ?, ?)", (tanaman.get_jenis(), index_tanaman, tanaman.get_icon()))
         conn.commit()
-        cursor.execute("SELECT * FROM tanaman;")
-        print(cursor.fetchall())
+        # cursor.execute("SELECT * FROM tanaman;")
+        # print(cursor.fetchall())
         conn.close()
+        return index_tanaman
 
     def perbarui_tanaman(self, tanaman: Tanaman, tanaman_baru: Tanaman):
         conn = sqlite3.connect("src/database/tunaz.db")
