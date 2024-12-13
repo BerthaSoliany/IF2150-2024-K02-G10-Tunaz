@@ -33,7 +33,7 @@ def calendar_view_page(page: ft.Page):
     frekuensi1 = ft.Row(controls=[frekuensi, ft.Text("hari", size=20, color="black")], expand=True)
     sampai_tanggal = ft.CupertinoTextField(width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text=datetime.strptime(last_date,"%Y-%m-%d").strftime("%d/%m/%Y"), placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True)
     kebutuhan_perawatan_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text=tanaman.get_data_informasi_tanaman().get_kebutuhan_perawatan(), placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), read_only=True, multiline=True, min_lines=3, max_lines=3)
-    notifikasi_switch = ft.Switch(value=True if jadwal_perawatan[7]==1 else False,track_outline_color="#5A3E2A",disabled=True, thumb_color="#FDFFEA",track_color="#5A3E2A") #seusain kalo valuenya false, itu color di switch (khusus untuk page ini doang)
+    notifikasi_switch = ft.Switch(value=True if jadwal_perawatan[7]==1 else False,track_outline_color="#5A3E2A",disabled=True, thumb_color="#FDFFEA" if jadwal_perawatan[7]==1 else "#5A3E2A",track_color="#5A3E2A" if jadwal_perawatan[7]==1 else "#FDFFEA") #seusain kalo valuenya false, itu color di switch (khusus untuk page ini doang)
     jenis_index = tanaman.get_jenis() + " " + str(tanaman.get_index()) # nanti diganti sesuai tanamannya
     tanaman_controller = TanamanController()
     icon = tanaman_controller.get_tanaman(tanaman.get_jenis(), tanaman.get_index())[3] # nanti diganti sesuai icon tanamannya

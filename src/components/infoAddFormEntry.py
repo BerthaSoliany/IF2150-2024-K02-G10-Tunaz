@@ -45,7 +45,7 @@ def info_add_form_entry_page(page: ft.Page):
                 border_radius=50,
                 bgcolor=ft.Colors.BROWN_100 if selected_icon.current == option["value"] else ft.Colors.TRANSPARENT,
             
-            )
+            )``
             for option in icon_option
         ]
 
@@ -58,6 +58,9 @@ def info_add_form_entry_page(page: ft.Page):
             data_informasi_tanaman_controller = DataInformasiTanamanController()
             data_informasi_tanaman_controller.tambah_data_informasi_tanaman(tanaman.get_jenis(), tanaman.get_index(), tanaman.get_data_informasi_tanaman())
             page.go("/src/page/infoPage")
+        else:
+            jenis_text.value = "Jenis Tanaman tidak boleh kosong"
+            page.update()
 
     def build_ui():
         return ft.Column(

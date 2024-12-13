@@ -27,16 +27,19 @@ def calendar_add_form_entry_page(page: ft.Page):
     def handle_change1(e):
         waktu_tanggal.value = "        " #
         waktu_tanggal.value += e.control.value.strftime('%d/%m/%Y')
+        waktu_text.value = ""
         page.update()
     
     def handle_change2(e):
         sampai_tanggal.value = "        " #
         sampai_tanggal.value += e.control.value.strftime('%d/%m/%Y')
+        tanggal_text.value = ""
         page.update()
 
     def handle_change3(e):
         waktu_jam.value = "        " #
         waktu_jam.value += e.control.value.strftime('%H:%M:%S')
+        jam_text.value = ""
         page.update()
 
     # untuk nampilin helper text kalau input kosong
@@ -45,15 +48,23 @@ def calendar_add_form_entry_page(page: ft.Page):
         if waktu_tanggal.value =="" or waktu_tanggal.value == None or waktu_tanggal.value == "        ":
             waktu_text.value = "Kolom tidak boleh kosong"
             res = True
+        else:
+            waktu_text.value = ""
         if waktu_jam.value == "" or waktu_jam.value == None or waktu_jam.value == "        ":
             jam_text.value = "Kolom tidak boleh kosong"
             res = True
+        else:
+            jam_text.value = ""
         if (frekuensi.value != "" and frekuensi.value != None) and (sampai_tanggal.value=="" or sampai_tanggal.value == None or sampai_tanggal.value == "        "):
             tanggal_text.value = "Kolom tidak boleh kosong"
             res = True
+        else:
+            tanggal_text.value = ""
         if (sampai_tanggal.value != "" and sampai_tanggal.value != None and sampai_tanggal.value != "        ") and (frekuensi.value =="" or frekuensi.value == None):
             frekuensi_text.value = "Kolom tidak boleh kosong"
             res = True
+        else:
+            frekuensi_text.value = ""
         page.update()
         return res
         
@@ -149,6 +160,11 @@ def calendar_add_form_entry_page(page: ft.Page):
     notifikasi_switch = ft.Switch(value=True,track_outline_color="#5A3E2A",active_color="#FDFFEA",active_track_color="#5A3E2A", inactive_thumb_color="#5A3E2A", inactive_track_color="#FDFFEA")
     icon = "icon1" # nanti diganti sesuai icon tanamannya
     tipe = "Penyiraman" if page.session.get("tipe") == 'Siram' else "Pemupukan"
+    pilih_tanggal_perawatan.disabled = True
+    pilih_waktu.disabled = True
+    pilih_tanggal_akhir.disabled = True
+    frekuensi.disabled = True
+    notifikasi_switch.disabled = True
 
     tanaman_controller = TanamanController()
     jenis_tanaman = tanaman_controller.get_all_jenis_tanaman()
@@ -161,6 +177,11 @@ def calendar_add_form_entry_page(page: ft.Page):
             pilihan_index.disabled = False
         else:
             pilihan_index.disabled = True
+        pilih_tanggal_perawatan.disabled = True
+        pilih_waktu.disabled = True
+        pilih_tanggal_akhir.disabled = True
+        frekuensi.disabled = True
+        notifikasi_switch.disabled = True
         pilihan_index.value = None
         pilihan_index.update()
         page.update()  
@@ -174,6 +195,11 @@ def calendar_add_form_entry_page(page: ft.Page):
         tanaman_controller = TanamanController()
         icon = tanaman_controller.get_tanaman(pilihan_jenis.value, pilihan_index.value)[3]
         form_card.content.content.controls[0].controls[1].src = "./img/"+icon+".png"
+        pilih_tanggal_perawatan.disabled = False
+        pilih_waktu.disabled = False
+        pilih_tanggal_akhir.disabled = False
+        frekuensi.disabled = False
+        notifikasi_switch.disabled = False
         page.update()
         
     pilihan_jenis = ft.Dropdown(

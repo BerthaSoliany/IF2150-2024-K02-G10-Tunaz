@@ -39,20 +39,37 @@ def graph_edit_form_entry_page(page: ft.Page):
         
         page.update()
 
-    def cek_kosong(e):
-        if tanggal_pertumbuhan.value =="":
+    def cek_kosong(e): 
+        res = False
+        if tanggal_pertumbuhan.value == "" or tanggal_pertumbuhan.value == None:
             tanggal_text.value = "Kolom tidak boleh kosong"
-        if tinggi_tanaman_field.value == "":
+            res = True
+        if tinggi_tanaman_field.value == "" or  tinggi_tanaman_field.value == None:
             tinggi_text.value = "Kolom tidak boleh kosong"
-        if status_tanaman_dropdown.value == "":
+            res = True
+        if status_tanaman_dropdown.value == "" or status_tanaman_dropdown.value == None:
             status_text.value = "Kolom tidak boleh kosong"
+            res = True
+        else:
+            status_text.value = ""
+        if tanggal_text.value != "" and tanggal_text.value != None:
+            res = True
+        if tinggi_text.value != "" and tinggi_text.value != None:
+            res = True
+        if status_text.value != "" and status_text.value != None:
+            res = True
         page.update()
+        return res
 
     def max_karakter(e):
         if len(e.control.value) == 25:
             kondisi_text.value = "Maksimal karakter yang diinput adalah 25"
         else:
             kondisi_text.value = ""
+        page.update()
+
+    def on_change(e):
+        status_text.value = ""
         page.update()
 
     def on_focus(e):
@@ -94,7 +111,7 @@ def graph_edit_form_entry_page(page: ft.Page):
     tanggal_pertumbuhan_field = ft.Stack([tanggal_pertumbuhan,pilih_tanggal])    
     tinggi_tanaman_field = ft.CupertinoTextField(on_focus=on_focus, on_blur=on_blur, max_length=10, on_change=check_number, border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan tinggi", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     tinggi_tanaman_field.value = page.session.get("data_pertumbuhan_tanaman").get_tinggi_tanaman()
-    status_tanaman_dropdown = ft.Dropdown(on_focus=on_focus, on_blur=on_blur, icon_enabled_color="black", border_radius=5, border_color="#D7D7D7",bgcolor="white", width=126, hint_content=ft.Text(value="Hidup", color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")])
+    status_tanaman_dropdown = ft.Dropdown(on_change=on_change, on_focus=on_focus, on_blur=on_blur, icon_enabled_color="black", border_radius=5, border_color="#D7D7D7",bgcolor="white", width=126, hint_content=ft.Text(value="Hidup", color="grey400", size="16"), border_width=1, text_style=ft.TextStyle(color="black"), options=[ft.dropdown.Option("Hidup"), ft.dropdown.Option("Mati")])
     status_tanaman_dropdown.value = page.session.get("data_pertumbuhan_tanaman").get_status_tanaman()
     kondisi_daun_field = ft.CupertinoTextField(cursor_width=1,cursor_color="black", on_focus=on_focus, on_blur=on_blur, on_change=max_karakter, max_length=25, border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="white", placeholder_text="Masukkan kondisi", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
     kondisi_daun_field.value = page.session.get("data_pertumbuhan_tanaman").get_kondisi_daun()
@@ -102,7 +119,7 @@ def graph_edit_form_entry_page(page: ft.Page):
     icon = page.session.get("icon_tanaman") # nanti diganti sesuai icon tanamannya
 
     def on_click_update(e):
-        if(tanggal_pertumbuhan.value == "" or tanggal_pertumbuhan.value == None or tinggi_tanaman_field.value == "" or  tinggi_tanaman_field.value == None or status_tanaman_dropdown.value == "" or status_tanaman_dropdown.value == None):
+        if(cek_kosong(e)):
             return
         data_pertumbuhan_controller = DataPertumbuhanTanamanController()
         data_pertumbuhan_baru = DataPertumbuhanTanaman(status_tanaman_dropdown.value, tinggi_tanaman_field.value, datetime.datetime.strptime(tanggal_pertumbuhan.value[8:],"%d/%m/%Y").strftime("%Y-%m-%d"), kondisi_daun_field.value)

@@ -13,10 +13,12 @@ def calendar_edit_form_entry_page(page: ft.Page):
 
     dialog = validasi_edit_jadwal(page)
     def show_dialog(e):
-        if frekuensi.value != None and sampai_tanggal.value==None:
-            pass
-        if sampai_tanggal.value != None and frekuensi.value ==None:
-            pass
+        if (cek_kosong(e)):
+            return
+        # if frekuensi.value != None and sampai_tanggal.value==None:
+        #     pass
+        # if sampai_tanggal.value != None and frekuensi.value ==None:
+        #     pass
         else:
             x = page.session.get("Tanaman")
             tanaman_baru = Tanaman(jenis_tanaman=x.get_jenis(), index_tanaman=x.get_index(), icon_tanaman=x.get_icon(), data_informasi_tanaman=x.get_data_informasi_tanaman(), data_pertumbuhan_tanaman=x.get_data_pertumbuhan_tanaman(), data_jadwal_perawatan=x.get_data_jadwal_perawatan())
@@ -32,28 +34,45 @@ def calendar_edit_form_entry_page(page: ft.Page):
     def handle_change1(e):
         waktu_tanggal.value = "        " #
         waktu_tanggal.value += e.control.value.strftime('%d/%m/%Y')
+        waktu_text.value = ""
         page.update()
     
     def handle_change2(e):
         sampai_tanggal.value = "        " #
         sampai_tanggal.value += e.control.value.strftime('%d/%m/%Y')
+        tanggal_text.value = ""
         page.update()
 
     def handle_change3(e):
         waktu_jam.value = "        " #
         waktu_jam.value += e.control.value.strftime('%H:%M:%S')
+        jam_text.value = ""
         page.update()
 
     def cek_kosong(e):
-        if waktu_tanggal.value =="":
+        res = False
+        if waktu_tanggal.value =="" or waktu_tanggal.value == None or waktu_tanggal.value == "        ":
             waktu_text.value = "Kolom tidak boleh kosong"
-        if waktu_jam.value == "":
+            res = True
+        else:
+            waktu_text.value = ""
+        if waktu_jam.value == "" or waktu_jam.value == None or waktu_jam.value == "        ":
             jam_text.value = "Kolom tidak boleh kosong"
-        if frekuensi.value != "" and sampai_tanggal.value=="":
+            res = True
+        else:
+            jam_text.value = ""
+        if (frekuensi.value != "" and frekuensi.value != None) and (sampai_tanggal.value=="" or sampai_tanggal.value == None or sampai_tanggal.value == "        "):
             tanggal_text.value = "Kolom tidak boleh kosong"
-        if sampai_tanggal.value != "" and frekuensi.value =="":
+            res = True
+        else:
+            tanggal_text.value = ""
+        if (sampai_tanggal.value != "" and sampai_tanggal.value != None and sampai_tanggal.value != "        ") and (frekuensi.value =="" or frekuensi.value == None):
             frekuensi_text.value = "Kolom tidak boleh kosong"
+            res = True
+        else:
+            frekuensi_text.value = ""
         page.update()
+        return res
 
     def check_number(e):
         if all(char.isdigit() for char in e.control.value):
