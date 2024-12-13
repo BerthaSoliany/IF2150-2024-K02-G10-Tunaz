@@ -335,7 +335,7 @@ def graph_page(page: ft.Page):
     )
 
     data_container = ft.ListView(
-        controls=[ft.Text("Tidak ada data pertumbuhan tanaman.", size=16, color=ft.Colors.BLACK)],
+        controls=[ft.Text("Pilih jenis dan index tanaman!", size=16, color=ft.Colors.BLACK, text_align=ft.TextAlign.CENTER),],
         padding=10,
         # margin=10,
         # border=ft.border.all(3, ft.Colors.GREY_200),

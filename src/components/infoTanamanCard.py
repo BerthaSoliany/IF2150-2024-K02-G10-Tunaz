@@ -23,6 +23,7 @@ def create_info_tanaman_card(page: ft.Page, x: Tanaman, on_click=None):
                             weight="bold",
                             color="#5F9356",
                             overflow=ft.TextOverflow.ELLIPSIS,
+                            width=325,
                         ),
                         ft.Image(
                             src="./img/" + x.get_icon() +".png",
@@ -39,7 +40,7 @@ def create_info_tanaman_card(page: ft.Page, x: Tanaman, on_click=None):
                     color="black",
                     # style=ft.TextStyle(font_family="Verdana"),
                     overflow=ft.TextOverflow.ELLIPSIS,
-                    max_lines=5
+                    max_lines=4
                 ),
                 ft.Row(
                     controls=[
@@ -62,12 +63,13 @@ def create_info_tanaman_card(page: ft.Page, x: Tanaman, on_click=None):
                 ),
             ],
             spacing=10,
+            alignment="spaceBetween",
         ),
         bgcolor="#FDFFEA",
         padding=20,
         border_radius=12,
-        width=None, 
-        height=None, 
+        width=360, 
+        height=220, 
         border=ft.border.all(1, "#D7D7D7"),
         expand=True,  # how to make width n height sesuai window size tapi kalo dia ga pas 3 ga expand...?
         on_click=handle_click,

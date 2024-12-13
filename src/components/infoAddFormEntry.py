@@ -45,7 +45,7 @@ def info_add_form_entry_page(page: ft.Page):
                 border_radius=50,
                 bgcolor=ft.Colors.BROWN_100 if selected_icon.current == option["value"] else ft.Colors.TRANSPARENT,
             
-            )``
+            )
             for option in icon_option
         ]
 
