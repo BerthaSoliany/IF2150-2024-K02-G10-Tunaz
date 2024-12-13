@@ -13,9 +13,9 @@ def calendar_edit_form_entry_page(page: ft.Page):
 
     dialog = validasi_edit_jadwal(page)
     def show_dialog(e):
-        if frekuensi.value != None and sampai_tanggal.value==None:
+        if frekuensi.value != None and sampai_tanggal.value==None :
             pass
-        if sampai_tanggal.value != None and frekuensi.value ==None:
+        if sampai_tanggal.value != None and (frekuensi.value ==None or frekuensi.value == ""):
             pass
         else:
             x = page.session.get("Tanaman")
