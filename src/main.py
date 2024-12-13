@@ -179,13 +179,15 @@ def main(page: ft.Page):
     def pilihan_perawatan():
         def handle_close_no(e):
             page.close(dialog)
-            tipe = "Penyiraman"
+            tipe = "Pupuk"
+            page.session.set("tipe", tipe)
             page.go("/src/components/calendarAddFormEntry")
             # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
 
         def handle_close_yes(e):
             page.close(dialog)
-            tipe = "Pemupukan"
+            tipe = "Siram"
+            page.session.set("tipe", tipe)
             page.go("/src/components/calendarAddFormEntry")
             # page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
 

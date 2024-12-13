@@ -1,11 +1,28 @@
 import flet as ft
 import datetime
 from src.controllers.tanamancontroller import TanamanController
-
+from src.controllers.datainformasitanamancontroller import DataInformasiTanamanController
+from src.controllers.jadwalperawatan import JadwalPerawatan
+from src.controllers.jadwalperawatancontroller import JadwalPerawatanController
 def calendar_add_form_entry_page(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     # page.theme = ft.Theme(font_family="Kantumruy-Regular")
+
+    def tambah(e):
+        if cek_kosong(e):
+            return
+        elif(pilihan_jenis.value == None or pilihan_index.value == None):
+            return
+        else:
+            jadwal_perawatan_controller = JadwalPerawatanController()
+            if(frekuensi.value == '' or frekuensi.value == None):
+                jadwal_perawatan_controller.tambah_data_satu_jadwal_perawatan(pilihan_jenis.value, pilihan_index.value, JadwalPerawatan(group_id=0,frekuensi_perawatan=frekuensi.value, waktu_perawatan=datetime.datetime.strptime(waktu_tanggal.value[8:], "%d/%m/%Y").strftime("%Y-%m-%d") + " " + waktu_jam.value[8:], jenis_perawatan=page.session.get("tipe"), pilihan_notifikasi=notifikasi_switch.value))
+            else: 
+                _ = jadwal_perawatan_controller.tambah_data_group_jadwal_perawatan(pilihan_jenis.value, pilihan_index.value, JadwalPerawatan(group_id=0,frekuensi_perawatan=frekuensi.value, waktu_perawatan=datetime.datetime.strptime(waktu_tanggal.value[8:], "%d/%m/%Y").strftime("%Y-%m-%d") + " " + waktu_jam.value[8:], jenis_perawatan=page.session.get("tipe"), pilihan_notifikasi=notifikasi_switch.value), datetime.datetime.strptime(sampai_tanggal.value[8:], "%d/%m/%Y").strftime("%Y-%m-%d"))
+            page.session.set("jenis_tanaman", None)
+            page.session.set("index_tanaman", None)
+            page.go("/src/main")
 
     def handle_change1(e):
         waktu_tanggal.value = "        " #
@@ -24,15 +41,22 @@ def calendar_add_form_entry_page(page: ft.Page):
 
     # untuk nampilin helper text kalau input kosong
     def cek_kosong(e):
-        if waktu_tanggal.value =="":
+        res = False
+        if waktu_tanggal.value =="" or waktu_tanggal.value == None or waktu_tanggal.value == "        ":
             waktu_text.value = "Kolom tidak boleh kosong"
-        if waktu_jam.value == "":
+            res = True
+        if waktu_jam.value == "" or waktu_jam.value == None or waktu_jam.value == "        ":
             jam_text.value = "Kolom tidak boleh kosong"
-        if frekuensi.value != "" and sampai_tanggal.value=="":
+            res = True
+        if (frekuensi.value != "" and frekuensi.value != None) and (sampai_tanggal.value=="" or sampai_tanggal.value == None or sampai_tanggal.value == "        "):
             tanggal_text.value = "Kolom tidak boleh kosong"
-        if sampai_tanggal.value != "" and frekuensi.value =="":
+            res = True
+        if (sampai_tanggal.value != "" and sampai_tanggal.value != None and sampai_tanggal.value != "        ") and (frekuensi.value =="" or frekuensi.value == None):
             frekuensi_text.value = "Kolom tidak boleh kosong"
+            res = True
         page.update()
+        return res
+        
     
     # function untuk validasi input
     def check_number(e):
@@ -121,11 +145,10 @@ def calendar_add_form_entry_page(page: ft.Page):
                             color="white"),
         width=1000,)
     sampai_tanggal_field = ft.Stack([sampai_tanggal,pilih_tanggal_akhir])
-    kebutuhan_perawatan_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="grey100", placeholder_text="Kebutuhan perawatan ini g bisa diubah", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), multiline=True, min_lines=3, max_lines=3, read_only=True)
+    kebutuhan_perawatan_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="grey100", placeholder_text="Tidak ada data kebutuhan perawatan", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), multiline=True, min_lines=3, max_lines=3, read_only=True)
     notifikasi_switch = ft.Switch(value=True,track_outline_color="#5A3E2A",active_color="#FDFFEA",active_track_color="#5A3E2A", inactive_thumb_color="#5A3E2A", inactive_track_color="#FDFFEA")
-    jenis_index = "Jagung 001" # nanti diganti sesuai tanamannya
     icon = "icon1" # nanti diganti sesuai icon tanamannya
-    tipe = "Penyiraman"
+    tipe = "Penyiraman" if page.session.get("tipe") == 'Siram' else "Pemupukan"
 
     tanaman_controller = TanamanController()
     jenis_tanaman = tanaman_controller.get_all_jenis_tanaman()
@@ -146,7 +169,13 @@ def calendar_add_form_entry_page(page: ft.Page):
         # tombol cari ini diilangin dan masukin function toggle data ke pilihan_index yaw
         page.session.set("jenis_tanaman", pilihan_jenis.value)
         page.session.set("index_tanaman", pilihan_index.value)
-
+        data_informasi_tanaman_controller = DataInformasiTanamanController()
+        kebutuhan_perawatan_field.value = data_informasi_tanaman_controller.get_data_informasi_tanaman(pilihan_jenis.value, pilihan_index.value)[4]
+        tanaman_controller = TanamanController()
+        icon = tanaman_controller.get_tanaman(pilihan_jenis.value, pilihan_index.value)[3]
+        form_card.content.content.controls[0].controls[1].src = "./img/"+icon+".png"
+        page.update()
+        
     pilihan_jenis = ft.Dropdown(
         on_change=dropdown_changed1,
         text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
@@ -221,7 +250,7 @@ def calendar_add_form_entry_page(page: ft.Page):
                     ft.Row(
                         controls=[
                         ft.OutlinedButton(text="BATAL", on_click=lambda e: page.go("/src/main"), width=142, style=ft.ButtonStyle(color="#F47A6F", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#F47A6F", width=2))),
-                        ft.OutlinedButton(text="TAMBAH", on_click=lambda e: page.go("/src/main"), width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
+                        ft.OutlinedButton(text="TAMBAH", on_click=tambah, width=142, style=ft.ButtonStyle(color="#5F9356", shape=ft.RoundedRectangleBorder(radius=10), side=ft.BorderSide(color="#5F9356", width=2))),
                         ], 
                         alignment=ft.MainAxisAlignment.END),
                 ],
