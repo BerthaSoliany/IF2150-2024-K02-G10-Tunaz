@@ -34,7 +34,9 @@ def info_page(page: ft.Page):
         cards = []
         data_informasi_tanaman_controller = DataInformasiTanamanController()
         tanaman_controller = TanamanController()
-        if(opt_sortby.value == "Jenis Tanaman (asc)"):
+        if(page.session.get("keyword") != None):
+            data_informasi_tanaman = data_informasi_tanaman_controller.search_database(page.session.get("keyword"), opt_sortby.value)
+        elif(opt_sortby.value == "Jenis Tanaman (asc)"):
             data_informasi_tanaman = data_informasi_tanaman_controller.sort_by_jenis_tanaman_ascending()
         elif(opt_sortby.value == "Jenis Tanaman (desc)"):
             data_informasi_tanaman = data_informasi_tanaman_controller.sort_by_jenis_tanaman_descending()
@@ -76,9 +78,15 @@ def info_page(page: ft.Page):
             cursor_width=1,
             cursor_color="black",
         )
-    
+    search_bar = create_search_bar()
+
+    def search(e):
+        page.session.set("keyword",search_bar.value)
+        sorting(e)
+
     def create_search_button():
         return ft.IconButton(
+            on_click=search,
             icon=ft.icons.SEARCH,
             icon_color="black",
             # on_click=lambda e: print("Search button clicked"),
@@ -89,6 +97,7 @@ def info_page(page: ft.Page):
             tooltip="Search"
         )
     
+    search_button = create_search_button()
     
     fab = create_floating_action_button(lambda e: page.go("/src/components/infoAddFormEntry"))
 
@@ -122,7 +131,7 @@ def info_page(page: ft.Page):
         ft.Stack([
         ft.Column(controls=[
             ft.Row(
-            controls=[create_search_button(), create_search_bar(), opt_sortby], 
+            controls=[search_button, search_bar, opt_sortby], 
             alignment="start", 
             vertical_alignment="center"), 
             scrollable_info_cards,
