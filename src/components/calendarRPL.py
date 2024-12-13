@@ -116,9 +116,9 @@ class SetCalendar(UserControl):
             month_grid = Column(alignment=MainAxisAlignment.CENTER, spacing=0)
             month_grid.controls.append(
                 Row(alignment=MainAxisAlignment.CENTER, controls=[
-                    ElevatedButton("Prev", on_click=lambda e: self._change_month(-1)),
+                    IconButton(icon = icons.CHEVRON_LEFT, on_click=lambda e: self._change_month(-1)),
                     month_label,
-                    ElevatedButton("Next", on_click=lambda e: self._change_month(1)),
+                    IconButton(icon = icons.CHEVRON_RIGHT, on_click=lambda e: self._change_month(1)),
                 ])
             )
             weekday_labels = [
