@@ -64,7 +64,9 @@ def calendar_add_form_entry_page(page: ft.Page):
             frekuensi_text.value = "Kolom tidak boleh kosong"
             res = True
         else:
-            frekuensi_text.value = ""
+            if(frekuensi_text.value == "Kolom tidak boleh kosong"):
+                frekuensi_text.value = ""
+                
         if (pilihan_jenis.value == "" or pilihan_jenis.value == None):
             jenis_text.value = "Kolom tidak boleh kosong"
             pilihan_jenis.border_color = "#F47A6F"
@@ -79,6 +81,9 @@ def calendar_add_form_entry_page(page: ft.Page):
         else:
             index_text.value = ""
             pilihan_index.border_color = "#D7D7D7"
+        if frekuensi_text.value != "" or waktu_text.value != "" or jam_text.value != "" or tanggal_text.value != "" or jenis_text.value != "" or index_text.value != "":
+            res = True
+
         page.update()
         return res
         
@@ -89,6 +94,8 @@ def calendar_add_form_entry_page(page: ft.Page):
             frekuensi_text.value = ""
             if len(e.control.value) == 2:
                 frekuensi_text.value = "Frekuensi tidak boleh lebih dari 2 digit"
+            if(e.control.value == "0"):
+                frekuensi_text.value = "Frekuensi tidak boleh 0"
         else:
             frekuensi_text.value = "Frekuensi harus berupa angka"
         page.update()
