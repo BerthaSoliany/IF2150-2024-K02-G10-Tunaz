@@ -109,20 +109,23 @@ class SetCalendar(UserControl):
         pass
 
     def hover_date(self, e):
-        self.hovered_date = e.control.data
         if e.data == "true":
-            if(self.previous_on_hover_container != None):
-                self.previous_on_hover_container.bgcolor = self.previous_on_hover_color
-                self.previous_on_hover_container.update()
+            self.hovered_date = e.control.data
             if(self.hovered_date == datetime.date.today()):
                 self.previous_on_hover_color = e.control.content.content.bgcolor
                 e.control.content.content.bgcolor = "#E0E0E0"
-                self.previous_on_hover_container = e.control.content.content
+                e.control.content.content.update()
             else:
                 self.previous_on_hover_color = e.control.content.bgcolor
                 e.control.content.bgcolor = "#E0E0E0"
-                self.previous_on_hover_container = e.control.content
-        e.control.content.update()
+                e.control.content.update()
+        else:
+            if(self.hovered_date == datetime.date.today()):
+                e.control.content.content.bgcolor = self.previous_on_hover_color
+                e.control.content.content.update()
+            else:
+                e.control.content.bgcolor = self.previous_on_hover_color
+                e.control.content.update()
 
     def create_circle(self, datee, colorr):
         datee = str(datee)
