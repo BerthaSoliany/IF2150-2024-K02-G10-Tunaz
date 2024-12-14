@@ -103,7 +103,7 @@ def graph_page(page: ft.Page):
             # data catatan
             data_container.controls = [
                 *[
-                    create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", "Tanggal: " + datetime.strptime(data_tanggal[i],"%Y-%m-%d").strftime("%d/%m/%Y"))
+                    create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", datetime.strptime(data_tanggal[i],"%Y-%m-%d").strftime("%d/%m/%Y"))
                     for i, point in enumerate(new_data_points)
                 ]
             ]

@@ -80,7 +80,7 @@ def graph_view_page(page: ft.Page):
                     ft.Row(
                         [
                             ft.Column([
-                                ft.Text("Tinggi Tanaman", size=20, color="black"),
+                                ft.Text("Tinggi Tanaman (cm)", size=20, color="black"),
                                 tinggi_tanaman_field,
                             ],
                             width=586,
