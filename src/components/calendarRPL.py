@@ -23,7 +23,7 @@ class SetCalendar(UserControl):
         self.click_count: list = []
         
         self.current_color = "blue"
-
+        self.hovered_date = any
         self.selected_date = any
 
         self.calendar_grid = Column(
@@ -33,7 +33,8 @@ class SetCalendar(UserControl):
         )
 
         self.previous_selected_container = None #track prev
-
+        self.previous_on_hover_container = None #track prev
+        self.previous_on_hover_color = "white"
         self.page = page
 
         self.on_date_selected = on_date_selected
@@ -76,7 +77,7 @@ class SetCalendar(UserControl):
     def one_click_date(self, e):
         if self.previous_selected_container:
             if(self.page.session.get(str(self.page.session.get("prev_selected"))) == 1):
-                self.previous_selected_container.bgcolor = "#AFC9AB"
+                self.previous_selected_container.bgcolor = "#5A3E2A, 0.4"
             else:
                 self.previous_selected_container.bgcolor = "white"
             # if self.selected_date == datetime.date.today():
@@ -90,20 +91,37 @@ class SetCalendar(UserControl):
 
         if(self.on_date_selected):
             self.on_date_selected(self.selected_date)
-
-        e.control.content.bgcolor = "#5F9356"
-        e.control.content.update()
+        if(self.selected_date == datetime.date.today()):
+            e.control.content.content.bgcolor = "#5A3E2A, 0.7"
+            self.previous_on_hover_color = e.control.content.content.bgcolor
+            e.control.content.update()
+            self.previous_selected_container = e.control.content.content
+        else:
+            e.control.content.bgcolor = "#5A3E2A, 0.7"
+            self.previous_on_hover_color = e.control.content.bgcolor
+            e.control.content.update()
+            self.previous_selected_container = e.control.content
         # self.previous_selected_container_2 = self.previous_selected_container
         self.page.session.set("prev_selected", self.selected_date.day)
-        self.previous_selected_container = e.control.content
+        
+        
         # self.update_notes_display()
         pass
 
     def hover_date(self, e):
+        self.hovered_date = e.control.data
         if e.data == "true":
-            e.control.content.bgcolor = "#D7D7D7"
-        else:
-            e.control.content.bgcolor = "white"
+            if(self.previous_on_hover_container != None):
+                self.previous_on_hover_container.bgcolor = self.previous_on_hover_color
+                self.previous_on_hover_container.update()
+            if(self.hovered_date == datetime.date.today()):
+                self.previous_on_hover_color = e.control.content.content.bgcolor
+                e.control.content.content.bgcolor = "#E0E0E0"
+                self.previous_on_hover_container = e.control.content.content
+            else:
+                self.previous_on_hover_color = e.control.content.bgcolor
+                e.control.content.bgcolor = "#E0E0E0"
+                self.previous_on_hover_container = e.control.content
         e.control.content.update()
 
     def create_circle(self, datee, colorr):
@@ -117,18 +135,7 @@ class SetCalendar(UserControl):
             alignment=alignment.center,
         )
     
-    def create_circle2(self, datee, colorr):
-        datee = str(datee)
-        return Container(
-            content=Text(datee, size=20, color="black", weight=FontWeight.BOLD),
-            width=45,  # Diameter of the circle
-            height=45,
-            bgcolor=colorr,  # Background color of the circle
-            border_radius=25,  # Half of the width/height
-            alignment=alignment.center,
-            border=border.all(2, "#5A3E2A"),
-            
-        )
+
     
     def create_month_calendar(self, year):
         self.current_year = year
@@ -191,8 +198,8 @@ class SetCalendar(UserControl):
                                 border=border.all(0.5, "brown"),
                                 alignment=alignment.center,
                                 data=datetime.date(year=self.current_year, month=month, day=day),
-                                on_click=lambda e: self.one_click_date(e),
                                 on_hover=lambda e: self.hover_date(e),
+                                on_click=lambda e: self.one_click_date(e),
                             )
                         # day_label = Text(str(day), size=12, color="black")
                         # print(day)
@@ -206,24 +213,36 @@ class SetCalendar(UserControl):
                                 hari = tanggal.split("-")[2]
                                 if(day == int(hari)):
                                     self.page.session.set(str(day), 1)
-                                    day_label = self.create_circle2(day, "#AFC9AB")
+                                    inner_circle = self.create_circle(day, "#5A3E2A, 0.4")
                                     idx += 1
                                 else:
-                                    day_label = self.create_circle2(day, "white")
+                                    inner_circle = self.create_circle(day, "white")
                             else:
-                                day_label = self.create_circle2(day, "white")
+                                inner_circle = self.create_circle(day, "white")
+                            # day_label.border = border.all(3, "#5A3E2A")
+
+                            outer_circle = Container(
+                                content=inner_circle,
+                                width=56,  # Diameter of the circle
+                                height=56,
+                                border_radius=40,  # Half of the width/height
+                                alignment=alignment.center,
+                                border = border.all(3, "#5A3E2A"),
+                            )
+                            day_label = outer_circle
+                            # day_label = Stack(controls=[outer_circle, inner_circle])
                             # print("MASUK")
 
                         elif self.notes.get(self.selected_date) is not None:
                             # print("MASUK2")
-                            day_label = self.create_circle(day, "#5F9356")
+                            day_label = self.create_circle(day, "#5A3E2A, 0.4")
                         else:
                             if(idx < len(jadwal_perawatan)):
                                 tanggal = jadwal_perawatan[idx][5].split(" ")[0]
                                 hari = tanggal.split("-")[2]
                                 if(day == int(hari)):
                                     self.page.session.set(str(day), 1)
-                                    day_label = self.create_circle(day, "#AFC9AB")
+                                    day_label = self.create_circle(day, "#5A3E2A, 0.4")
                                     idx += 1
                                 else:
                                     day_label = self.create_circle(day, "white")
