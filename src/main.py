@@ -54,8 +54,12 @@ def route_change(e: ft.RouteChangeEvent):
 
 
 def main(page: ft.Page):
-    notification_thread = threading.Thread(target=show_notification, daemon=True)
-    notification_thread.start()
+    if(page.session.get("thread") != None):
+        pass
+    else:
+        page.session.set("thread", True)
+        notification_thread = threading.Thread(target=show_notification, daemon=True)
+        notification_thread.start()
     page.on_route_change = route_change
     page.title = "Flet app"
     page.fonts = {
