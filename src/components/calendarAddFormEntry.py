@@ -81,7 +81,7 @@ def calendar_add_form_entry_page(page: ft.Page):
         else:
             index_text.value = ""
             pilihan_index.border_color = "#D7D7D7"
-        if frekuensi_text.value != "" or waktu_text.value != "" or jam_text.value != "" or tanggal_text.value != "" or jenis_text.value != "" or index_text.value != "":
+        if (frekuensi_text.value != "" and frekuensi_text.value !=None) or (waktu_text.value != "" and waktu_text.value != None) or (jam_text.value != "" and jam_text.value != None) or (tanggal_text.value != "" and tanggal_text.value != None) or (jenis_text.value != "" and jenis_text.value != None) or (index_text.value != "" and index_text.value != None):
             res = True
 
         page.update()

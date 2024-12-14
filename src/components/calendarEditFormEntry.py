@@ -73,7 +73,7 @@ def calendar_edit_form_entry_page(page: ft.Page):
             if(frekuensi_text.value == "Kolom tidak boleh kosong"):
                 frekuensi_text.value = ""
             
-        if frekuensi_text.value != "" or waktu_text.value != "" or jam_text.value != "" or tanggal_text.value != "":
+        if (frekuensi_text.value != "" and frekuensi_text.value !=None) or (waktu_text.value != "" and waktu_text.value != None) or (jam_text.value != "" and jam_text.value != None) or (tanggal_text.value != "" and tanggal_text.value != None):
             res = True
         page.update()
         return res
