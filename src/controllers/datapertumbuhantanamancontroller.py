@@ -14,11 +14,11 @@ class DataPertumbuhanTanamanController:
             raise ValueError("Tinggi tanaman must be a valid number (real).")
 
         cursor.execute("SELECT * FROM Tanaman WHERE jenis_tanaman = ? AND index_tanaman = ?;", (jenis_tanaman, index_tanaman))
-        print(cursor.fetchall())
+        #print(cursor.fetchall())
         cursor.execute("INSERT INTO dataPertumbuhanTanaman (jenis_tanaman, index_tanaman, status_tanaman, tinggi_tanaman, tanggal_catatan, kondisi_daun) VALUES (?, ?, ?, ?, ?, ?)", (jenis_tanaman, index_tanaman, data_pertumbuhan_tanaman.get_status_tanaman(), data_pertumbuhan_tanaman.get_tinggi_tanaman(), data_pertumbuhan_tanaman.get_tanggal_catatan(), data_pertumbuhan_tanaman.get_kondisi_daun()))
         conn.commit()
         cursor.execute("SELECT * FROM dataPertumbuhanTanaman;")
-        print(cursor.fetchall())
+        #print(cursor.fetchall())
         conn.close()
 
     def perbarui_data_pertumbuhan(self, jenis_tanaman: str, index_tanaman: int, data_pertumbuhan_tanaman: DataPertumbuhanTanaman, data_pertumbuhan_tanaman_baru: DataPertumbuhanTanaman):

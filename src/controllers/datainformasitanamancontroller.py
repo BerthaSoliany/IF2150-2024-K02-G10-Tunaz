@@ -10,7 +10,7 @@ class DataInformasiTanamanController:
         cursor.execute("INSERT INTO dataInformasiTanaman (jenis_tanaman, index_tanaman, waktu_tanam, kebutuhan_perawatan) VALUES (?, ?, ?, ?)", (jenis_tanaman, index_tanaman, data_informasi_tanaman.get_waktu_tanam(), data_informasi_tanaman.get_kebutuhan_perawatan()))
         conn.commit()
         cursor.execute("SELECT * FROM dataInformasiTanaman;")
-        print(cursor.fetchall())
+        #print(cursor.fetchall())
         conn.close()
 
     def perbarui_data_informasi_tanaman(self, jenis_tanaman: str, index_tanaman: int, data_informasi_tanaman_baru: DataInformasiTanaman):

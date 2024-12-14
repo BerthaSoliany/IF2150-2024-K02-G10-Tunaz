@@ -61,9 +61,8 @@ class JadwalPerawatanController:
         cursor.execute("UPDATE groupJadwalPerawatan SET last_group_id = ?;", (group_id,))
         cursor.execute("UPDATE dataJadwalPerawatan SET group_id = ?, frekuensi_perawatan = ?, waktu_perawatan = ?, jenis_perawatan = ?, pilihan_notifikasi = ? WHERE jenis_tanaman = ? AND index_tanaman = ? AND group_id = ? AND waktu_perawatan = ? AND jenis_perawatan = ?;", (group_id, None, jadwal_perawatan_baru.get_waktu_perawatan(), jadwal_perawatan_baru.get_jenis_perawatan(), jadwal_perawatan_baru.get_pilihan_notifikasi(), jenis_tanaman, index_tanaman, jadwal_perawatan_lama.get_group_id(), jadwal_perawatan_lama.get_waktu_perawatan(), jadwal_perawatan_lama.get_jenis_perawatan()))
         conn.commit()
-        print("ini dari controller")
         cursor.execute("SELECT * FROM dataJadwalPerawatan;")
-        print(cursor.fetchall())
+        #print(cursor.fetchall())
         conn.close()
         return group_id
     
@@ -160,7 +159,7 @@ class JadwalPerawatanController:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM dataJadwalPerawatan;")
         data = cursor.fetchall()
-        print(data)
+        #print(data)
         conn.close()
         # return data
 

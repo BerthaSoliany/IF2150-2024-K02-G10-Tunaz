@@ -87,7 +87,7 @@ def info_page(page: ft.Page):
     def create_search_button():
         return ft.IconButton(
             on_click=search,
-            icon=ft.icons.SEARCH,
+            icon=ft.Icons.SEARCH,
             icon_color="black",
             # on_click=lambda e: print("Search button clicked"),
             icon_size=24,

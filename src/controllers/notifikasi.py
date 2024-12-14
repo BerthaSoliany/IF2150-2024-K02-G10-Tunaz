@@ -1,30 +1,41 @@
+import sys
+import os
 import datetime
 import time
-import locale
-from winotify import Notification, audio
+import sqlite3
+from win11toast import toast
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from src.controllers.jadwalperawatancontroller import JadwalPerawatanController
 
-def notification(target_datetime, title, duration="long"):
-    locale.setlocale(locale.LC_TIME, 'id_ID') #menggunakan bahasa indonesia
+def notification(target_datetime, notification_message):
+    icon = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../img/logo_tunaz2.png'))
+    toast('Reminder Tunaz', notification_message, icon=icon)
+
+def show_notification():
+    connection = sqlite3.connect('src/database/tunaz.db')
+    cursor = connection.cursor()
+    last_time = None
+    #print("Menunggu notifikasi...")
     while True:
-        current_datetime = datetime.datetime.now()
-        current_time_str = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
-        day_of_week = current_datetime.strftime('%A')
+        current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+        jadwal_perawatan_controller = JadwalPerawatanController()
+        perawatan_list = jadwal_perawatan_controller.get_all_jadwal_perawatan_by_date(current_date)
         
-        if current_time_str == target_datetime:
-            notification_message = f"{day_of_week}, {current_datetime.strftime('%H:%M:%S')}."
-            notif = Notification(
-                app_id="Reminder Tunaz",
-                title=title,
-                msg=notification_message,
-                duration=duration,
-                icon="./img/logo_tunaz2.png"
-            )
-            notif.set_audio(audio.Reminder, loop=True)
-            notif.show()
-            break
-        time.sleep(1)  # Sleep for 1 second before checking again
-
-
-target_datetime = "2024-12-12 00:05:00" #format 'YYYY-MM-DD HH:MM:SS'
-notification_title = "Siram Jagung 001"
-notification(target_datetime, notification_title)
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if(current_time != last_time):
+            last_time = current_time
+            for row in perawatan_list:
+                notif_id = row[0]
+                notify_time = row[5]
+                jenis_perawatan = row[6]
+                jenis_tanaman = row[1]
+                index_tanaman = row[2]
+                pilihan_notifikasi = row[7]
+                
+                if pilihan_notifikasi:
+                    if notify_time == current_time:
+                        message = f"{jenis_perawatan} {jenis_tanaman} {index_tanaman}"
+                        notification(notify_time, message)
+                        print(f"Notifikasi '{message}' ditampilkan pada {current_time}")
+        
+        time.sleep(1)

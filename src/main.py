@@ -18,9 +18,10 @@ from src.components.calendarRPL import TODAY_DATE
 from src.controllers.jadwalperawatancontroller import JadwalPerawatanController
 from src.controllers.jadwalperawatan import JadwalPerawatan
 from src.controllers.datainformasitanamancontroller import DataInformasiTanamanController
+from src.controllers.notifikasi import show_notification
 import datetime
 import calendar
-
+import threading
 
 def route_change(e: ft.RouteChangeEvent):
     page = e.page
@@ -53,6 +54,12 @@ def route_change(e: ft.RouteChangeEvent):
 
 
 def main(page: ft.Page):
+    if(page.session.get("thread") != None):
+        pass
+    else:
+        page.session.set("thread", True)
+        notification_thread = threading.Thread(target=show_notification, daemon=True)
+        notification_thread.start()
     page.on_route_change = route_change
     page.title = "Flet app"
     page.fonts = {
@@ -190,7 +197,7 @@ def main(page: ft.Page):
 
         dialog = ft.AlertDialog(
             modal=True,
-            content=ft.Text("Pilih jenis perawatan yang ingin kamu jadwalkan!", text_align="center", color=ft.colors.BLACK),
+            content=ft.Text("Pilih jenis perawatan yang ingin kamu jadwalkan!", text_align="center", color=ft.Colors.BLACK),
             actions=[
                 ft.Row(
                     controls=[
@@ -203,7 +210,7 @@ def main(page: ft.Page):
             actions_alignment=ft.MainAxisAlignment.END,
             on_dismiss=lambda e: page.add(),
             bgcolor="#FDFFEA",
-            shadow_color=ft.colors.GREY_400,
+            shadow_color=ft.Colors.GREY_400,
         )
         return dialog
     dialog = pilihan_perawatan()
