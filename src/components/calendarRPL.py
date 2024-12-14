@@ -89,6 +89,12 @@ class SetCalendar(UserControl):
         # self.update_notes_display()
         pass
 
+    def hover_date(self, e):
+        if e.data == "true":
+            e.control.content.bgcolor = "#D7D7D7"
+        else:
+            e.control.content.bgcolor = "white"
+        e.control.content.update()
 
     def create_circle(self, datee, colorr):
         datee = str(datee)
@@ -99,7 +105,6 @@ class SetCalendar(UserControl):
             bgcolor=colorr,  # Background color of the circle
             border_radius=25,  # Half of the width/height
             alignment=alignment.center,
-            
         )
 
     def create_month_calendar(self, year):
@@ -159,6 +164,7 @@ class SetCalendar(UserControl):
                                 alignment=alignment.center,
                                 data=datetime.date(year=self.current_year, month=month, day=day),
                                 on_click=lambda e: self.one_click_date(e),
+                                on_hover=lambda e: self.hover_date(e),
                             )
                         # day_label = Text(str(day), size=12, color="black")
                         # print(day)
