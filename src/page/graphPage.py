@@ -23,7 +23,7 @@ def graph_page(page: ft.Page):
     page.horizontal_alignment = ft.alignment.center
     page.vertical_alignment = ft.alignment.center
 
-    text_refs = [ft.Ref[ft.Text]() for i in range(6)]
+    # text_refs = [ft.Ref[ft.Text]() for i in range(6)]
 
     def to_date(dt_date):
         yy, mm, dd = map(int, dt_date.split('-'))
@@ -60,19 +60,42 @@ def graph_page(page: ft.Page):
         new_data_points, data_tanggal = graph.tinggi_terhadap_waktu(Tanaman(jenis_tanaman=pilihan_jenis.value, index_tanaman=pilihan_index.value, icon_tanaman=None, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None))
         if(len(new_data_points) != 0):
             range_tanggal = (to_date(data_tanggal[-1]) - to_date(data_tanggal[0])).days
+            if(range_tanggal < 5):
+                range_tanggal = 5
             range_tinggi = max(new_data_points)
+            if(range_tinggi < 3):
+                range_tinggi = 3
             # data grafik
             new_data_points = [ft.LineChartDataPoint((to_date(data_tanggal[i])-to_date(data_tanggal[0])).days, new_data_points[i]) for i in range(len(new_data_points))]
             data_1[0].data_points = new_data_points
             # scaling grafik
-               
-            for i in range(3):
-                chart.left_axis.labels[i].value = range_tinggi*(i+1)/3
-                chart.left_axis.labels[i].label.value = range_tinggi*(i+1)/3
+            chart.left_axis.labels.clear()
+            chart.horizontal_grid_lines.interval=max(round(range_tinggi/7),1)
+            chart.vertical_grid_lines.interval=max(round(range_tanggal/12),1)
+            chart.update()
+            # for i in range(3):
+            #     chart.left_axis.labels[i].value = round(range_tinggi*(i+1)/3)
+            #     chart.left_axis.labels[i].label.value = round(range_tinggi*(i+1)/3)
+            chart.left_axis.labels_interval = max(range_tinggi//3,1)
+            range_interval = range_tinggi
+            if(range_tinggi % 3 == 0):
+                range_interval += 1
+            chart.left_axis.labels = [
+                ft.ChartAxisLabel(
+                    value=i,
+                    label=ft.Text(str(i), size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
+                ) for i in range(int(range_interval))
+            ]
+            chart.left_axis.labels.append(
+                ft.ChartAxisLabel(
+                    value=0,
+                    label=ft.Text("0", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
+                ))
             chart.max_y = range_tinggi
-            text_refs = [ft.Ref[ft.Text]() for i in range(6)]   
-            for i in range(6):
-                chart.bottom_axis.labels[i].value = range_tanggal*i//5
+            # text_refs = [ft.Ref[ft.Text]() for i in range(6)]   
+            first_date = to_date(data_tanggal[0])
+            # for i in range(6):
+            #     chart.bottom_axis.labels[i].value = range_tanggal*i//5
                 # text_refs[i].current.value = (to_date(data_tanggal[0]) + timedelta(days=range_tanggal*i//5))
             chart.max_x = range_tanggal
             # judul grafik
@@ -89,19 +112,48 @@ def graph_page(page: ft.Page):
             new_data_points = []
             data_1[0].data_points = data1_set1
             # scaling grafik dummy
-            for i in range(3):
-                chart.left_axis.labels[i].value = 30*(i+1)/3
-                chart.left_axis.labels[i].label.value = 30*(i+1)/3
+            chart.horizontal_grid_lines.interval=30//7
+            chart.vertical_grid_lines.interval=30//12
+            # for i in range(3):
+            #     chart.left_axis.labels[i].value = 30*(i+1)/3
+            #     chart.left_axis.labels[i].label.value = 30*(i+1)/3
+            chart.left_axis.labels_interval = 10
+            chart.left_axis.labels=[
+                    ft.ChartAxisLabel(
+                        value=30*(i+1)/3,
+                        label=ft.Text(30*(i+1)/3, size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
+                    ) for i in range(3)
+            ]
             chart.max_y = 30
-            for i in range(6):
-                chart.bottom_axis.labels[i].value = 30*i//5
+            first_date = date.today()
+            # for i in range(6):
+            #     chart.bottom_axis.labels[i].value = 30*i//5
                 # text_refs[i].current.value = (date.today() + timedelta(days=30*i//5))
             chart.max_x = 30
+            range_tanggal = 30
             # judul grafik dummy
             chart_container.content.controls[0] = ft.Text("Tidak ada data pertumbuhan tanaman.", size=20, color="#5F9356", weight=ft.FontWeight.BOLD)
             # data catatan dummy
             data_container.controls = [ft.Text("Tidak ada data pertumbuhan tanaman.", size=16, color=ft.Colors.BLACK)]
-
+        chart.bottom_axis.labels.clear()
+        chart.bottom_axis.labels_interval = max(round(range_tanggal/5),1)
+        range_interval = range_tanggal
+        if(range_tanggal % 5 == 0):
+            range_interval += 1
+        chart.bottom_axis.labels = [
+                ft.ChartAxisLabel(
+                    value=i,
+                    label=ft.Container(
+                        ft.Text(
+                            (first_date + timedelta(days=i)).strftime("%d/%m/%Y"),
+                            size=16,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.Colors.BLACK,
+                        ),
+                        margin=ft.margin.only(top=10),
+                    ),
+                ) for i in range(int(range_interval))
+        ]
         chart.data_series = data_1
         chart_container.update()
         chart.update()
@@ -196,110 +248,40 @@ def graph_page(page: ft.Page):
         border=ft.border.all(3, ft.Colors.GREY_200),
         horizontal_grid_lines=ft.ChartGridLines(
             interval=range_tinggi//7, color=ft.Colors.GREY_200, width=1
+            # interval=1, color=ft.Colors.GREY_200, width=1
         ),
         vertical_grid_lines=ft.ChartGridLines(
+            # interval=1, color=ft.Colors.GREY_200, width=1
             interval=range_tanggal//12, color=ft.Colors.GREY_200, width=1
         ),
         left_axis=ft.ChartAxis(
             title=ft.Text("Tinggi Tanaman (cm)", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
             labels=[
                 ft.ChartAxisLabel(
-                    value=range_tinggi/3,
-                    label=ft.Text(range_tinggi/3, size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ),
-                ft.ChartAxisLabel(
-                    value=range_tinggi/3*2,
-                    label=ft.Text(range_tinggi/3*2, size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ),
-                ft.ChartAxisLabel(
-                    value=range_tinggi,
-                    label=ft.Text(range_tinggi, size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ),
+                    value=range_tinggi*(i+1)/3,
+                    label=ft.Text(range_tinggi*(i+1)/3, size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
+                ) for i in range(3)
             ],
             labels_size=40,
+            labels_interval=range_tinggi//3,
         ),
         bottom_axis=ft.ChartAxis(
             title=ft.Text("Tanggal", size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
             labels=[
                 ft.ChartAxisLabel(
-                    value=0,
+                    value=range_tanggal*i/5,
                     label=ft.Container(
                         ft.Text(
-                            tanggal_sekarang,
+                            (tanggal_sekarang + timedelta(days=range_tanggal*i/5)).strftime("%d/%m/%Y"),
                             size=16,
                             weight=ft.FontWeight.BOLD,
                             color=ft.Colors.BLACK,
-                            ref=text_refs[0],
                         ),
                         margin=ft.margin.only(top=10),
                     ),
-                ),
-                ft.ChartAxisLabel(
-                    value=range_tanggal/5,
-                    label=ft.Container(
-                        ft.Text(
-                            tanggal_sekarang + timedelta(days=range_tanggal//5),
-                            size=16,
-                            weight=ft.FontWeight.BOLD,
-                            color=ft.Colors.BLACK,
-                            ref=text_refs[1],
-                        ),
-                        margin=ft.margin.only(top=10),
-                    ),
-                ),
-                ft.ChartAxisLabel(
-                    value=range_tanggal/5*2,
-                    label=ft.Container(
-                        ft.Text(
-                            tanggal_sekarang + timedelta(days=range_tanggal//5*2),
-                            size=16,
-                            weight=ft.FontWeight.BOLD,
-                            color=ft.Colors.BLACK,
-                            ref=text_refs[2],
-                        ),
-                        margin=ft.margin.only(top=10),
-                    ),
-                ),
-                ft.ChartAxisLabel(
-                    value=range_tanggal/5*3,
-                    label=ft.Container(
-                        ft.Text(
-                            tanggal_sekarang + timedelta(days=range_tanggal//5*3),
-                            size=16,
-                            weight=ft.FontWeight.BOLD,
-                            color=ft.Colors.BLACK,
-                            ref=text_refs[3],
-                        ),
-                        margin=ft.margin.only(top=10),
-                    ),
-                ),
-                ft.ChartAxisLabel(
-                    value=range_tanggal/5*4,
-                    label=ft.Container(
-                        ft.Text(
-                            tanggal_sekarang + timedelta(days=range_tanggal//5*4),
-                            size=16,
-                            weight=ft.FontWeight.BOLD,
-                            color=ft.Colors.BLACK,
-                            ref=text_refs[4],
-                        ),
-                        margin=ft.margin.only(top=10),
-                    ),
-                ),
-                ft.ChartAxisLabel(
-                    value=range_tanggal,
-                    label=ft.Container(
-                        ft.Text(
-                            tanggal_sekarang + timedelta(days=range_tanggal),
-                            size=16,
-                            weight=ft.FontWeight.BOLD,
-                            color=ft.Colors.BLACK,
-                            ref=text_refs[5],
-                        ),
-                        margin=ft.margin.only(top=10),
-                    ),
-                ),
+                ) for i in range(6)
             ],
+            labels_interval=range_tanggal//5,
             labels_size=32,
         ),
         tooltip_bgcolor=ft.Colors.with_opacity(0.8, ft.Colors.GREY_200),
