@@ -126,7 +126,7 @@ class SetCalendar(UserControl):
             bgcolor=colorr,  # Background color of the circle
             border_radius=25,  # Half of the width/height
             alignment=alignment.center,
-            border=border.all(2, "black"),
+            border=border.all(2, "#5A3E2A"),
             
         )
     

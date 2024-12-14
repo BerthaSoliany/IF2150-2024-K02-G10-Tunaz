@@ -112,7 +112,7 @@ def calendar_add_form_entry_page(page: ft.Page):
     index_text = ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     space=ft.Text()
 
-    waktu_tanggal = ft.CupertinoTextField(read_only=True, width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        DD/MM/YY", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
+    waktu_tanggal = ft.CupertinoTextField(read_only=True, width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        DD/MM/YY", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_600), text_style=ft.TextStyle(color="black"))
     pilih_tanggal_perawatan = ft.OutlinedButton(
         "",
         icon=ft.Icons.CALENDAR_MONTH,
@@ -132,7 +132,7 @@ def calendar_add_form_entry_page(page: ft.Page):
                             color="white"),
         width=1000,)
     waktu_tanggal_field = ft.Stack([waktu_tanggal,pilih_tanggal_perawatan])
-    waktu_jam = ft.CupertinoTextField(read_only=True,width= None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        J:M:D", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
+    waktu_jam = ft.CupertinoTextField(read_only=True,width= None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        J:M:D", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_600), text_style=ft.TextStyle(color="black"))
     pilih_waktu = ft.OutlinedButton(
         "",
         icon=ft.Icons.CALENDAR_MONTH,
@@ -150,9 +150,9 @@ def calendar_add_form_entry_page(page: ft.Page):
                             color="white"),
         width=1000,)
     waktu_jam_field = ft.Stack([waktu_jam,pilih_waktu])
-    frekuensi = ft.CupertinoTextField(cursor_width=1,cursor_color="black",on_blur=on_blur,on_focus=on_focus,max_length=2, on_change=check_number,width=120, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="Frekuensi jadwal", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
+    frekuensi = ft.CupertinoTextField(cursor_width=1,cursor_color="black",on_blur=on_blur,on_focus=on_focus,max_length=2, on_change=check_number,width=120, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="Frekuensi jadwal", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_600), text_style=ft.TextStyle(color="black"))
     frekuensi1 = ft.Row(controls=[frekuensi, ft.Text("hari", size=20, color="black")], expand=True)
-    sampai_tanggal = ft.CupertinoTextField(read_only=True, width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="       Masukkan tanggal akhir", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
+    sampai_tanggal = ft.CupertinoTextField(read_only=True, width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="       Masukkan tanggal akhir", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_600), text_style=ft.TextStyle(color="black"))
     pilih_tanggal_akhir = ft.OutlinedButton(
         "",
         icon=ft.Icons.CALENDAR_MONTH,
@@ -172,7 +172,7 @@ def calendar_add_form_entry_page(page: ft.Page):
                             color="white"),
         width=1000,)
     sampai_tanggal_field = ft.Stack([sampai_tanggal,pilih_tanggal_akhir])
-    kebutuhan_perawatan_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="grey100", placeholder_text="Tidak ada data kebutuhan perawatan", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"), multiline=True, min_lines=3, max_lines=3, read_only=True)
+    kebutuhan_perawatan_field = ft.CupertinoTextField(border_radius=5, border=ft.border.all(1,"#D7D7D7"),bgcolor="grey100", placeholder_text="Tidak ada data kebutuhan perawatan", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_600), text_style=ft.TextStyle(color="black"), multiline=True, min_lines=3, max_lines=3, read_only=True)
     notifikasi_switch = ft.Switch(value=True,track_outline_color="#5A3E2A",active_color="#FDFFEA",active_track_color="#5A3E2A", inactive_thumb_color="#5A3E2A", inactive_track_color="#FDFFEA")
     icon = "icon1" # nanti diganti sesuai icon tanamannya
     tipe = "Penyiraman" if page.session.get("tipe") == 'Siram' else "Pemupukan"
