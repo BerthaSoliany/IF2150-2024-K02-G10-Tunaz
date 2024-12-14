@@ -1,4 +1,4 @@
-import flet
+import flet as ft
 from flet import *
 from flet import UserControl
 import calendar
@@ -86,7 +86,7 @@ class SetCalendar(UserControl):
 
         self.selected_date = e.control.data
         globals()["TODAY_DATE"] = self.selected_date
-        print(TODAY_DATE)
+        # print(TODAY_DATE)
 
         if(self.on_date_selected):
             self.on_date_selected(self.selected_date)
@@ -99,17 +99,22 @@ class SetCalendar(UserControl):
         # self.update_notes_display()
         pass
 
+    def hover_date(self, e):
+        if e.data == "true":
+            e.control.content.bgcolor = "#D7D7D7"
+        else:
+            e.control.content.bgcolor = "white"
+        e.control.content.update()
 
     def create_circle(self, datee, colorr):
         datee = str(datee)
         return Container(
-            content=Text(datee, size=20, color="black", weight=FontWeight.BOLD),
+            content=Text(datee, size=20, color="#5A3E2A", weight=FontWeight.BOLD),
             width=45,  # Diameter of the circle
             height=45,
             bgcolor=colorr,  # Background color of the circle
             border_radius=25,  # Half of the width/height
             alignment=alignment.center,
-            
         )
     
     def create_circle2(self, datee, colorr):
@@ -131,30 +136,32 @@ class SetCalendar(UserControl):
         for month in range(self.m1, self.m2):
             month_label = Text(
                 f"{calendar.month_name[month]} {self.current_year}",
-                size=14,
-                weight="brown",
-                color="brown",
+                size=30,
+                weight=ft.FontWeight.BOLD,
+                color="#5A3E2A",
+                text_align=ft.TextAlign.CENTER,
             )
             month_matrix=calendar.monthcalendar(self.current_year, month)
-            month_grid = Column(alignment=MainAxisAlignment.CENTER, spacing=0)
+            month_grid = Column(alignment=MainAxisAlignment.CENTER,horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=0)
             month_grid.controls.append(
-                Row(alignment=MainAxisAlignment.CENTER, controls=[
-                    IconButton(icon = icons.CHEVRON_LEFT, on_click=lambda e: self._change_month(-1)),
+                Row(alignment=MainAxisAlignment.SPACE_BETWEEN, controls=[
+                    IconButton(icon = icons.CHEVRON_LEFT, on_click=lambda e: self._change_month(-1), icon_color="#5A3E2A", icon_size=50),
                     month_label,
-                    IconButton(icon = icons.CHEVRON_RIGHT, on_click=lambda e: self._change_month(1)),
-                ])
+                    IconButton(icon = icons.CHEVRON_RIGHT, on_click=lambda e: self._change_month(1), icon_color="#5A3E2A", icon_size=50),
+                ], width=400)
             )
             weekday_labels = [
                 Container(
                     border=border.all(0.5, Colors.WHITE),
-                    width=90,
-                    height=60,
-                    bgcolor=  "brown",
+                    width=120,
+                    height=62,
+                    bgcolor= "#5A3E2A",
                     alignment=alignment.center,
                     content=Text(
                         weekday,
                         size=20,
                         color= "white",
+                        weight= ft.FontWeight.BOLD,
                     )
                 )
                 for weekday in ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -175,16 +182,17 @@ class SetCalendar(UserControl):
                 if week < len(month_matrix):
                     for day in month_matrix[week]:
                         if day == 0:
-                            day_container = Container(width=90, height=60, bgcolor="red",border=border.all(0.5, "brown"),)
+                            day_container = Container(width=120, height=62, bgcolor="#E0E0E0",border=border.all(0.5, "brown"),)
                         else:
                             day_container = Container(
-                                width=90,
-                                height=60,
+                                width=120,
+                                height=62,
                                 bgcolor="white",
                                 border=border.all(0.5, "brown"),
                                 alignment=alignment.center,
                                 data=datetime.date(year=self.current_year, month=month, day=day),
                                 on_click=lambda e: self.one_click_date(e),
+                                on_hover=lambda e: self.hover_date(e),
                             )
                         # day_label = Text(str(day), size=12, color="black")
                         # print(day)
@@ -226,7 +234,7 @@ class SetCalendar(UserControl):
                 else:
                     # Add empty week rows to maintain height
                     for _ in range(7):
-                        week_container.controls.append(Container(width=90, height=60))
+                        week_container.controls.append(Container(width=120, height=62))
                 month_grid.controls.append(week_container)
 
             self.calendar_grid.controls.append(month_grid)
@@ -271,9 +279,5 @@ class SetCalendar(UserControl):
             )
 
 def calendarBody(page: Page, on_date_selected=None):
-    calendar = SetCalendar(page=page, on_date_selected=on_date_selected)
+    calendar = SetCalendar(on_date_selected=on_date_selected)
     return calendar
-
-
-if __name__=="__main__":
-    flet.app(target=main)

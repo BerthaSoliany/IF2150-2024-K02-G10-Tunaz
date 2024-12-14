@@ -104,7 +104,7 @@ def calendar_edit_form_entry_page(page: ft.Page):
         icon_color=ft.Colors.BLACK,
         on_click=lambda e: page.open(
             ft.DatePicker(first_date=datetime.datetime(year=2023,month=1,day=1),
-                          last_date=datetime.datetime.now(), 
+                          last_date=datetime.datetime.now() + datetime.timedelta(days=180), 
                           on_change=handle_change1,
                           cancel_text="Batal",
                           confirm_text="Pilih",
@@ -144,7 +144,7 @@ def calendar_edit_form_entry_page(page: ft.Page):
         icon_color=ft.Colors.BLACK,
         on_click=lambda e: page.open(
             ft.DatePicker(first_date=datetime.datetime(year=2023,month=1,day=1),
-                          last_date=datetime.datetime.now(), 
+                          last_date=datetime.datetime.now() + datetime.timedelta(days=180), 
                           on_change=handle_change2,
                           cancel_text="Batal",
                           confirm_text="Pilih",

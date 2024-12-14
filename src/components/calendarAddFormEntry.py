@@ -65,6 +65,20 @@ def calendar_add_form_entry_page(page: ft.Page):
             res = True
         else:
             frekuensi_text.value = ""
+        if (pilihan_jenis.value == "" or pilihan_jenis.value == None):
+            jenis_text.value = "Kolom tidak boleh kosong"
+            pilihan_jenis.border_color = "#F47A6F"
+            res = True
+        else:
+            jenis_text.value = ""
+            pilihan_jenis.border_color = "#D7D7D7"
+        if(pilihan_index.value == "" or pilihan_index.value == None):
+            index_text.value = "Kolom tidak boleh kosong"
+            pilihan_index.border_color = "#F47A6F"
+            res = True
+        else:
+            index_text.value = ""
+            pilihan_index.border_color = "#D7D7D7"
         page.update()
         return res
         
@@ -94,6 +108,8 @@ def calendar_add_form_entry_page(page: ft.Page):
     jam_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     tanggal_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     frekuensi_text=ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
+    jenis_text = ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
+    index_text = ft.Text(weight=ft.FontWeight.NORMAL, color="#F47A6F", size=12)
     space=ft.Text()
 
     waktu_tanggal = ft.CupertinoTextField(read_only=True, width=None, content_padding=5, border_radius=5, border=ft.border.all(1,"#D7D7D7"), bgcolor="white", placeholder_text="        DD/MM/YY", placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), text_style=ft.TextStyle(color="black"))
@@ -103,13 +119,13 @@ def calendar_add_form_entry_page(page: ft.Page):
         icon_color=ft.Colors.BLACK,
         on_click=lambda e: page.open(
             ft.DatePicker(first_date=datetime.datetime(year=2023,month=1,day=1),
-                          last_date=datetime.datetime.now(), 
+                          last_date=datetime.datetime.now() + datetime.timedelta(days=180), 
                           on_change=handle_change1,
                           cancel_text="Batal",
                           confirm_text="Pilih",
                           error_format_text="Format input tidak valid", 
                           field_label_text="Masukkan tanggal", 
-                          help_text="Pilih tanggal")), 
+                          help_text="Pilih tanggal")),
         style=ft.ButtonStyle(side=ft.BorderSide(color="transparent", width=0),
                             shape=ft.RoundedRectangleBorder(radius=5), 
                             alignment=ft.Alignment(-1,0),
@@ -143,7 +159,7 @@ def calendar_add_form_entry_page(page: ft.Page):
         icon_color=ft.Colors.BLACK,
         on_click=lambda e: page.open(
             ft.DatePicker(first_date=datetime.datetime(year=2023,month=1,day=1),
-                          last_date=datetime.datetime.now(), 
+                          last_date=datetime.datetime.now() + datetime.timedelta(days=180), 
                           on_change=handle_change2,
                           cancel_text="Batal",
                           confirm_text="Pilih",
@@ -204,6 +220,8 @@ def calendar_add_form_entry_page(page: ft.Page):
         
     pilihan_jenis = ft.Dropdown(
         on_change=dropdown_changed1,
+        on_focus=on_focus,
+        on_blur=on_blur,
         text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
         bgcolor="white",
         options=[ft.dropdown.Option(option) for option in jenis_tanaman],
@@ -248,8 +266,8 @@ def calendar_add_form_entry_page(page: ft.Page):
                         controls=[
                             ft.Row(
                                 controls=[
-                                    pilihan_jenis,
-                                    pilihan_index,
+                                    ft.Column(controls=[pilihan_jenis,jenis_text], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
+                                    ft.Column(controls=[pilihan_index,index_text], alignment=ft.MainAxisAlignment.START, horizontal_alignment=ft.CrossAxisAlignment.START),
                                 ],
                                 alignment=ft.MainAxisAlignment.START,
                                 vertical_alignment=ft.CrossAxisAlignment.CENTER,

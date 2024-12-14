@@ -79,7 +79,7 @@ def create_click_card2(page, on_click, waktu, perawatan_jenis_index, kebutuhan_p
                 content=ft.Column(
                     [
                         ft.Text(waktu, size=16, color="black"),
-                        ft.Text(perawatan_jenis_index, size=20, color="#5F9356", weight=ft.FontWeight.BOLD),
+                        ft.Text(perawatan_jenis_index, size=20, color="#5F9356", weight=ft.FontWeight.BOLD, overflow=ft.TextOverflow.ELLIPSIS),
                         ft.Text(kebutuhan_perawatan, size=16, color="grey600", overflow=ft.TextOverflow.ELLIPSIS),
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,

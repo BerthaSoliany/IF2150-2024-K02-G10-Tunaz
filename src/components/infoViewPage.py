@@ -1,5 +1,4 @@
 import flet as ft
-from src.components.button1 import create_button1
 from src.components.validasi import validasi
 from src.controllers.tanaman import Tanaman
 def info_view_page(page: ft.Page):

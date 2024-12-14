@@ -66,12 +66,8 @@ def main(page: ft.Page):
     page.padding = ft.padding.all(0)
     
     data_container = ft.ListView(
-        controls=[ft.Text("Tidak ada jadwal perawatan tanaman.", size=16, color=ft.Colors.BLACK)],
+        controls=[ft.Text("Tidak ada jadwal perawatan tanaman.", size=16, color=ft.Colors.BLACK, text_align=ft.TextAlign.CENTER)],
         padding=10,
-        # margin=10,
-        # border=ft.border.all(3, ft.Colors.GREY_200),
-        # border_radius=10,
-        # bgcolor=ft.Colors.WHITE,
         divider_thickness=0,
         expand=True,
         width=300,
@@ -151,7 +147,7 @@ def main(page: ft.Page):
                 header,
                 data_container,
             ],
-            alignment=ft.MainAxisAlignment.START,
+            alignment=ft.MainAxisAlignment.CENTER,
             horizontal_alignment=ft.CrossAxisAlignment.END,
 
         ),
@@ -168,6 +164,7 @@ def main(page: ft.Page):
         ),
         # expand=True,
         width=300,
+        height=505,
         # width=ft.Column(expand=True),
         alignment=ft.Alignment(1,0),
         # shadow=ft.BoxShadow
