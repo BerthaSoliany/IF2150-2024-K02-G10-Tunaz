@@ -3,6 +3,7 @@ from flet import *
 from flet import UserControl
 import calendar
 import datetime
+from src.controllers.jadwalperawatancontroller import JadwalPerawatanController
 
 CELL_SIZE = (28,28)
 CELL_BG_COLOR = "green200"
@@ -12,7 +13,7 @@ HORIZONTAL_LENGTH = 750
 TODAY_DATE = datetime.date.today()
 
 class SetCalendar(UserControl): 
-    def __init__(self, start_year=datetime.date.today().year, on_date_selected=None):
+    def __init__(self, start_year=datetime.date.today().year, page=None, on_date_selected=None):
         self.notes = {} #dict
         self.current_year = start_year
         
@@ -32,6 +33,9 @@ class SetCalendar(UserControl):
         )
 
         self.previous_selected_container = None #track prev
+
+        self.page = page
+
         self.on_date_selected = on_date_selected
         super().__init__()
 
@@ -40,6 +44,7 @@ class SetCalendar(UserControl):
 
 
     def _change_month(self, delta):
+        self.page.session.clear()
         self.previous_selected_container = None
         if(delta > 0):
             if(self.m1 ==12):
@@ -70,9 +75,13 @@ class SetCalendar(UserControl):
 
     def one_click_date(self, e):
         if self.previous_selected_container:
-            self.previous_selected_container.bgcolor = "white"
-            if self.selected_date == datetime.date.today():
-                self.previous_selected_container.bgcolor = "green"
+            if(self.page.session.get(str(self.page.session.get("prev_selected"))) == 1):
+                self.previous_selected_container.bgcolor = "#AFC9AB"
+            else:
+                self.previous_selected_container.bgcolor = "white"
+            # if self.selected_date == datetime.date.today():
+            #     self.previous_selected_container.border = border.all(2, "black")
+            
             self.previous_selected_container.update()
 
         self.selected_date = e.control.data
@@ -82,9 +91,10 @@ class SetCalendar(UserControl):
         if(self.on_date_selected):
             self.on_date_selected(self.selected_date)
 
-        e.control.content.bgcolor = "lightgreen, 0.5"
+        e.control.content.bgcolor = "#5F9356"
         e.control.content.update()
         # self.previous_selected_container_2 = self.previous_selected_container
+        self.page.session.set("prev_selected", self.selected_date.day)
         self.previous_selected_container = e.control.content
         # self.update_notes_display()
         pass
@@ -106,7 +116,20 @@ class SetCalendar(UserControl):
             border_radius=25,  # Half of the width/height
             alignment=alignment.center,
         )
-
+    
+    def create_circle2(self, datee, colorr):
+        datee = str(datee)
+        return Container(
+            content=Text(datee, size=20, color="black", weight=FontWeight.BOLD),
+            width=45,  # Diameter of the circle
+            height=45,
+            bgcolor=colorr,  # Background color of the circle
+            border_radius=25,  # Half of the width/height
+            alignment=alignment.center,
+            border=border.all(2, "black"),
+            
+        )
+    
     def create_month_calendar(self, year):
         self.current_year = year
         self.calendar_grid.controls: list = []
@@ -147,7 +170,12 @@ class SetCalendar(UserControl):
             # weekday_row = weekday_labels
             month_grid.controls.append(weekday_row)
 
-            
+            year_month = str(self.current_year) + "-" + str(self.m1)
+            jadwal_perawatan_controller = JadwalPerawatanController()
+            jadwal_perawatan = jadwal_perawatan_controller.get_all_jadwal_perawatan_by_month(year_month)
+            # tanggal = jadwal_perawatan[5].split(" ")[0]
+            # hari = tanggal.split("-")[2]
+            idx = 0
             max_weeks = 6
             for week in range(max_weeks):
                 week_container = Row(spacing=0)
@@ -173,13 +201,34 @@ class SetCalendar(UserControl):
                         elif (day == datetime.date.today().day
                             and month == datetime.date.today().month
                             and self.current_year == datetime.date.today().year):
+                            if(idx < len(jadwal_perawatan)):
+                                tanggal = jadwal_perawatan[idx][5].split(" ")[0]
+                                hari = tanggal.split("-")[2]
+                                if(day == int(hari)):
+                                    self.page.session.set(str(day), 1)
+                                    day_label = self.create_circle2(day, "#AFC9AB")
+                                    idx += 1
+                                else:
+                                    day_label = self.create_circle2(day, "white")
+                            else:
+                                day_label = self.create_circle2(day, "white")
                             # print("MASUK")
-                            day_label = self.create_circle(day, "green")
+
                         elif self.notes.get(self.selected_date) is not None:
                             # print("MASUK2")
-                            day_label = self.create_circle(day, "lightgreen")
+                            day_label = self.create_circle(day, "#5F9356")
                         else:
-                            day_label = self.create_circle(day, "white")
+                            if(idx < len(jadwal_perawatan)):
+                                tanggal = jadwal_perawatan[idx][5].split(" ")[0]
+                                hari = tanggal.split("-")[2]
+                                if(day == int(hari)):
+                                    self.page.session.set(str(day), 1)
+                                    day_label = self.create_circle(day, "#AFC9AB")
+                                    idx += 1
+                                else:
+                                    day_label = self.create_circle(day, "white")
+                            else:
+                                day_label = self.create_circle(day, "white")
                         day_container.content = day_label
                         week_container.controls.append(day_container)
                 else:
@@ -198,12 +247,12 @@ class SetCalendar(UserControl):
         self.dateToday = Container(
             
             content=Text(
-                # bgcolor="green"
+                # bgcolor="#5F9356"
                 f"\t{day_name}, \n\t{datetime.date.today().month} {self.current_year}",
                 size=14,
                 weight="white",
             ),
-            bgcolor="green",
+            bgcolor="#5F9356",
             width=900,
             height=50
         )
