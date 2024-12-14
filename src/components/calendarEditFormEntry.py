@@ -24,7 +24,7 @@ def calendar_edit_form_entry_page(page: ft.Page):
             tanaman_baru = Tanaman(jenis_tanaman=x.get_jenis(), index_tanaman=x.get_index(), icon_tanaman=x.get_icon(), data_informasi_tanaman=x.get_data_informasi_tanaman(), data_pertumbuhan_tanaman=x.get_data_pertumbuhan_tanaman(), data_jadwal_perawatan=x.get_data_jadwal_perawatan())
             # print(waktu_tanggal.value[8:].replace("/", "-") + " " + waktu_jam.value[8:])
             tanaman_baru.set_data_jadwal_perawatan(JadwalPerawatan(group_id = tanaman_baru.get_data_jadwal_perawatan().get_group_id(), frekuensi_perawatan=frekuensi.value, waktu_perawatan= datetime.datetime.strptime(waktu_tanggal.value[8:], "%d/%m/%Y").strftime("%Y-%m-%d") + " " + waktu_jam.value[8:], jenis_perawatan=tanaman_baru.get_data_jadwal_perawatan().get_jenis_perawatan(), pilihan_notifikasi=notifikasi_switch.value))
-            if frekuensi.value == None:
+            if frekuensi.value == None or frekuensi.value == "":
                 page.session.set("sampai_tanggal_baru", None)
             else:
                 page.session.set("sampai_tanggal_baru",datetime.datetime.strptime(sampai_tanggal.value[8:], "%d/%m/%Y").strftime("%Y-%m-%d"))
@@ -70,7 +70,11 @@ def calendar_edit_form_entry_page(page: ft.Page):
             frekuensi_text.value = "Kolom tidak boleh kosong"
             res = True
         else:
-            frekuensi_text.value = ""
+            if(frekuensi_text.value == "Kolom tidak boleh kosong"):
+                frekuensi_text.value = ""
+            
+        if frekuensi_text.value != "" or waktu_text.value != "" or jam_text.value != "" or tanggal_text.value != "":
+            res = True
         page.update()
         return res
 
@@ -79,6 +83,8 @@ def calendar_edit_form_entry_page(page: ft.Page):
             frekuensi_text.value = ""
             if len(e.control.value) == 2:
                 frekuensi_text.value = "Frekuensi tidak boleh lebih dari 2 digit"
+            if(e.control.value == "0"):
+                frekuensi_text.value = "Frekuensi tidak boleh 0"
         else:
             frekuensi_text.value = "Frekuensi harus berupa angka"
         page.update()
@@ -161,12 +167,16 @@ def calendar_edit_form_entry_page(page: ft.Page):
     jadwal_perawatan_controller = JadwalPerawatanController()
     jadwal_perawatan = jadwal_perawatan_controller.get_one_jadwal_perawatan(tanaman.get_jenis(), tanaman.get_index(), tanaman.get_data_jadwal_perawatan())
     last_date = jadwal_perawatan_controller.get_sampai_tanggal_by_group_id(jadwal_perawatan[3])
-    waktu_tanggal.value = "        " #
-    waktu_tanggal.value += datetime.datetime.strptime(jadwal_perawatan[5].split()[0], "%Y-%m-%d").strftime("%d/%m/%Y")
-    frekuensi.value = jadwal_perawatan[4]
+    count = jadwal_perawatan_controller.get_group_length(jadwal_perawatan[3])
     sampai_tanggal.value = "        " #
     if(frekuensi.value != None):
         sampai_tanggal.value += datetime.datetime.strptime(last_date,"%Y-%m-%d").strftime("%d/%m/%Y")
+    if(count==1):
+        last_date = None
+        sampai_tanggal.value = ""
+    waktu_tanggal.value = "        " #
+    waktu_tanggal.value += datetime.datetime.strptime(jadwal_perawatan[5].split()[0], "%Y-%m-%d").strftime("%d/%m/%Y")
+    frekuensi.value = jadwal_perawatan[4]
 
     waktu_jam.value = "        " #
     waktu_jam.value += jadwal_perawatan[5].split()[1]
