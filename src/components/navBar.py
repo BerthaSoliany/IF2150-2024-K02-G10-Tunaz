@@ -1,35 +1,47 @@
 import flet as ft
 
 def create_navbar(page: ft.Page):
-    # ini fungsi untuk route navbar. blm fiks masih bisa diubah
+    # page.theme = ft.Theme(font_family="Kantumruy-Regular")
+    # page.bgcolor = "#FDFFEA"
+
+    def flush_session(e):
+        page.session.set("Tanaman", None)
+        page.session.set("Sorting", None)
+        page.session.set("action", None)
+        page.session.set("jenis_tanaman", None)
+        page.session.set("index_tanaman", None)
+        page.session.set("data_pertumbuhan_tanaman", None)
+
     def on_home_click(e):
-        page.go("/home")
+        flush_session(e)
+        page.go("/src/main")
 
     def on_informasi_click(e):
-        page.go("/informasi")
+        flush_session(e)
+        page.go("/src/page/infoPage")
 
     def on_pertumbuhan_click(e):
-        page.go("/pertumbuhan")
+        flush_session(e)
+        page.go("/src/page/graphPage")        
 
     return ft.Container(
         content=ft.Row(
             controls=[
                 ft.Row(
-                    controls=[
+                    controls=[ft.Container(content=
                         ft.Image(
                             src="./img/logo1.png",  
-                            width=90, 
-                            height=90,  
+                            width=170, 
+                            height=95,  
                             fit="contain" 
-                        ),
+                        ), on_click=on_home_click)
                     ],
                     alignment="start",
                 ),
                 ft.Row(
                     controls=[
-                        ft.TextButton("Home", on_click=on_home_click, style=ft.ButtonStyle(color=ft.colors.BROWN_700, text_style=ft.TextStyle(weight="bold", size=18))),
-                        ft.TextButton("Informasi Tanaman", on_click=on_informasi_click, style=ft.ButtonStyle(color=ft.colors.BROWN_700, text_style=ft.TextStyle(weight="bold", size=18))),
-                        ft.TextButton("Grafik Pertumbuhan", on_click=on_pertumbuhan_click, style=ft.ButtonStyle(color=ft.colors.BROWN_700, text_style=ft.TextStyle(weight="bold", size=18))),
+                        ft.TextButton("Informasi Tanaman", on_click=on_informasi_click, style=ft.ButtonStyle(color="#5A3E2A", text_style=ft.TextStyle(weight="bold", size=23))),
+                        ft.TextButton("Grafik Pertumbuhan", on_click=on_pertumbuhan_click, style=ft.ButtonStyle(color="#5A3E2A", text_style=ft.TextStyle(weight="bold", size=23))),
                     ],
                     alignment="end",
                 ),
@@ -37,8 +49,8 @@ def create_navbar(page: ft.Page):
             alignment="spaceBetween",
             vertical_alignment="center",
         ),
-        bgcolor=ft.colors.YELLOW_100,
-        padding=5,
+        bgcolor="#FDFFEA",
+        padding=10,
         margin=0
     )
 
