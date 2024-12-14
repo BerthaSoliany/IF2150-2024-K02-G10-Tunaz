@@ -8,7 +8,7 @@ def create_click_card(page, on_click, tinggi, tanggal):
     def handle_click(e):
         page.session.set("tinggi_tanaman", tinggi[8:])
         # page.session.set("tanggal_catatan", int(tanggal[9:]))
-        page.session.set("tanggal_catatan", datetime.strptime(tanggal[9:],"%d/%m/%Y").strftime("%Y-%m-%d"))
+        page.session.set("tanggal_catatan", datetime.strptime(tanggal,"%d/%m/%Y").strftime("%Y-%m-%d"))
         on_click(e)
         page.update()
     
@@ -33,11 +33,12 @@ def create_click_card(page, on_click, tinggi, tanggal):
             content=ft.Container(
                 content=ft.Column(
                     [
-                        ft.Text(tanggal, size=16, color="#5F9356"),
-                        ft.Text(tinggi, size=15, color="black"),
+                        ft.Text(tanggal, size=16, color="#5F9356", weight=ft.FontWeight.BOLD),
+                        ft.Text(tinggi + "cm", size=15, color="black"),
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    spacing=1
                 ),
                 padding=10,
                 alignment=ft.alignment.center,

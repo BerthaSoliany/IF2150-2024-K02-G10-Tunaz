@@ -148,7 +148,7 @@ def graph_edit_form_entry_page(page: ft.Page):
                     ft.Row(
                         [
                             ft.Column([
-                                ft.Text("Tinggi Tanaman", size=20, color="black"),
+                                ft.Text("Tinggi Tanaman (cm)", size=20, color="black"),
                                 tinggi_tanaman_field,
                                 tinggi_text,
                             ],
