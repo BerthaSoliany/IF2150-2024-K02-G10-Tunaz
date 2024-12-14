@@ -1,8 +1,14 @@
+import sys
+import os
 import datetime
 import time
-import os
 import sqlite3
 from win11toast import toast
+
+# Add the src directory to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+from src.controllers.jadwalperawatancontroller import JadwalPerawatanController
 
 def notification(target_datetime, notification_message):
     icon = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../img/logo_tunaz2.png'))
@@ -16,41 +22,31 @@ def notification(target_datetime, notification_message):
             break
         time.sleep(1)
 
-# Fungsi untuk mendapatkan notifikasi yang waktunya sudah tiba
-def get_notifications_to_trigger(cursor):
-    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    query = "SELECT id, notify_time, message FROM notifications WHERE notify_time <= ? AND notify_time != 'triggered'"
-    cursor.execute(query, (current_time,))
-    return cursor.fetchall()
-
-# Fungsi untuk menandai notifikasi yang sudah ditampilkan
-def mark_notification_as_triggered(cursor, notification_id):
-    query = "UPDATE notifications SET notify_time = 'triggered' WHERE id = ?"
-    cursor.execute(query, (notification_id,))
-
-# Main function
-def main():
-    # Koneksi ke database
-    connection = sqlite3.connect('notifications.db')
+# Refactored main function into show_notification
+def show_notification():
+    connection = sqlite3.connect('src/database/tunaz.db')
     cursor = connection.cursor()
 
     print("Menunggu notifikasi...")
     while True:
-        # Periksa notifikasi yang waktunya sudah tiba
-        notifications = get_notifications_to_trigger(cursor)
+        current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+        jadwal_perawatan_controller = JadwalPerawatanController()
+        perawatan_list = jadwal_perawatan_controller.get_all_jadwal_perawatan_by_date(current_date)
         
-        for notif_id, notify_time, message in notifications:
-            # Tampilkan notifikasi menggunakan fungsi notification
-            notification(notify_time, message)
+        for row in perawatan_list:
+            notif_id = row[0]
+            notify_time = row[5]
+            jenis_perawatan = row[6]
+            jenis_tanaman = row[1]
+            index_tanaman = row[2]
+            pilihan_notifikasi = row[7]
             
-            # Tandai sebagai ditampilkan
-            mark_notification_as_triggered(cursor, notif_id)
+            if pilihan_notifikasi:
+                current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                if notify_time == current_time:
+                    message = f"{jenis_perawatan} {jenis_tanaman} {index_tanaman}"
+                    notification(notify_time, message)
+                    
+                    print(f"Notifikasi '{message}' ditampilkan pada {current_time}")
         
-        # Simpan perubahan ke database
-        connection.commit()
-
-        # Tunggu sebelum memeriksa lagi (dalam detik)
-        time.sleep(5)
-
-if __name__ == "__main__":
-    main()
+        time.sleep(1)

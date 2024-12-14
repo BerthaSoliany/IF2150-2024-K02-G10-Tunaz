@@ -1,5 +1,5 @@
 import flet as ft
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime, datetime
 # import plotly.graph_objects as go
 from src.components.button1 import create_button1
 from src.components.navBar import create_navbar
@@ -20,7 +20,6 @@ s = State()
 
 def graph_page(page: ft.Page):
     page.bgcolor = "white"
-    page.theme = ft.Theme(font_family="Kantumruy-Regular")
     page.horizontal_alignment = ft.alignment.center
     page.vertical_alignment = ft.alignment.center
 
@@ -30,12 +29,19 @@ def graph_page(page: ft.Page):
         yy, mm, dd = map(int, dt_date.split('-'))
         return date(yy, mm, dd)
     
+    def to_date2(dt_date):
+        dd, mm, yy = map(int, dt_date.split('/'))
+        return date(yy, mm, dd)
+    
     def dropdown_changed1(e):
         pilihan_index.options.clear()
         if(pilihan_jenis.value != None):
             index_tanaman = tanaman_controller.get_all_index_tanaman(pilihan_jenis.value)
             pilihan_index.options = [ft.dropdown.Option(option) for option in index_tanaman]
             pilihan_index.disabled = False
+            pilihan_index.bgcolor = "#DBC4AB"
+            pilihan_index.fill_color = "#DBC4AB"
+            pilihan_index.update()
         else:
             pilihan_index.disabled = True
         pilihan_index.value = None
@@ -46,8 +52,12 @@ def graph_page(page: ft.Page):
         # tombol cari ini diilangin dan masukin function toggle data ke pilihan_index yaw
         page.session.set("jenis_tanaman", pilihan_jenis.value)
         page.session.set("index_tanaman", pilihan_index.value)
+        tanaman_controller = TanamanController()
+        icon_tanaman = tanaman_controller.get_tanaman(pilihan_jenis.value, pilihan_index.value)[3]
+        page.session.set("icon_tanaman", icon_tanaman)
+        
         graph = GrafikPertumbuhan()
-        new_data_points, data_tanggal = graph.tinggi_terhadap_waktu(Tanaman(jenis_tanaman=pilihan_jenis.value, index_tanaman=pilihan_index.value, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None))
+        new_data_points, data_tanggal = graph.tinggi_terhadap_waktu(Tanaman(jenis_tanaman=pilihan_jenis.value, index_tanaman=pilihan_index.value, icon_tanaman=None, data_informasi_tanaman=None, data_pertumbuhan_tanaman=None, data_jadwal_perawatan=None))
         if(len(new_data_points) != 0):
             range_tanggal = (to_date(data_tanggal[-1]) - to_date(data_tanggal[0])).days
             range_tinggi = max(new_data_points)
@@ -70,7 +80,7 @@ def graph_page(page: ft.Page):
             # data catatan
             data_container.controls = [
                 *[
-                    create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", f"Tanggal: {point.x}")
+                    create_click_card(page, lambda e: page.go("/src/components/graphViewPage"), f"Tinggi: {point.y}", "Tanggal: " + datetime.strptime(data_tanggal[i],"%Y-%m-%d").strftime("%d/%m/%Y"))
                     for i, point in enumerate(new_data_points)
                 ]
             ]
@@ -111,45 +121,43 @@ def graph_page(page: ft.Page):
 
     pilihan_jenis = ft.Dropdown(
             on_change=dropdown_changed1,
-            text_style=ft.TextStyle(size=16, color="black", overflow="hidden"),
-            bgcolor="white",
-            # label=judul,
-            # label_style=ft.TextStyle(size=16, color="black"),
+            text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
+            bgcolor="#AADBA3",
             options=[ft.dropdown.Option(option) for option in jenis_tanaman],
-            width=102,
+            width=300,
             height=44,
             # max_menu_height=200,
-            icon_enabled_color="black",
+            select_icon_enabled_color="black",
             border_width=0,
             border_radius=10,
             fill_color="#AADBA3",
-            hint_content=ft.Text(value="Jenis", size=16, color="black"),
+            hint_content=ft.Text(value="Jenis", size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
             content_padding=10,
-            alignment=ft.alignment.center,
+            alignment=ft.Alignment(-1,0),
             disabled = False,
         )
     
     pilihan_index = ft.Dropdown(
             on_change=toggle_data,
-            text_style=ft.TextStyle(size=16, color="black", overflow="hidden"),
-            bgcolor="white",
+            text_style=ft.TextStyle(size=16, color="black", overflow=ft.TextOverflow.ELLIPSIS),
+            bgcolor="#E0E0E0",
             # label=judul,
             # label_style=ft.TextStyle(size=16, color="black"),
             options=[ft.dropdown.Option(option) for option in []],
-            width=102,
+            width=100,
             height=44,
             # max_menu_height=200,
-            icon_enabled_color="black",
+            select_icon_enabled_color="black",
+            # icon=ft.Icon(size=16, color="black"),
             border_width=0,
             border_radius=10,
-            fill_color="#DBC4AB",
+            fill_color="#E0E0E0", #if pilihan_jenis.value else "#E0E0E0",
             hint_content=ft.Text(value="Index", size=16, color="black"),
-            content_padding=10,
-            alignment=ft.alignment.center,
+            content_padding=5,
+            alignment=ft.Alignment(0,0),
             disabled=True,
         )
     # index_tanaman = tanaman_controller.get_all_index_tanaman(pilihan_jenis.value)
-    
 
     # Create an add button
     # def button_clicked(e):
@@ -318,9 +326,8 @@ def graph_page(page: ft.Page):
         padding=10,
         margin=10,
         bgcolor=ft.Colors.WHITE,
-        width=800,
+        width=850,
         height=400,
-        expand=True,
         # shadow=ft.BoxShadow(
         #     blur_radius=1,
         #     spread_radius=1,
@@ -330,7 +337,7 @@ def graph_page(page: ft.Page):
     )
 
     data_container = ft.ListView(
-        controls=[ft.Text("Tidak ada data pertumbuhan tanaman.", size=16, color=ft.Colors.BLACK)],
+        controls=[ft.Text("Pilih jenis dan index tanaman!", size=16, color=ft.Colors.BLACK, text_align=ft.TextAlign.CENTER),],
         padding=10,
         # margin=10,
         # border=ft.border.all(3, ft.Colors.GREY_200),
@@ -339,7 +346,7 @@ def graph_page(page: ft.Page):
         divider_thickness=0,
         expand=True,
         width=300,
-        height=400,
+        height=380,
     )
 
     header = ft.Container(
@@ -379,11 +386,13 @@ def graph_page(page: ft.Page):
         # shadow=ft.BoxShadow
         # alignment=ft.alignment.center,
     )
-    page.controls.clear()
-    page.controls.append(ft.Stack([
+
+    konten = ft.Stack([
+    ft.Column(controls=[
+        create_navbar(page),
+        ft.Stack([
         ft.Column(
             controls=[
-                create_navbar(page),
                 ft.Row(
                     controls=[
                         pilihan_jenis,
@@ -399,9 +408,26 @@ def graph_page(page: ft.Page):
                     ],
                     alignment="spaceBetween",
                     vertical_alignment="center",
+                    spacing=10,
                 ),
-            ], 
-        ), fab
-    ], expand=True, alignment=ft.Alignment(1,1)))
+            ], right=20, bottom=20, left=20, top=5
+        )
+    ])
+    ]),
+    fab], expand=True, alignment=ft.Alignment(1,1))
+
+    page.controls.clear()
+    page.controls.append(konten)
     page.update()
+
+    if page.session.get("jenis_tanaman") != None:
+        pilihan_jenis.value = page.session.get("jenis_tanaman")
+        dropdown_changed1(None)
+
+    if page.session.get("index_tanaman") != None:
+        pilihan_index.value = page.session.get("index_tanaman")
+        toggle_data(None)
+        
+    page.update()
+        
     return page
