@@ -1,34 +1,56 @@
 import datetime
 import time
-import locale
 import os
-from winotify import Notification, audio
+import sqlite3
+from win11toast import toast
 
-def notification(target_datetime, title, duration="long"):
-    icon_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../img/logo_tunaz2.png'))
-    locale.setlocale(locale.LC_TIME, 'id_ID')  # menggunakan bahasa Indonesia
-    
+def notification(target_datetime, notification_message):
+    icon = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../img/logo_tunaz2.png'))
+
     while True:
         current_datetime = datetime.datetime.now()
         current_time_str = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
-        day_of_week = current_datetime.strftime('%A')
         
         if current_time_str == target_datetime:
-            notification_message = f"{day_of_week}, {current_datetime.strftime('%H:%M:%S')}."
-            notif = Notification(
-                app_id="Reminder Tunaz",
-                title=title,
-                msg=notification_message,
-                duration=duration,
-                icon=icon_path,
-            )
-            notif.set_audio(audio.Reminder, loop=True)  # Pilihan Audio: Default, Mail, NewMail, SMS, Reminder
-            notif.show()
+            toast('Reminder Tunaz', notification_message, icon=icon)
             break
-        time.sleep(1)  # Tidur selama 1 detik sebelum memeriksa lagi
+        time.sleep(1)
 
+# Fungsi untuk mendapatkan notifikasi yang waktunya sudah tiba
+def get_notifications_to_trigger(cursor):
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    query = "SELECT id, notify_time, message FROM notifications WHERE notify_time <= ? AND notify_time != 'triggered'"
+    cursor.execute(query, (current_time,))
+    return cursor.fetchall()
 
-# Contoh penggunaan:
-target_datetime = "2024-12-12 15:43:00"  # format 'YYYY-MM-DD HH:MM:SS'
-notification_title = "Siram Jagung 001"
-notification(target_datetime, notification_title)
+# Fungsi untuk menandai notifikasi yang sudah ditampilkan
+def mark_notification_as_triggered(cursor, notification_id):
+    query = "UPDATE notifications SET notify_time = 'triggered' WHERE id = ?"
+    cursor.execute(query, (notification_id,))
+
+# Main function
+def main():
+    # Koneksi ke database
+    connection = sqlite3.connect('notifications.db')
+    cursor = connection.cursor()
+
+    print("Menunggu notifikasi...")
+    while True:
+        # Periksa notifikasi yang waktunya sudah tiba
+        notifications = get_notifications_to_trigger(cursor)
+        
+        for notif_id, notify_time, message in notifications:
+            # Tampilkan notifikasi menggunakan fungsi notification
+            notification(notify_time, message)
+            
+            # Tandai sebagai ditampilkan
+            mark_notification_as_triggered(cursor, notif_id)
+        
+        # Simpan perubahan ke database
+        connection.commit()
+
+        # Tunggu sebelum memeriksa lagi (dalam detik)
+        time.sleep(5)
+
+if __name__ == "__main__":
+    main()
