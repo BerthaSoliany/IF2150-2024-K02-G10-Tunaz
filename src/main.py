@@ -18,9 +18,10 @@ from src.components.calendarRPL import TODAY_DATE
 from src.controllers.jadwalperawatancontroller import JadwalPerawatanController
 from src.controllers.jadwalperawatan import JadwalPerawatan
 from src.controllers.datainformasitanamancontroller import DataInformasiTanamanController
+from src.controllers.notifikasi import show_notification
 import datetime
 import calendar
-
+import threading
 
 def route_change(e: ft.RouteChangeEvent):
     page = e.page
@@ -53,6 +54,8 @@ def route_change(e: ft.RouteChangeEvent):
 
 
 def main(page: ft.Page):
+    notification_thread = threading.Thread(target=show_notification, daemon=True)
+    notification_thread.start()
     page.on_route_change = route_change
     page.title = "Flet app"
     page.fonts = {
