@@ -72,7 +72,7 @@ def graph_page(page: ft.Page):
             chart.left_axis.labels.clear()
             chart.horizontal_grid_lines.interval=max(round(range_tinggi/7),1)
             chart.vertical_grid_lines.interval=max(round(range_tanggal/12),1)
-            chart.update()
+            # chart.update()
             # for i in range(3):
             #     chart.left_axis.labels[i].value = round(range_tinggi*(i+1)/3)
             #     chart.left_axis.labels[i].label.value = round(range_tinggi*(i+1)/3)
@@ -84,7 +84,7 @@ def graph_page(page: ft.Page):
                 ft.ChartAxisLabel(
                     value=i,
                     label=ft.Text(str(i), size=14, weight=ft.FontWeight.BOLD, color=ft.Colors.BLACK),
-                ) for i in range(int(range_interval))
+                ) for i in range(0,int(range_interval),int(chart.left_axis.labels_interval))
             ]
             chart.left_axis.labels.append(
                 ft.ChartAxisLabel(
@@ -136,7 +136,7 @@ def graph_page(page: ft.Page):
             # data catatan dummy
             data_container.controls = [ft.Text("Tidak ada data pertumbuhan tanaman.", size=16, color=ft.Colors.BLACK)]
         chart.bottom_axis.labels.clear()
-        chart.bottom_axis.labels_interval = max(round(range_tanggal/5),1)
+        chart.bottom_axis.labels_interval = max(int(round(range_tanggal/5)),1)
         range_interval = range_tanggal
         if(range_tanggal % 5 == 0):
             range_interval += 1
@@ -152,7 +152,7 @@ def graph_page(page: ft.Page):
                         ),
                         margin=ft.margin.only(top=10),
                     ),
-                ) for i in range(int(range_interval))
+                ) for i in range(0,int(range_interval),int(chart.bottom_axis.labels_interval))
         ]
         chart.data_series = data_1
         chart_container.update()

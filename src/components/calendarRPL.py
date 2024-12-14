@@ -181,6 +181,8 @@ class SetCalendar(UserControl):
             month_grid.controls.append(weekday_row)
 
             year_month = str(self.current_year) + "-" + str(self.m1)
+            if(self.m1<10):
+                year_month = str(self.current_year) + "-0" + str(self.m1)
             jadwal_perawatan_controller = JadwalPerawatanController()
             jadwal_perawatan = jadwal_perawatan_controller.get_all_jadwal_perawatan_by_month(year_month)
             # tanggal = jadwal_perawatan[5].split(" ")[0]
@@ -218,6 +220,13 @@ class SetCalendar(UserControl):
                                     self.page.session.set(str(day), 1)
                                     inner_circle = self.create_circle(day, "#5A3E2A, 0.4")
                                     idx += 1
+                                    while(idx < len(jadwal_perawatan)):
+                                        tanggal = jadwal_perawatan[idx][5].split(" ")[0]
+                                        hari = tanggal.split("-")[2]
+                                        if(day == int(hari)):
+                                            idx += 1
+                                        else:
+                                            break
                                 else:
                                     inner_circle = self.create_circle(day, "white")
                             else:
@@ -247,6 +256,13 @@ class SetCalendar(UserControl):
                                     self.page.session.set(str(day), 1)
                                     day_label = self.create_circle(day, "#5A3E2A, 0.4")
                                     idx += 1
+                                    while(idx < len(jadwal_perawatan)):
+                                        tanggal = jadwal_perawatan[idx][5].split(" ")[0]
+                                        hari = tanggal.split("-")[2]
+                                        if(day == int(hari)):
+                                            idx += 1
+                                        else:
+                                            break
                                 else:
                                     day_label = self.create_circle(day, "white")
                             else:
