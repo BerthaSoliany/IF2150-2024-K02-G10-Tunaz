@@ -41,7 +41,7 @@ Tumbuhan Azul atau Tunaz adalah P/L manajemen taman atau kebun berbasis desktop 
 
 6. Jalankan perangkat lunak:
     ```sh
-    python app.py
+    flet run app.py
 
 ## Daftar Modul
 - [Modul 1: List Informasi Tanaman](#modul-1-list-informasi-tanaman)

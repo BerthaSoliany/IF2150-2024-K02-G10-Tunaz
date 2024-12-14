@@ -21,7 +21,7 @@ def info_view_page(page: ft.Page):
         border_radius=5, 
         border=ft.border.all(1,"#D7D7D7"), 
         placeholder_text=x.get_data_informasi_tanaman().get_kebutuhan_perawatan(), 
-        placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400), 
+        placeholder_style=ft.TextStyle(color=ft.Colors.GREY_600), 
         multiline=True, 
         min_lines=8, 
         max_lines=8, 

@@ -144,7 +144,7 @@ def info_add_form_entry_page(page: ft.Page):
         bgcolor="white",
         text_style=ft.TextStyle(color="black"),
         placeholder_text="Masukan jenis tanaman di sini...",
-        placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400),
+        placeholder_style=ft.TextStyle(color=ft.Colors.GREY_600),
     )
 
     kebutuhan_perawatan_field = ft.CupertinoTextField(
@@ -159,7 +159,7 @@ def info_add_form_entry_page(page: ft.Page):
         bgcolor="white",
         text_style=ft.TextStyle(color="black"),
         placeholder_text="Masukkan kebutuhan perawatan di sini...",
-        placeholder_style=ft.TextStyle(color=ft.Colors.GREY_400),
+        placeholder_style=ft.TextStyle(color=ft.Colors.GREY_600),
         multiline=True,
         min_lines=3,
         max_lines=3,
