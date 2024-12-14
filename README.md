@@ -50,8 +50,8 @@ Tumbuhan Azul atau Tunaz adalah P/L manajemen taman atau kebun berbasis desktop 
 - [Modul 4: Notifikasi](#modul-4-notifikasi)
 - [Pembagian Tugas](#pembagian-tugas)
 
-### Modul 1: List Informasi Tanaman
-List informasi tanaman menampilkan jenis tanaman, indeks tanaman, informasi perawatan tanaman, dan umur tanaman dari data tanaman.
+### Modul 1: Informasi Tanaman
+Informasi tanaman menampilkan daftar jenis tanaman, indeks tanaman, informasi perawatan tanaman, dan umur tanaman dari data tanaman.
 ![page_info_tanaman](https://github.com/user-attachments/assets/6b4156eb-3c92-4665-b9c6-61c38260fb53)
 
 ### Modul 2: Kalender Perawatan
