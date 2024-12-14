@@ -61,24 +61,6 @@ def info_page(page: ft.Page):
     opt_sortby.on_change = sorting
     if(page.session.get("Sorting") != None):
         opt_sortby.value = page.session.get("Sorting")
-    
-    def create_search_bar():
-        return ft.TextField(
-            label="Cari Tanaman",  
-            label_style=ft.TextStyle(size=16, color="black"),
-            expand=True,
-            height=40,
-            border_radius=16,
-            border=ft.border.all(1, "#D7D7D7"),
-            border_color="#D7D7D7",
-            bgcolor="#FFFFFF",
-            #icon="search",
-            content_padding=ft.Padding(left=20, right=10, top=10, bottom=10),
-            text_style=ft.TextStyle(size=16, color="black"),
-            cursor_width=1,
-            cursor_color="black",
-        )
-    search_bar = create_search_bar()
 
     def search(e):
         page.session.set("keyword",search_bar.value)
@@ -98,6 +80,26 @@ def info_page(page: ft.Page):
         )
     
     search_button = create_search_button()
+
+    def create_search_bar():
+        return ft.TextField(
+            label="Cari Tanaman",  
+            label_style=ft.TextStyle(size=16, color="black"),
+            expand=True,
+            height=40,
+            border_radius=16,
+            border=ft.border.all(1, "#D7D7D7"),
+            border_color="#D7D7D7",
+            bgcolor="#FFFFFF",
+            #icon="search",
+            content_padding=ft.Padding(left=20, right=10, top=10, bottom=10),
+            text_style=ft.TextStyle(size=16, color="black"),
+            cursor_width=1,
+            cursor_color="black",
+            on_submit=search,
+        )
+    search_bar = create_search_bar()
+    
     
     fab = create_floating_action_button(lambda e: page.go("/src/components/infoAddFormEntry"))
 
