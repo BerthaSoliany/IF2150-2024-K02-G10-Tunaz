@@ -34,6 +34,8 @@ Tumbuhan Azul atau Tunaz adalah P/L manajemen taman atau kebun berbasis desktop 
 4. Aktivasi virtual environment yang sudah dibuat:<br>
    Untuk Windows: ```venv\Scripts\activate```<br> 
    Untuk Unix-like Shell (bash): ```source venv/bin/activate```
+> [!NOTE]
+> Sesuaikan kembali path dari activate sesuai dengan venv masing-masing
 
 5. Instal dependencies:
     ```sh
@@ -78,7 +80,6 @@ Notifikasi muncul ketika terdapat jadwal perawatan tanaman sebagai pengingat bag
 
 ## Tabel Basis Data
 - [Tabel Tanaman](#tabel-tanaman)
-- [Tabel Tracker Jenis](#tabel-tracker-jenis)
 - [Tabel Data Informasi Tanaman](#tabel-data-informasi-tanaman)
 - [Tabel Data Pertumbuhan Tanaman](#tabel-data-informasi-tanaman)
 - [Tabel Data Jadwal Perawatan](#tabel-data-jadwal-perawatan)
@@ -92,13 +93,8 @@ Tabel ini menyimpan informasi dasar mengenai suatu tanaman.
 | jenis_tanaman | varchar(25) | - |
 | index_tanaman | integer | - |
 | icon_tanaman | text | - |
-
-### Tabel Tracker Jenis
-Tabel ini menyimpan indeks terakhir dari suatu jenis tanaman.
-| Atribut | Tipe | Keterangan |
-|---------|------|------------|
-| jenis_tanaman | varchar(25) | - |
-| last_tanaman_index | integer | - |
+<br>
+<img width="514" alt="sample_tanaman_database_table" src="https://github.com/user-attachments/assets/437af802-1ac3-4044-83a1-ff3ca0af560c" />
 
 ### Tabel Data Informasi Tanaman
 Tabel ini menyimpan data informasi suatu tanaman untuk list informasi tanaman.
@@ -109,6 +105,8 @@ Tabel ini menyimpan data informasi suatu tanaman untuk list informasi tanaman.
 | index_tanaman | integer | Foreign Key dari Tabel Tanaman |
 | waktu_tanam | text | - |
 | kebutuhan_perawatan | varchar(200) | - |
+<img width="622" alt="sample_datainformasitanaman_database_table" src="https://github.com/user-attachments/assets/b26dce2c-ddb1-47a3-ad13-e227b15348ad" />
+
 
 ### Tabel Data Pertumbuhan Tanaman
 Tabel ini menyimpan data pertumbuhan suatu tanaman untuk grafik pertumbuhan tanaman.
@@ -121,6 +119,7 @@ Tabel ini menyimpan data pertumbuhan suatu tanaman untuk grafik pertumbuhan tana
 | tinggi_tanaman| real | - |
 | tanggal_catatan | text | - |
 | kondisi_daun | varchar(25) | - |
+<img width="806" alt="sample_datapertumbuhantanaman_database_table" src="https://github.com/user-attachments/assets/49cf4bec-7c49-4572-9840-9bddeb7882dc" />
 
 ### Tabel Data Jadwal Perawatan
 Tabel ini menyimpan data jadwal perawatan suatu tanaman untuk kalender perawatan.
@@ -134,9 +133,6 @@ Tabel ini menyimpan data jadwal perawatan suatu tanaman untuk kalender perawatan
 | waktu_perawatan | text | - |
 | jenis_perawatan | varchar(25) | - |
 | pilihan_notifikasi | boolean | default = True |
+<img width="803" alt="sample_datajadwalperawatan_database_table" src="https://github.com/user-attachments/assets/c9b9c1dc-5200-42ff-b3f1-f8879ffb1e15" />
 
-### Tabel Grup Jadwal Perawatan
-Tabel ini menyimpan indeks terakhir dari grup tanaman, yaitu kelompok tanaman yang memiliki jadwal perawatan pada suatu rentang waktu tertentu.
-| Atribut | Tipe | Keterangan |
-|---------|------|------------|
-| last_group_id | integer | - |
+**<p align="center">Terima kasih!</p>**
