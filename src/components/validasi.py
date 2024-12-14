@@ -33,7 +33,7 @@ def validasi(page: ft.Page, link):
 
     dialog = ft.AlertDialog(
         modal=True,
-        content=ft.Text("Apakah Anda yakin ingin menghapus data ini?\nPenghapusan data bersifat permanen.", text_align="center", color=ft.colors.BLACK),
+        content=ft.Text("Apakah Anda yakin ingin menghapus data ini?\nPenghapusan data bersifat permanen.", text_align="center", color=ft.Colors.BLACK),
         actions=[
             ft.Row(
                 controls=[
@@ -46,7 +46,7 @@ def validasi(page: ft.Page, link):
         actions_alignment=ft.MainAxisAlignment.END,
         on_dismiss=lambda e: page.add(),
         bgcolor="#FDFFEA",
-        shadow_color=ft.colors.GREY_400,
+        shadow_color=ft.Colors.GREY_400,
     )
     return dialog
 
@@ -76,7 +76,7 @@ def validasi_hapus_jadwal(page: ft.Page, link):
 
     dialog = ft.AlertDialog(
         modal=True,
-        content=ft.Text("Apakah Anda yakin ingin menghapus data ini?\nPenghapusan data bersifat permanen.", text_align="center", color=ft.colors.BLACK),
+        content=ft.Text("Apakah Anda yakin ingin menghapus data ini?\nPenghapusan data bersifat permanen.", text_align="center", color=ft.Colors.BLACK),
         actions=[
             ft.Row(
                 controls=[
@@ -90,7 +90,7 @@ def validasi_hapus_jadwal(page: ft.Page, link):
         actions_alignment=ft.MainAxisAlignment.END,
         on_dismiss=lambda e: page.add(),
         bgcolor="#FDFFEA",
-        shadow_color=ft.colors.GREY_400,
+        shadow_color=ft.Colors.GREY_400,
     )
     return dialog
 
@@ -136,7 +136,7 @@ def validasi_edit_jadwal(page: ft.Page):
 
     dialog = ft.AlertDialog(
         modal=True,
-        content=ft.Text("Apakah Anda yakin ingin mengubah jadwal ini?", text_align="center", color=ft.colors.BLACK),
+        content=ft.Text("Apakah Anda yakin ingin mengubah jadwal ini?", text_align="center", color=ft.Colors.BLACK),
         actions=[
             ft.Row(
                 controls=[
@@ -150,6 +150,6 @@ def validasi_edit_jadwal(page: ft.Page):
         actions_alignment=ft.MainAxisAlignment.END,
         on_dismiss=lambda e: page.add(),
         bgcolor="#FDFFEA",
-        shadow_color=ft.colors.GREY_400,
+        shadow_color=ft.Colors.GREY_400,
     )
     return dialog

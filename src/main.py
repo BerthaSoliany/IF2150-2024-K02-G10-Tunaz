@@ -197,7 +197,7 @@ def main(page: ft.Page):
 
         dialog = ft.AlertDialog(
             modal=True,
-            content=ft.Text("Pilih jenis perawatan yang ingin kamu jadwalkan!", text_align="center", color=ft.colors.BLACK),
+            content=ft.Text("Pilih jenis perawatan yang ingin kamu jadwalkan!", text_align="center", color=ft.Colors.BLACK),
             actions=[
                 ft.Row(
                     controls=[
@@ -210,7 +210,7 @@ def main(page: ft.Page):
             actions_alignment=ft.MainAxisAlignment.END,
             on_dismiss=lambda e: page.add(),
             bgcolor="#FDFFEA",
-            shadow_color=ft.colors.GREY_400,
+            shadow_color=ft.Colors.GREY_400,
         )
         return dialog
     dialog = pilihan_perawatan()

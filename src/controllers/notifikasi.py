@@ -15,7 +15,7 @@ def show_notification():
     connection = sqlite3.connect('src/database/tunaz.db')
     cursor = connection.cursor()
     last_time = None
-    print("Menunggu notifikasi...")
+    #print("Menunggu notifikasi...")
     while True:
         current_date = datetime.datetime.now().strftime('%Y-%m-%d')
         jadwal_perawatan_controller = JadwalPerawatanController()

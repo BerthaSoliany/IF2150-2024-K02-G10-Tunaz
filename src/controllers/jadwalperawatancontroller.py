@@ -32,9 +32,8 @@ class JadwalPerawatanController:
         waktu_akhir_perawatan = datetime.combine(waktu_akhir_perawatan, waktu_perawatan_datetime.time())
         # waktu_perawatan = waktu_perawatan_datetime.date()
         while waktu_perawatan_datetime <= waktu_akhir_perawatan:
-            print("halo")
-            print("1", waktu_perawatan_datetime)
-            print("2", waktu_akhir_perawatan)
+            #print("1", waktu_perawatan_datetime)
+            #print("2", waktu_akhir_perawatan)
             cursor.execute("INSERT INTO dataJadwalPerawatan (jenis_tanaman, index_tanaman, group_id, frekuensi_perawatan, waktu_perawatan, jenis_perawatan, pilihan_notifikasi) VALUES (?, ?, ?, ?, ?, ?, ?);", (jenis_tanaman, index_tanaman, group_id, jadwal_perawatan.get_frekuensi_perawatan(), jadwal_perawatan.get_waktu_perawatan(), jadwal_perawatan.get_jenis_perawatan(), jadwal_perawatan.get_pilihan_notifikasi()))
             waktu_perawatan_datetime = waktu_perawatan_datetime + timedelta(days = int(jadwal_perawatan.get_frekuensi_perawatan()))
             # waktu_perawatan = waktu_perawatan_datetime.date()
@@ -56,9 +55,8 @@ class JadwalPerawatanController:
         cursor.execute("UPDATE groupJadwalPerawatan SET last_group_id = ?;", (group_id,))
         cursor.execute("UPDATE dataJadwalPerawatan SET group_id = ?, frekuensi_perawatan = ?, waktu_perawatan = ?, jenis_perawatan = ?, pilihan_notifikasi = ? WHERE jenis_tanaman = ? AND index_tanaman = ? AND group_id = ? AND waktu_perawatan = ? AND jenis_perawatan = ?;", (group_id, jadwal_perawatan_baru.get_frekuensi_perawatan(), jadwal_perawatan_baru.get_waktu_perawatan(), jadwal_perawatan_baru.get_jenis_perawatan(), jadwal_perawatan_baru.get_pilihan_notifikasi(), jenis_tanaman, index_tanaman, jadwal_perawatan_lama.get_group_id(), jadwal_perawatan_lama.get_waktu_perawatan(), jadwal_perawatan_lama.get_jenis_perawatan()))
         conn.commit()
-        print("ini dari controller")
         cursor.execute("SELECT * FROM dataJadwalPerawatan;")
-        print(cursor.fetchall())
+        #print(cursor.fetchall())
         conn.close()
         return group_id
     
@@ -146,7 +144,7 @@ class JadwalPerawatanController:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM dataJadwalPerawatan;")
         data = cursor.fetchall()
-        print(data)
+        #print(data)
         conn.close()
         # return data
 
